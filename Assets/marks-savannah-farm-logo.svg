@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 180" role="img" aria-labelledby="title">
+  <title id="title">Mark's Savannah Farm</title>
+  <defs>
+    <linearGradient id="field" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b6a3d" />
+      <stop offset="1" stop-color="#16472e" />
+    </linearGradient>
+  </defs>
+  <g aria-hidden="true">
+    <circle cx="82" cy="58" r="34" fill="#dda85a" />
+    <path d="M71 133c8-20 7-40 1-57m0 34c-13-13-25-17-42-17m42 10c15-14 29-18 47-17M68 83C48 80 34 70 25 57c17-7 34-6 50 4-7-19-4-34 7-48 15 13 22 29 18 48 14-17 30-23 49-21-4 20-15 34-35 42" fill="none" stroke="#075c3b" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" />
+    <path d="M20 143c31-13 69-13 112 0M30 153c28-9 58-9 90 0m-77 9c19-5 40-5 60 0" fill="none" stroke="url(#field)" stroke-linecap="round" stroke-width="5" />
+    <path d="M134 145c8-4 13-4 20 0m-14 8c8-4 13-4 20 0" fill="none" stroke="#dda85a" stroke-linecap="round" stroke-width="3" />
+  </g>
+  <text x="190" y="77" fill="#075c3b" font-family="Manrope, Arial, sans-serif" font-size="54" font-weight="800" letter-spacing="-2">Mark’s</text>
+  <text x="190" y="137" fill="#075c3b" font-family="Manrope, Arial, sans-serif" font-size="48" font-weight="800" letter-spacing="-1.8">Savannah Farm</text>
+</svg>

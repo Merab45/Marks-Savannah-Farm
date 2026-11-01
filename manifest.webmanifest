@@ -1,8 +1,8 @@
 {
   "id": "./index.html",
-  "name": "Mark's Savanna Stock",
-  "short_name": "Mark's Stock",
-  "description": "Browse livestock and contact Mark's Savanna Stock in Kajiado.",
+  "name": "Mark's Savannah Farm",
+  "short_name": "Mark's Farm",
+  "description": "Explore livestock, crops, poultry, dairy products, and agri-consultancy from Mark's Savannah Farm in Kajiado.",
   "lang": "en",
   "start_url": "./index.html",
   "scope": "./",
@@ -10,9 +10,6 @@
   "background_color": "#f8f7f1",
   "theme_color": "#183727",
   "icons": [
-    { "src": "./Assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "./Assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "./Assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "./Assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    { "src": "./Assets/Glossy%20Green%20Agriculture%20Emblem.png", "sizes": "any", "type": "image/png", "purpose": "any" }
   ]
 }

@@ -1,10 +1,10 @@
-# Mark's Savanna Stock
+# Mark's Savannah Farm
 
-A static livestock website for Mark's Savanna Stock in Kajiado, Kenya.
+A farm website for Mark's Savannah Farm in Kajiado, Kenya, featuring livestock, crops, poultry farming, dairy products, and agri-consultancy.
 
 ## Pages
 
-- `index.html` – public farm website with livestock listings and WhatsApp enquiries
+- `index.html` – public farm website with product and service categories, livestock listings, and WhatsApp enquiries
 - `sign-in.html`, `create-account.html`, `customer-account.html` – buyer accounts (prototype)
 - `herdbook.html` – the farm's private record keeper (not linked from the public site)
 
@@ -36,7 +36,6 @@ Whenever you change a site file, bump the cache version in `service-worker.js` s
 - Buyer accounts, saved animals, and herdbook records are stored in the browser (localStorage). They do not sync between devices, and animals added in herdbook are **not** visible to other visitors of the public site.
 - `herdbook.html` has no password. Anyone who knows the address can open it, so do not rely on it for private data.
 - Live M-Pesa payments are not enabled.
-- The market guide cards on the home page are dated public price references, not farm listings.
 
 ## Farm contact
 

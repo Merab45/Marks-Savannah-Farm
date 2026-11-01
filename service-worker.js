@@ -1,5 +1,5 @@
 // Change this value whenever a site update should replace the cached files.
-const CACHE = 'marks-savanna-stock-v7';
+const CACHE = 'marks-savannah-farm-v40';
 
 // These core pages and assets remain available when the visitor is offline.
 const FILES = [
@@ -12,9 +12,13 @@ const FILES = [
   './CSS/site.css',
   './JS/site.js',
   './manifest.webmanifest',
-  './Assets/icon.svg',
-  './Assets/icon-192.png',
-  './Assets/icon-512.png',
+  './Assets/login page background.png',
+  './Assets/Hero background.png',
+  './Assets/marks-savannah-farm-logo.svg',
+  './Assets/Mark’s Savannah Farm Logo.png',
+  './Assets/Marks Savannah Farm Logo 2.png',
+  './Assets/farm-icon.svg',
+  './Assets/Glossy Green Agriculture Emblem.png',
 ];
 
 self.addEventListener('install', event => {

@@ -201,7 +201,7 @@ html.page-index .hero-photo {
   position:relative;
   border-radius:18px;
   overflow:hidden;
-  background:#d8ddca url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Maasai_cattle%2C_Kenya.jpg/1280px-Maasai_cattle%2C_Kenya.jpg') center 50%/cover no-repeat;
+  background:#d8ddca url('../Assets/Hero background.png') center 50%/cover no-repeat;
   transition:background-image .45s ease
 }
 html.page-index .hero-photo:after {
@@ -721,6 +721,47 @@ html.page-index .menu {
     width:44%
   }
 }
+
+/* Use the wide farm logo in the public desktop navigation. */
+@media (min-width: 901px) {
+  html.page-index .nav .desktop-logo {
+    display: block;
+    flex: 0 0 auto;
+    width: 150px;
+    height: 75px;
+    object-fit: contain;
+    padding: 2px;
+    background: #fff;
+    border-radius: 5px;
+  }
+
+  html.page-index .nav .mobile-brand-lockup {
+    display: none;
+  }
+
+  html.page-index .nav .brand:after {
+    display: none;
+  }
+}
+
+/* Keep the compact text-and-mark lockup on tablets and phones. */
+@media (max-width: 900px) {
+  html.page-index .nav .desktop-logo {
+    display: none;
+  }
+
+  html.page-index .nav .mobile-brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  html.page-index .nav .brand:after {
+    display: none;
+  }
+}
+
+
 @media(max-width:620px) {
   html.page-index .nav {
     height:65px;
@@ -956,7 +997,7 @@ html.page-index .footer-bottom {
     line-height:1.8
   }
 }
-html.page-index /* Mark's Savanna Stock brand: deep savanna green, warm brass, and ivory. */
+html.page-index /* Mark's Savannah Farm brand: deep savanna green, warm brass, and ivory. */
 .nav {
   position:relative;
   z-index:1;
@@ -1002,12 +1043,6 @@ html.page-index .nav .nav-cta {
 }
 html.page-index .nav .nav-cta:hover {
   background:#f1d995
-}
-html.page-index .nav>div>a:first-child {
-  color:#f4eddb!important;
-  border:1px solid #ffffff60;
-  border-radius:7px;
-  padding:10px 12px
 }
 html.page-index .footer {
   background:#183727;
@@ -3402,5 +3437,1178 @@ html.page-create-account{
     font:800 15px Manrope
   }html.page-create-account .h1{
     font-size:27px
+  }
+}
+
+/* Homepage refresh based on the supplied farm landing-page reference. */
+html.page-index #top {
+  display: flex;
+  flex-direction: column;
+}
+
+html.page-index .nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 10;
+  width: 100%;
+  max-width: none;
+  height: 68px;
+  padding: 0 clamp(12px, 1.5vw, 24px);
+  color: #fff;
+  background: rgba(8, 37, 22, 0.05);
+  border-bottom: 1px solid #ffffff24;
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+html.page-index .nav .desktop-logo {
+  width: 120px;
+  height: 54px;
+  padding: 0;
+  background: transparent;
+}
+
+html.page-index .nav .farm-logo {
+  display: block;
+  flex: 0 0 auto;
+  width: 44px !important;
+  height: 44px !important;
+  object-fit: contain;
+}
+
+html.page-index .nav > .brand {
+  flex: 0 0 auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html.page-index .nav .links {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+html.page-index .nav .links a {
+  position: relative;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html.page-index .nav .links a::after,
+html.page-index .nav .nav-dropdown-toggle::after {
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+  left: 0;
+  height: 1px;
+  border-radius: 2px;
+  background: #20bd58;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 180ms ease;
+}
+
+html.page-index .nav .links a:hover::after,
+html.page-index .nav .links a:focus-visible::after,
+html.page-index .nav .nav-dropdown-toggle:hover::after,
+html.page-index .nav .nav-dropdown-toggle:focus-visible::after {
+  transform: scaleX(1);
+}
+
+html.page-index .nav .links a:hover {
+  color: #fff !important;
+}
+
+html.page-index .nav .nav-dropdown-toggle:hover,
+html.page-index .nav .nav-dropdown-toggle:focus-visible {
+  color: #fff;
+}
+
+html.page-index .nav-quote {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 17px;
+  color: #fff;
+  border: 1px solid #0a9f45;
+  border-radius: 999px;
+  background: #0a9f45;
+  box-shadow: 0 4px 14px #071d1030;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+html.page-index .nav-quote:hover {
+  color: #fff;
+  background: #087c37;
+  transform: translateY(-1px);
+}
+
+html.page-index .hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: none;
+  min-height: clamp(540px, 68vh, 720px);
+  margin: 0;
+  padding: 118px clamp(24px, 4.6vw, 72px) 60px;
+  overflow: hidden;
+  background: #173d27;
+}
+
+html.page-index .hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background-position: center 46%;
+}
+
+html.page-index .hero-photo:after {
+  display: block;
+  inset: 0;
+  background: linear-gradient(90deg, #092413b8 0%, #09241372 40%, #09241315 75%, transparent 100%), linear-gradient(0deg, #09241345 0%, transparent 58%);
+  opacity: 1;
+}
+
+html.page-index .hero-copy {
+  position: relative;
+  z-index: 2;
+  width: min(740px, 74%);
+  padding: 0;
+  color: #fff;
+}
+
+html.page-index .hero h1 {
+  max-width: 760px;
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: clamp(42px, 4.7vw, 66px);
+  line-height: 1.02;
+  letter-spacing: -3px;
+}
+
+html.page-index .hero h1 em {
+  color: #75d02f;
+}
+
+html.page-index .hero-copy p {
+  max-width: 600px;
+  color: #f4f8f0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+html.page-index .hero-actions {
+  gap: 12px;
+  margin-top: 21px;
+}
+
+html.page-index .hero-actions .btn {
+  border-radius: 999px;
+  background: #0aa244;
+  padding: 13px 20px;
+}
+
+html.page-index .hero-actions .btn-light {
+  border-color: #ffffffa8;
+  border-radius: 999px;
+  color: #fff;
+}
+
+html.page-index .hero-actions .btn-light:hover {
+  color: #163b26;
+  background: #fff;
+}
+
+html.page-index .trust,
+html.page-index .photo-badge,
+html.page-index .photo-label {
+  display: none;
+}
+
+html.page-index .photo-credit-link {
+  right: 22px;
+  bottom: 62px;
+}
+
+html.page-index .proof {
+  position: relative;
+  z-index: 4;
+  width: min(1000px, calc(100% - 40px));
+  margin: -31px auto 0;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 12px 28px #173d271c;
+}
+
+html.page-index .proof-inner {
+  padding: 17px 26px;
+}
+
+html.page-index .proof-item {
+  color: #273b2e;
+}
+
+html.page-index .proof-item svg {
+  width: 22px;
+  height: 22px;
+  color: #0b9d43;
+  stroke: currentColor;
+}
+
+html.page-index .proof-item b {
+  color: #1d3627;
+}
+
+html.page-index .offerings {
+  order: 1;
+  width: 100%;
+  padding: 42px 24px 46px;
+  background: linear-gradient(180deg, #f7f8f3, #eef3ed);
+}
+
+html.page-index .offerings-inner {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+}
+
+html.page-index .offerings-heading {
+  margin-bottom: 21px;
+  text-align: center;
+}
+
+html.page-index .offerings-heading .section-kicker {
+  color: #168147;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+html.page-index .offerings-heading h2 {
+  margin: 7px 0 6px;
+  color: #143d28;
+  font: 800 clamp(27px, 3vw, 38px) Manrope, sans-serif;
+  letter-spacing: -1.2px;
+}
+
+html.page-index .offerings-heading p {
+  margin: 0;
+  color: #627166;
+  font-size: 14px;
+}
+
+html.page-index .offering-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+html.page-index .offering-card {
+  display: flex;
+  min-height: 210px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px 18px 18px;
+  border: 1px solid #e7ece5;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 22px #183d270b;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+html.page-index .offering-card:hover {
+  transform: translateY(-4px);
+  border-color: #b5d1b8;
+  box-shadow: 0 14px 28px #183d2717;
+}
+
+html.page-index .offering-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 14px;
+  color: #087a35;
+  background: #eaf4e9;
+}
+
+html.page-index .offering-icon svg {
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+html.page-index .offering-card h3 {
+  margin: 15px 0 6px;
+  color: #183d27;
+  font: 800 16px Manrope, sans-serif;
+}
+
+html.page-index .offering-card p {
+  margin: 0 0 15px;
+  color: #657268;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+html.page-index .offering-card > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  margin-top: auto;
+  color: #087a35;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+html.page-index .offering-card > a:hover span {
+  transform: translate(2px, -2px);
+}
+
+html.page-index .offering-card > a span {
+  transition: transform 160ms ease;
+}
+
+html.page-index .category-shortcuts {
+  order: 5;
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 34px clamp(20px, 3vw, 44px) 10px;
+}
+
+html.page-index .category-shortcuts h2 {
+  margin: 0 0 17px;
+  color: #183d27;
+  font: 800 clamp(21px, 2vw, 27px) Manrope, sans-serif;
+  letter-spacing: -.7px;
+}
+
+html.page-index .category-shortcut-list {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+html.page-index .category-shortcut {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  min-height: 112px;
+  padding: 14px 16px;
+  border: 1px solid #e4eae1;
+  border-radius: 15px;
+  color: #244632;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: left;
+  box-shadow: 0 5px 16px #183d270b;
+  transition: transform 170ms ease, color 170ms ease, background-color 170ms ease, border-color 170ms ease, box-shadow 170ms ease;
+}
+
+html.page-index .category-shortcut:hover {
+  transform: translateY(-3px);
+  border-color: #9ccba7;
+  box-shadow: 0 10px 22px #173d2717;
+}
+
+html.page-index .category-shortcut.is-active {
+  border-color: #087a35;
+  color: #fff;
+  background: linear-gradient(145deg, #087a35, #07552e);
+  box-shadow: 0 9px 20px #087a3533;
+}
+
+html.page-index .category-icon {
+  display: grid;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  border-radius: 12px;
+  color: #087a35;
+  background: #edf6ec;
+  font-size: 24px;
+}
+
+html.page-index .category-shortcut.is-active .category-icon {
+  background: #ffffff20;
+}
+
+html.page-index .category-shortcut:focus-visible {
+  outline: 3px solid #78c94a;
+  outline-offset: 3px;
+}
+
+html.page-index .story {
+  order: 3;
+  width: 100%;
+  max-width: 1440px;
+  padding: 30px clamp(24px, 3.2vw, 50px) 24px;
+  grid-template-columns: 1.12fr 1fr;
+  gap: 24px;
+}
+
+html.page-index .story-photo {
+  min-height: 205px;
+  border-radius: 14px;
+}
+
+html.page-index .story-copy .eyebrow,
+html.page-index .features-head .eyebrow {
+  color: #078737;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 14px;
+}
+
+html.page-index .story-copy .eyebrow:before,
+html.page-index .features-head .eyebrow:before {
+  width: 20px;
+  background: #0a9b3d;
+}
+
+html.page-index .story-copy h2 {
+  margin: 7px 0;
+  color: #16482b;
+  font-size: clamp(25px, 2.4vw, 34px);
+  letter-spacing: -1px;
+}
+
+html.page-index .story-copy p {
+  margin: 7px 0;
+  color: #39463c;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+html.page-index .story-points {
+  gap: 24px;
+  margin-top: 14px;
+}
+
+html.page-index .point b {
+  color: #16703a;
+  font-size: 14px;
+}
+
+html.page-index .features {
+  order: 4;
+  background: #f3f5f3;
+}
+
+html.page-index .features-inner {
+  max-width: 1480px;
+  padding: 24px clamp(20px, 2vw, 30px) 30px;
+}
+
+html.page-index .features-head {
+  margin-bottom: 15px;
+}
+
+html.page-index .features-head h2 {
+  margin: 5px 0 0;
+  color: #183d27;
+  font-size: clamp(26px, 2.6vw, 35px);
+}
+
+html.page-index .features-head p {
+  display: none;
+}
+
+html.page-index .feature-grid {
+  gap: 12px;
+}
+
+html.page-index .feature {
+  min-height: 126px;
+  padding: 16px;
+  border: 1px solid #edf0ed;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 20px #1c35220d;
+}
+
+html.page-index .feature-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #0a9640;
+  background: #e8f4e8;
+}
+
+html.page-index .feature h3 {
+  margin: 10px 0 5px;
+  color: #172f20;
+  font-size: 14px;
+}
+
+html.page-index .feature p {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+html.page-index #livestock {
+  order: 5;
+  width: 100%;
+  max-width: 1480px;
+  padding: 42px clamp(20px, 3vw, 44px);
+  scroll-margin-top: 18px;
+}
+
+html.page-index #livestock .section-head {
+  margin-bottom: 18px;
+}
+
+html.page-index #livestock .section h2 {
+  color: #183d27;
+}
+
+html.page-index #livestock .cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+html.page-index .listing-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 34px 22px;
+  border: 1px dashed #a9c3aa;
+  border-radius: 18px;
+  background: linear-gradient(140deg, #f7faf4, #edf5ec);
+  text-align: center;
+}
+
+html.page-index .listing-empty-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 50%;
+  color: #087a35;
+  background: #dfefdd;
+  font-size: 24px;
+}
+
+html.page-index .listing-empty h3 {
+  margin: 13px 0 4px;
+  color: #183d27;
+  font: 800 20px Manrope, sans-serif;
+}
+
+html.page-index .listing-empty p {
+  max-width: 460px;
+  margin: 0 0 16px;
+  color: #66756a;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+html.page-index .clear-listing-filters {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid #0b8f3d;
+  border-radius: 999px;
+  color: #087a35;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+html.page-index #livestock .card {
+  border-radius: 14px;
+  box-shadow: 0 8px 24px #173d2710;
+}
+
+html.page-index #livestock .card-pic {
+  height: 175px;
+}
+
+html.page-index .contact {
+  order: 6;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 27px clamp(24px, 5vw, 76px);
+  border-radius: 0;
+  background: #087333;
+}
+
+html.page-index #buying-guide {
+  order: 7;
+  width: 100%;
+  max-width: 1480px;
+  padding: 34px clamp(20px, 3vw, 44px);
+}
+
+html.page-index .footer {
+  background: linear-gradient(110deg, #064a2b, #006131 65%, #064a2b);
+  border-top: 2px solid #61bb49;
+}
+
+@media (max-width: 900px) {
+  html.page-index .nav {
+    height: 62px;
+    padding-right: 14px;
+    padding-left: 12px;
+    background: rgba(8, 37, 22, 0.05);
+  }
+
+  html.page-index .nav .desktop-logo {
+    width: 108px;
+    height: 49px;
+  }
+
+  html.page-index .nav .farm-logo {
+    width: 41px !important;
+    height: 41px !important;
+  }
+
+  html.page-index .hero {
+    min-height: 420px;
+    padding-top: 108px;
+  }
+
+  html.page-index .hero-copy {
+    width: min(690px, 90%);
+  }
+
+  html.page-index .story {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  html.page-index .offering-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  html.page-index .category-shortcut-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  html.page-index .hero {
+    min-height: 495px;
+    padding: 110px 22px 75px;
+  }
+
+  html.page-index .hero-copy {
+    width: 100%;
+  }
+
+  html.page-index .nav .farm-logo {
+    width: 37px !important;
+    height: 37px !important;
+  }
+
+  html.page-index .hero h1 {
+    font-size: clamp(42px, 11vw, 58px);
+    letter-spacing: -2px;
+  }
+
+  html.page-index .hero-copy p {
+    max-width: 440px;
+    font-size: 14px;
+  }
+
+  html.page-index .proof {
+    width: calc(100% - 28px);
+    margin-top: -27px;
+    border-radius: 18px;
+  }
+
+  html.page-index .proof-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 17px;
+  }
+
+  html.page-index .story {
+    padding: 28px 18px;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  html.page-index .story-photo {
+    min-height: 205px;
+  }
+
+  html.page-index .features-inner {
+    padding: 28px 16px;
+  }
+
+  html.page-index .offerings {
+    padding: 32px 16px;
+  }
+
+  html.page-index .offering-grid {
+    grid-template-columns: 1fr;
+  }
+
+  html.page-index .offering-card {
+    min-height: 175px;
+  }
+
+  html.page-index .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  html.page-index .feature {
+    min-height: auto;
+  }
+
+  html.page-index #livestock {
+    padding: 34px 16px;
+  }
+
+  html.page-index .category-shortcuts {
+    padding: 27px 16px 8px;
+  }
+
+  html.page-index .category-shortcut-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 2px 2px 8px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  html.page-index .category-shortcut-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  html.page-index .category-shortcut {
+    flex: 0 0 132px;
+    min-height: 104px;
+    padding: 12px;
+  }
+
+  html.page-index #livestock .section-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  html.page-index #livestock .cards {
+    grid-template-columns: 1fr;
+  }
+
+  html.page-index .contact {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 28px 20px;
+  }
+
+  html.page-index #buying-guide {
+    padding: 32px 16px;
+  }
+}
+
+/* Primary navigation: accessible service dropdown and compact mobile menu. */
+html.page-index .nav-menu-toggle {
+  display: none;
+}
+
+html.page-index .nav-dropdown {
+  position: relative;
+}
+
+html.page-index .nav-dropdown-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  color: inherit;
+  border: 0;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Chevron drawn with borders so it centres on the label at any font size.
+   The "⌄" character in the HTML is hidden (font-size: 0). */
+html.page-index .nav-dropdown-toggle > span {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 2px;
+  font-size: 0;
+  line-height: 0;
+  border-right: 1.6px solid currentColor;
+  border-bottom: 1.6px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 160ms ease, margin 160ms ease;
+}
+
+html.page-index .nav-dropdown.is-open .nav-dropdown-toggle > span {
+  margin-top: 3px;
+  transform: rotate(-135deg);
+}
+
+html.page-index .nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 15px);
+  left: -18px;
+  z-index: 20;
+  display: none;
+  width: 168px;
+  min-width: 0;
+  padding: 6px;
+  color: #173d27;
+  background: #fff;
+  border: 1px solid #e2e9df;
+  border-radius: 12px;
+  box-shadow: 0 14px 34px #071d1030;
+}
+
+html.page-index .nav-dropdown.is-open .nav-dropdown-menu,
+html.page-index .nav-dropdown:focus-within .nav-dropdown-menu {
+  display: grid;
+}
+
+html.page-index .nav-dropdown-menu a {
+  display: block;
+  padding: 9px 10px;
+  color: #173d27;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+html.page-index .nav-dropdown-menu a:hover,
+html.page-index .nav-dropdown-menu a:focus-visible {
+  color: #075c3b !important;
+  background: #eff6ee;
+}
+
+html.page-index .nav-dropdown-menu a::after {
+  display: none;
+}
+
+/* ---- Products & Services mega menu ---- */
+html.page-index .nav-dropdown-menu .mega-title {
+  padding: 8px 10px 4px;
+  color: #5b7a66;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html.page-index .nav-dropdown-menu .mega-links {
+  display: grid;
+}
+
+html.page-index .nav-dropdown-menu a.mega-all {
+  color: #075c3b;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html.page-index .nav-dropdown-menu a.mega-promo {
+  color: #8f6f2f;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html.page-index .nav-dropdown-menu a.mega-feature {
+  display: none;
+}
+
+@keyframes megaIn {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@media (min-width: 701px) {
+  /* Anchor the panel to the full-width nav instead of the toggle. */
+  html.page-index .nav-dropdown {
+    position: static;
+  }
+
+  /* Toggle becomes a full-height tab that turns dark while the menu is open. */
+  html.page-index .nav-dropdown-toggle {
+    height: 68px;
+    margin: 0 -14px;
+    padding: 0 14px;
+  }
+
+  html.page-index .nav .nav-dropdown-toggle::after {
+    right: 14px;
+    bottom: 21px;
+    left: 14px;
+  }
+
+  /* Same underline as the other links, kept while the menu is open. */
+  html.page-index .nav-dropdown.is-open .nav-dropdown-toggle::after,
+  html.page-index .nav-dropdown:focus-within .nav-dropdown-toggle::after {
+    transform: scaleX(1);
+  }
+
+  html.page-index .nav-dropdown-menu {
+    top: 100%;
+    left: 50%;
+    width: min(800px, calc(100vw - 32px));
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0 0 12px 12px;
+    background: #fff;
+    box-shadow: 0 22px 44px #071d1040;
+    transform: translateX(-50%);
+  }
+
+  html.page-index .nav-dropdown.is-open .nav-dropdown-menu,
+  html.page-index .nav-dropdown:focus-within .nav-dropdown-menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) minmax(150px, 230px);
+    grid-template-rows: auto 1fr auto;
+    animation: megaIn 160ms ease-out;
+  }
+
+  /* Titles and link lists are placed straight into the menu grid. */
+  html.page-index .nav-dropdown-menu .mega-col {
+    display: contents;
+  }
+
+  html.page-index .nav-dropdown-menu .mega-title {
+    align-self: end;
+    padding: 24px 0 6px 24px;
+    color: #075c3b;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    grid-row: 1;
+  }
+
+  html.page-index .nav-dropdown-menu .mega-links {
+    align-content: start;
+    padding: 4px 12px 12px 14px;
+    grid-row: 2;
+  }
+
+  html.page-index .nav-dropdown-menu .mega-col:nth-child(1) > * { grid-column: 1; }
+  html.page-index .nav-dropdown-menu .mega-col:nth-child(2) > * { grid-column: 2; }
+  html.page-index .nav-dropdown-menu .mega-col:nth-child(3) > * { grid-column: 3; }
+
+  html.page-index .nav-dropdown-menu .mega-links a {
+    padding: 7px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: normal;
+    background: transparent;
+  }
+
+  html.page-index .nav-dropdown-menu .mega-links a:hover,
+  html.page-index .nav-dropdown-menu .mega-links a:focus-visible {
+    color: #075c3b !important;
+    background: #eff6ee;
+  }
+
+  html.page-index .nav-dropdown-menu a.mega-all {
+    margin-top: 10px;
+  }
+
+  html.page-index .nav-dropdown-menu a.mega-promo {
+    padding: 4px 24px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 0;
+    grid-column: 1 / 4;
+    grid-row: 3;
+  }
+
+  html.page-index .nav-dropdown-menu a.mega-promo:hover,
+  html.page-index .nav-dropdown-menu a.mega-promo:focus-visible {
+    color: #6b5120 !important;
+    background: transparent;
+  }
+
+  html.page-index .nav-dropdown-menu a.mega-feature {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    padding: 0;
+    border-radius: 0;
+    background: #d8ddca;
+    grid-column: 4;
+    grid-row: 1 / 4;
+  }
+
+  html.page-index .nav-dropdown-menu a.mega-feature .mega-img {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0;
+    transition: opacity 260ms ease;
+  }
+
+  html.page-index .nav-dropdown-menu a.mega-feature .mega-img.is-on {
+    opacity: 1;
+  }
+
+  html.page-index .nav-dropdown-menu a.mega-feature .mega-caption {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    color: #fff;
+    background: #102a1bd9;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: normal;
+    transition: background 160ms ease;
+  }
+
+  html.page-index .nav-dropdown-menu a.mega-feature:hover .mega-caption {
+    background: #075c3b;
+  }
+}
+
+/* Mouse devices: hover (handled in site.js via .is-open) drives the menu, so a
+   lingering click focus must not keep it open after the pointer leaves. */
+@media (min-width: 701px) and (hover: hover) {
+  html.page-index .nav-dropdown:not(.is-open):focus-within .nav-dropdown-menu {
+    display: none;
+  }
+
+  html.page-index .nav-dropdown:not(.is-open):focus-within .nav-dropdown-toggle::after {
+    transform: scaleX(0);
+  }
+
+  html.page-index .nav-dropdown:not(.is-open):focus-within .nav-dropdown-toggle:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.page-index .nav-dropdown-menu { animation: none !important; }
+}
+
+@media (max-width: 700px) {
+  html.page-index .nav-menu-toggle {
+    display: grid;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    place-content: center;
+    padding: 0;
+    color: #fff;
+    border: 1px solid #ffffff85;
+    border-radius: 50%;
+    background: #0a291b55;
+  }
+
+  html.page-index .nav-menu-toggle span {
+    display: block;
+    width: 17px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+
+  html.page-index .nav .links,
+  html.page-index .nav .links.is-open {
+    position: absolute;
+    top: calc(100% - 1px);
+    right: 14px;
+    left: 14px;
+    z-index: 30;
+    display: none;
+    width: auto;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    padding: 12px;
+    color: #173d27;
+    border: 1px solid #e2e9df;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 16px 36px #071d1033;
+  }
+
+  html.page-index .nav .links.is-open {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  html.page-index .nav .links > a,
+  html.page-index .nav-dropdown-toggle {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    color: #173d27;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  html.page-index .nav .links > a:hover,
+  html.page-index .nav-dropdown-toggle:hover {
+    color: #075c3b !important;
+    background: #eff6ee;
+  }
+
+  html.page-index .nav .links > a::after,
+  html.page-index .nav .nav-dropdown-toggle::after {
+    display: none;
+  }
+
+  html.page-index .nav-dropdown-menu {
+    position: static;
+    width: auto;
+    min-width: 0;
+    margin: 0 0 6px 10px;
+    padding: 4px;
+    border: 0;
+    background: #f5f8f3;
+    box-shadow: none;
+  }
+
+  html.page-index .nav-dropdown-menu a {
+    padding: 10px 12px;
+    white-space: normal;
   }
 }

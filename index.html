@@ -5,43 +5,82 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#183727">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="icon" href="Assets/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="Assets/icon-192.png">
+    <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Mark’s Stock">
+    <meta name="apple-mobile-web-app-title" content="Mark’s Farm">
     <title>
-      Mark's Savanna Stock — Good stock. Grown with care.
+      Mark's Savannah Farm | Livestock, Crops, Poultry, Dairy &amp; Agri-Consultancy
     </title>
-    <meta name="description" content="Meet the livestock at Mark's Savanna Stock. Browse healthy cattle, goats, sheep and more, raised with care and ready for their next home.">
+    <meta name="description" content="Explore livestock, crops, poultry, dairy products, and agri-consultancy from Mark's Savannah Farm in Kajiado, Kenya.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="CSS/site.css">
+    <link rel="stylesheet" href="CSS/site.css?v=40">
   </head>
   <body class="page-index">
     <nav class="nav">
-      <a class="brand" href="#top"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 16.5c2-5 4-8 8-8s6 3 8 8M7 15h10M9 8l-1-3m7 3 1-3M5 17v2m14-2v2M8 12l-2-1m10 1 2-1"/></svg></span><b>Mark's Savanna Stock</b></a>
-      <div class="links">
-        <a href="#livestock">Our livestock</a><a href="#about">Our farm</a><a href="#why-us">Why buy from us</a><a href="#contact">Contact</a>
+      <a class="brand" href="#top" aria-label="Mark's Savannah Farm home">
+        <img class="farm-logo" src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt="Mark’s Savannah Farm">
+      </a>
+      <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="links" id="primary-navigation">
+        <a href="#top">Home</a>
+        <a href="#about">About Us</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="products-menu">Products &amp; Services <span aria-hidden="true">⌄</span></button>
+          <div class="nav-dropdown-menu" id="products-menu">
+            <div class="mega-col">
+              <div class="mega-title">Livestock</div>
+              <div class="mega-links">
+                <a href="#livestock" data-nav-livestock-type="Cattle" data-preview="cattle">Cattle</a>
+                <a href="#livestock" data-nav-livestock-type="Goat" data-preview="goat">Goats</a>
+                <a href="#livestock" data-nav-livestock-type="Sheep" data-preview="sheep">Sheep</a>
+                <a href="#livestock" data-nav-livestock-type="Chicken" data-preview="chicken">Poultry</a>
+                <a href="#livestock" data-nav-livestock-type="Donkey">Donkeys</a>
+                <a class="mega-all" href="#livestock" data-nav-livestock-type="all">View all livestock</a>
+              </div>
+            </div>
+            <div class="mega-col">
+              <div class="mega-title">From the farm</div>
+              <div class="mega-links">
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20crops." target="_blank" rel="noopener">Crops</a>
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20poultry%20farming." target="_blank" rel="noopener" data-preview="chicken">Poultry Farming</a>
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20dairy%20products." target="_blank" rel="noopener" data-preview="cattle">Dairy Products</a>
+              </div>
+            </div>
+            <div class="mega-col">
+              <div class="mega-title">Services</div>
+              <div class="mega-links">
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20agri-consultancy." target="_blank" rel="noopener">Agri-Consultancy</a>
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20a%20quote." target="_blank" rel="noopener">Get a Quote</a>
+                <a href="#buying-guide">Buying guide</a>
+                <a href="#contact">Contact the farm</a>
+              </div>
+            </div>
+            <a class="mega-promo" href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20talk%20to%20Mark." target="_blank" rel="noopener">Talk to Mark on WhatsApp &rarr;</a>
+            <a class="mega-feature" href="#livestock" data-nav-livestock-type="all"><span class="mega-img is-on" aria-hidden="true" style="background-image:url('Assets/Hero%20background.png')"></span><span class="mega-img" aria-hidden="true"></span><span class="mega-caption">Browse all livestock &rsaquo;</span></a>
+          </div>
+        </div>
+        <a href="#contact">Contact</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#buying-guide">Blog</a>
       </div>
-      <div style="display:flex;gap:9px;align-items:center">
-        <a href="sign-in.html" style="font-size:11px;font-weight:700;color:var(--green)">Sign in</a><a class="nav-cta" href="#livestock">Find your next animal&nbsp; ↗</a>
-      </div>
+      <a class="nav-quote" href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20a%20quote." target="_blank" rel="noopener">Get a Quote</a>
     </nav>
     <main id="top">
       <section class="hero">
         <div class="hero-copy">
-          <div class="eyebrow">
-            Raised with care · Ready for you
-          </div>
           <h1>
-            Good stock.<br><em>Good start.</em>
+            Growing food.<br><em>Building a better tomorrow.</em>
           </h1>
           <p>
-            Meet the animals raised with care at Mark's Savanna Stock. Browse our available livestock and find the right fit for your farm, family, or business.
+            Explore livestock, crops, poultry, dairy products, and agri-consultancy from Mark's Savannah Farm.
           </p>
           <div class="hero-actions">
-            <a class="btn" href="#livestock">Browse available livestock <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a><a class="btn-light" href="#about">Meet our farm</a>
+            <a class="btn" href="#products-services">Explore our farm <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a><a class="btn-light" href="#livestock">Browse livestock</a>
           </div>
           <div class="trust">
             <div class="avatars">
@@ -52,22 +91,7 @@
             </div>
           </div>
         </div>
-        <div class="hero-photo" id="livestockSlideshow" role="region" aria-roledescription="carousel" aria-label="Maasai livestock photographs">
-          <div class="photo-badge">
-            <div class="badge-top">
-              <i class="badge-dot"></i>Representative photos
-            </div>
-            <small>Maasai livestock in Kenya</small>
-          </div>
-          <div class="photo-label">
-            <small id="slideEyebrow">Maasai cattle · Kenya</small><b id="slideCaption">Livestock traditions of the Kenyan savanna</b>
-          </div>
-          <div class="photo-credit-link" id="slideCredit"></div>
-          <div class="slide-controls">
-            <button type="button" id="slidePrev" aria-label="Previous livestock photo">‹</button><button type="button" id="slidePause" class="slide-pause" aria-label="Pause slideshow">Pause</button><button type="button" id="slideNext" aria-label="Next livestock photo">›</button>
-          </div>
-          <span id="slideStatus" class="slide-status" aria-live="polite"></span>
-        </div>
+        <div class="hero-photo" id="gallery" aria-hidden="true"></div>
       </section>
       <section class="proof">
         <div class="proof-inner">
@@ -85,6 +109,59 @@
           </div>
         </div>
       </section>
+      <section class="offerings" id="products-services" aria-labelledby="offerings-title">
+        <div class="offerings-inner">
+          <div class="offerings-heading">
+            <span class="section-kicker">From our farm</span>
+            <h2 id="offerings-title">Products &amp; Services</h2>
+            <p>Explore what we offer, then contact the farm for current details and availability.</p>
+          </div>
+          <div class="offering-grid">
+            <article class="offering-card">
+              <span class="offering-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 20h25l5 7v9H9V24l-1-4Zm25 2h6l4 7v7h-5M14 36a4 4 0 1 0 8 0m12 0a4 4 0 1 0 8 0M10 20l-3-5m8 5 2-5m13 5 2-5M17 27h5"/></svg></span>
+              <h3>Livestock</h3>
+              <p>Browse animals listed by the farm and ask about their details.</p>
+              <a href="#livestock">View livestock <span aria-hidden="true">↗</span></a>
+            </article>
+            <article class="offering-card">
+              <span class="offering-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 41V10m0 14c-8-2-12-7-12-14 8 0 12 5 12 14Zm0-5c0-8 4-13 12-15 1 8-3 13-12 15ZM16 41l8-9 8 9m-16-5h16"/></svg></span>
+              <h3>Crops</h3>
+              <p>Ask about crop products and what is currently available.</p>
+              <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20crops." target="_blank" rel="noopener">Ask about crops <span aria-hidden="true">↗</span></a>
+            </article>
+            <article class="offering-card">
+              <span class="offering-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M17 11h14l-2 6 5 6v16H14V23l5-6-2-6Zm2 6h10m-13 8h16M20 31h8m-4-14v7"/></svg></span>
+              <h3>Poultry Farming</h3>
+              <p>Contact us about poultry farming and available offerings.</p>
+              <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20poultry%20farming." target="_blank" rel="noopener">Ask about poultry <span aria-hidden="true">↗</span></a>
+            </article>
+            <article class="offering-card">
+              <span class="offering-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M17 9h14v5l4 5v20H13V19l4-5V9Zm0 5h14m-18 9h22m-15 7h8m-4-12v5"/></svg></span>
+              <h3>Dairy Products</h3>
+              <p>Ask the farm about its dairy products and availability.</p>
+              <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20dairy%20products." target="_blank" rel="noopener">Ask about dairy <span aria-hidden="true">↗</span></a>
+            </article>
+            <article class="offering-card">
+              <span class="offering-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 40V22m0 9c-8 0-13-5-13-12 8 0 13 4 13 12Zm0-5c0-9 5-14 14-15 0 9-5 15-14 15ZM12 40h25M16 35h17"/></svg></span>
+              <h3>Agri-Consultancy</h3>
+              <p>Talk with us about practical guidance for your farm.</p>
+              <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20agri-consultancy." target="_blank" rel="noopener">Discuss your needs <span aria-hidden="true">↗</span></a>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="category-shortcuts" aria-labelledby="category-shortcuts-title">
+        <h2 id="category-shortcuts-title">Browse by animal</h2>
+        <div class="category-shortcut-list" role="group" aria-label="Filter livestock by animal type">
+          <button type="button" class="category-shortcut is-active" data-livestock-type="all" aria-pressed="true" aria-controls="cards"><span class="category-icon" aria-hidden="true">🌿</span><span>All livestock</span></button>
+          <button type="button" class="category-shortcut" data-livestock-type="Cattle" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐄</span><span>Cattle</span></button>
+          <button type="button" class="category-shortcut" data-livestock-type="Goat" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐐</span><span>Goats</span></button>
+          <button type="button" class="category-shortcut" data-livestock-type="Sheep" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐑</span><span>Sheep</span></button>
+          <button type="button" class="category-shortcut" data-livestock-type="Chicken" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐓</span><span>Poultry</span></button>
+          <button type="button" class="category-shortcut" data-livestock-type="Donkey" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🫏</span><span>Donkeys</span></button>
+          <button type="button" class="category-shortcut" data-livestock-type="Camel" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐪</span><span>Camels</span></button>
+        </div>
+      </section>
       <section class="section" id="livestock">
         <div class="section-head">
           <div>
@@ -92,24 +169,18 @@
               A good home starts here
             </div>
             <h2>
-              Livestock from the savanna
+              Currently listed livestock
             </h2>
             <p class="section-desc">
-              Explore the animals kept across Maasai country and see current market guides.
+              Browse animals the farm has listed for sale. Ask us to confirm current details and availability.
             </p>
           </div>
           <a class="see-all" href="#contact">Have a question? &nbsp;↗</a>
         </div>
-        <p class="section-desc" style="margin:-14px 0 18px">
-          Market guide prices are dated public references, not confirmed farm listings. Ask the farm to confirm real availability, animal details, and the current price.
-        </p>
         <div class="market-tools">
           <input id="listingSearch" type="search" placeholder="Search livestock, breed, or tag" aria-label="Search listings"><select id="listingType" aria-label="Filter by animal type"><option value="all">All animal types</option><option>Cattle</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Donkey</option><option>Camel</option></select><select id="listingSort" aria-label="Sort listings"><option value="recent">Recently listed</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name A–Z</option></select><span id="listingCount" class="listing-count"></span>
         </div>
-        <div class="cards" id="cards"></div>
-        <p class="market-price-note">
-          Price references checked 29 Sep 2026. Cattle and goat figures are Kajiado county averages reported 31 Aug 2026; sheep is KSh 550/kg at Kajiado Livestock Market on 14 Sep 2026. Camel and donkey references are from Turkana (Feb 2026) and Meru (Jul 2026); the Kienyeji chicken figure is a Kajiado seller asking price. <a href="https://beavorenventures.co.ke/livestockpriceske/prices/cattle" target="_blank" rel="noopener">Cattle price source</a> · <a href="https://beavorenventures.co.ke/livestockpriceske/prices/goat" target="_blank" rel="noopener">Goat price source</a> · <a href="https://mkulimahub.co.ke/market-prices" target="_blank" rel="noopener">Kajiado sheep live-weight source</a> · <a href="https://knowledgeweb.ndma.go.ke/Library/doclink.aspx?document=c45f1457-5532-4a5d-b093-38e3cdf275d4" target="_blank" rel="noopener">Camel reference</a> · <a href="https://portal.mkulimabora.org/market-prices/donkey" target="_blank" rel="noopener">Donkey reference</a> · <a href="https://jiji.co.ke/kajiado/74-chickens" target="_blank" rel="noopener">Kajiado chicken listings</a>. Market prices move with condition, breed, age, weight, season, and market.
-        </p>
+        <div class="cards" id="cards" aria-live="polite"></div>
       </section>
       <section class="features" id="why-us">
         <div class="features-inner">
@@ -168,20 +239,20 @@
             A farm with heart
           </div>
           <h2>
-            We care for our animals like they’re part of the family.
+            Rooted in care and good farming.
           </h2>
           <p>
-            At Mark's Savanna Stock, we believe healthy animals and happy customers go hand in hand. We take pride in the way we raise our livestock and in being open about every animal we offer.
+            Mark's Savannah Farm brings together livestock, crops, poultry, dairy products, and agri-consultancy. We welcome enquiries about our current offerings and the support we provide to farms.
           </p>
           <p>
-            Whether you’re growing your herd, starting out, or looking for one special animal, we’d love to help you find it.
+            Whether you’re looking for farm products or practical agricultural guidance, contact us to discuss what you need.
           </p>
           <div class="story-points">
             <div class="point">
-              <b>Good care</b><span>Every day, all year</span>
+            <b>Farm products</b><span>Across several categories</span>
             </div>
             <div class="point">
-              <b>Honest sales</b><span>No surprises</span>
+            <b>Farm guidance</b><span>Talk through your needs</span>
             </div>
           </div>
         </div>
@@ -189,10 +260,10 @@
       <section class="contact" id="contact">
         <div>
           <h2>
-            Found one you like?
+            How can we help?
           </h2>
           <p>
-            Ask us about availability, arrange a visit, or simply learn a little more.
+            Ask about livestock, crops, poultry, dairy products, or agri-consultancy.
           </p>
         </div>
         <a class="btn" href="https://wa.me/254706894568?text=Hello%2C%20I%20am%20interested%20in%20your%20livestock." target="_blank" rel="noopener">Chat on WhatsApp&nbsp; ↗</a>
@@ -251,9 +322,9 @@
     <footer class="footer">
       <div class="footer-inner">
         <div>
-          <a class="brand" href="#top"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 16.5c2-5 4-8 8-8s6 3 8 8M7 15h10M9 8l-1-3m7 3 1-3M5 17v2m14-2v2"/></svg></span><b>Mark's Savanna Stock</b></a>
+          <a class="brand footer-brand" href="#top"><img class="footer-farm-logo" src="Assets/farm-icon.svg" alt=""><b>Mark's Savannah Farm</b></a>
           <p>
-            Good stock, raised with care in Kajiado.
+            Farm products and agricultural services in Kajiado, Kenya.
           </p>
         </div>
         <div>
@@ -276,6 +347,7 @@
           <p>
             <a href="#livestock">Available livestock</a>
           </p>
+          <p><a href="#products-services">Products &amp; Services</a></p>
           <p>
             <a href="#about">About the farm</a>
           </p>
@@ -286,7 +358,7 @@
         </div>
       </div>
       <div style="max-width:1144px;margin:20px auto 0;padding-top:13px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px">
-        © <span id="year"></span> Mark's Savanna Stock. All rights reserved.<span>Good stock. Grown with care.</span>
+        © <span id="year"></span> Mark's Savannah Farm. All rights reserved.<span>Growing food. Building a better tomorrow.</span>
       </div>
     </footer>
     <div class="modal" id="enquiry" role="dialog" aria-modal="true" aria-labelledby="enquiryTitle">

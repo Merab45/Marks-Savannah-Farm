@@ -1,3 +1,118 @@
+// Accessible primary navigation for the homepage.
+if (document.documentElement.classList.contains('page-index')) {
+  const nav = document.querySelector('.page-index .nav');
+  const menuToggle = nav?.querySelector('.nav-menu-toggle');
+  const links = nav?.querySelector('.links');
+  const servicesToggle = nav?.querySelector('.nav-dropdown-toggle');
+  const servicesDropdown = nav?.querySelector('.nav-dropdown');
+
+  menuToggle?.addEventListener('click', () => {
+    const isOpen = menuToggle.getAttribute('aria-expanded') !== 'true';
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+    links?.classList.toggle('is-open', isOpen);
+  });
+
+  // Desktop with a mouse: open on hover, close shortly after the pointer leaves.
+  const hoverMenu = window.matchMedia('(min-width: 701px) and (hover: hover)');
+  let closeTimer;
+  const setServicesOpen = isOpen => {
+    servicesToggle?.setAttribute('aria-expanded', String(isOpen));
+    servicesDropdown?.classList.toggle('is-open', isOpen);
+    if (!isOpen) resetPreview();
+  };
+
+  // Photo panel: swap the image and caption to match the link being hovered.
+  const megaFeature = servicesDropdown?.querySelector('.mega-feature');
+  const megaLayers = megaFeature ? [...megaFeature.querySelectorAll('.mega-img')] : [];
+  const megaCaption = megaFeature?.querySelector('.mega-caption');
+  const defaultCaption = megaCaption ? megaCaption.textContent : '';
+  const previewImages = {
+    default: 'Assets/Hero%20background.png',
+    cattle: 'https://upload.wikimedia.org/wikipedia/commons/b/bb/Boran_cattle_in_Kenya.jpg',
+    chicken: 'https://upload.wikimedia.org/wikipedia/commons/f/fe/Kenyan_backyard_chicken_rooster.jpg',
+    goat: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg/1280px-Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg',
+    sheep: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg/1280px-Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg',
+  };
+  let activeLayer = 0;
+  let currentImage = previewImages.default;
+  let preloaded = false;
+
+  function showPreview(key, caption) {
+    if (!megaLayers.length) return;
+    if (megaCaption) megaCaption.textContent = caption;
+    const url = previewImages[key] || previewImages.default;
+    if (url === currentImage) return;
+    const next = megaLayers[1 - activeLayer];
+    next.style.backgroundImage = `url("${url}")`;
+    next.classList.add('is-on');
+    megaLayers[activeLayer].classList.remove('is-on');
+    activeLayer = 1 - activeLayer;
+    currentImage = url;
+  }
+
+  function resetPreview() {
+    showPreview('default', defaultCaption);
+  }
+
+  servicesDropdown?.querySelectorAll('.mega-links a, .mega-promo').forEach(link => {
+    const preview = () => showPreview(link.dataset.preview, link.textContent.replace(/\s*[→›]+\s*$/, '').trim() + ' ›');
+    link.addEventListener('mouseenter', preview);
+    link.addEventListener('focus', preview);
+  });
+
+  servicesDropdown?.addEventListener('mouseenter', () => {
+    if (!hoverMenu.matches) return;
+    clearTimeout(closeTimer);
+    if (!preloaded) {
+      preloaded = true;
+      Object.values(previewImages).forEach(src => { new Image().src = src; });
+    }
+    setServicesOpen(true);
+  });
+
+  servicesDropdown?.addEventListener('mouseleave', () => {
+    if (!hoverMenu.matches) return;
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => setServicesOpen(false), 140);
+  });
+
+  servicesToggle?.addEventListener('click', event => {
+    // A mouse click on a hover-driven menu does nothing; keyboard activation (detail 0) still toggles.
+    if (hoverMenu.matches && event.detail > 0) return;
+    setServicesOpen(servicesToggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  nav?.addEventListener('click', event => {
+    if (event.target.closest('.links a')) {
+      event.target.closest('.links a').blur();
+      menuToggle?.setAttribute('aria-expanded', 'false');
+      menuToggle?.setAttribute('aria-label', 'Open navigation');
+      links?.classList.remove('is-open');
+      servicesToggle?.setAttribute('aria-expanded', 'false');
+      servicesDropdown?.classList.remove('is-open');
+    }
+  });
+
+  document.addEventListener('click', event => {
+    if (!nav?.contains(event.target)) {
+      servicesToggle?.setAttribute('aria-expanded', 'false');
+      servicesDropdown?.classList.remove('is-open');
+    }
+  });
+
+  nav?.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      menuToggle?.setAttribute('aria-expanded', 'false');
+      menuToggle?.setAttribute('aria-label', 'Open navigation');
+      links?.classList.remove('is-open');
+      servicesToggle?.setAttribute('aria-expanded', 'false');
+      servicesDropdown?.classList.remove('is-open');
+      menuToggle?.focus();
+    }
+  });
+}
+
 // Initialize behavior only on the matching page.
 if (document.documentElement.classList.contains('page-index')) {
   (() => {
@@ -17,31 +132,6 @@ if (document.documentElement.classList.contains('page-index')) {
       }
     }
     ;
-    const marketGuide=[
-    {
-      name:"Kajiado cattle market guide",type:"Cattle",breed:"Maasai Zebu / local cattle",age:"County average",weight:"Medium animal · Aug 2026",price:43773,unit:"head",emoji:"🐄",location:"Kajiado · KSh per head",health:"market reference, confirm the current animal and price",referenceOnly:true
-    }
-    ,
-    {
-      name:"Kajiado goat market guide",type:"Goat",breed:"Local Maasai goat",age:"County average",weight:"Aug 2026",price:8482,unit:"head",emoji:"🐐",location:"Kajiado · KSh per head",health:"market reference, confirm the current animal and price",referenceOnly:true
-    }
-    ,
-    {
-      name:"Kajiado sheep market guide",type:"Sheep",breed:"Red Maasai sheep",age:"Live-weight rate",weight:"Kajiado · Sep 2026",price:550,unit:"kg",emoji:"🐑",location:"Kajiado · price per kg",health:"market reference, confirm the current animal and price",referenceOnly:true
-    }
-    ,
-    {
-      name:"Kenyan camel market guide",type:"Camel",breed:"Camel",age:"4 years",weight:"Turkana · Feb 2026",price:26869,unit:"head",emoji:"🐪",location:"Turkana · KSh per head",health:"market reference, confirm the current animal and price",referenceOnly:true
-    }
-    ,
-    {
-      name:"Kenyan donkey market guide",type:"Donkey",breed:"Local donkey",age:"Market reference",weight:"Meru · Jul 2026",price:8000,unit:"head",emoji:"🫏",location:"Meru · KSh per head",health:"market reference, confirm the current animal and price",referenceOnly:true
-    }
-    ,
-    {
-      name:"Kajiado Kienyeji chicken guide",type:"Chicken",breed:"Indigenous / Kienyeji",age:"Seller asking price",weight:"Kajiado listing",price:1000,unit:"bird",emoji:"🐓",location:"Kajiado · KSh per bird",health:"market reference, confirm the current bird and price",referenceOnly:true
-    }
-    ];
     const readJSON=(k,f)=>{
       try{
         const v=JSON.parse(localStorage.getItem(k));
@@ -82,15 +172,19 @@ if (document.documentElement.classList.contains('page-index')) {
     let livestock=[];
     function draw(){
       const q=(document.getElementById('listingSearch')?.value||'').trim().toLowerCase(),type=document.getElementById('listingType')?.value||'all',sort=document.getElementById('listingSort')?.value||'recent';
-      livestock=[...farmListings(),...marketGuide].filter(a=>(type==='all'||a.type===type)&&[a.name,a.type,a.breed,a.location].join(' ').toLowerCase().includes(q));
+      const allListings=farmListings();
+      livestock=allListings.filter(a=>(type==='all'||a.type===type)&&[a.name,a.type,a.breed,a.location].join(' ').toLowerCase().includes(q));
       const key=(a,empty)=>(a.unit==='kg'||!+a.price)?empty:+a.price;
       if(sort==='price-low')livestock.sort((a,b)=>key(a,Infinity)-key(b,Infinity));
       if(sort==='price-high')livestock.sort((a,b)=>key(b,-1)-key(a,-1));
       if(sort==='name')livestock.sort((a,b)=>a.name.localeCompare(b.name));
       document.getElementById('listingCount').textContent=livestock.length+' listing'+(livestock.length===1?'':'s');
       const saved=new Set(favs().map(f=>f.id));
+      const emptyMessage=allListings.length===0
+        ? '<div class="listing-empty"><span class="listing-empty-mark" aria-hidden="true">🌱</span><h3>No livestock listed right now</h3><p>Contact the farm to ask about current availability.</p><a class="btn" href="#contact">Ask the farm</a></div>'
+        : '<div class="listing-empty"><span class="listing-empty-mark" aria-hidden="true">⌕</span><h3>No matching livestock</h3><p>Try another animal type or clear your search and filters.</p><button class="clear-listing-filters" type="button" data-clear-listing-filters>Clear filters</button></div>';
       document.getElementById('cards').innerHTML=livestock.length?livestock.map((a,i)=>{
-        const guide=!!a.referenceOnly,src=a.image||photos[a.type]?.url,isSaved=saved.has(favId(a));
+        const guide=false,src=a.image||photos[a.type]?.url,isSaved=saved.has(favId(a));
         const emoji=`<span class="emoji"${src?' hidden':''}>${a.emoji||'🐄'}</span>`;
         const pic=src?`<img src="${
   esc(src)
@@ -102,15 +196,15 @@ if (document.documentElement.classList.contains('page-index')) {
   esc(a.type)
 }
 )" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">${emoji}`:emoji;
-        const credit=a.image?'Farm photo':photos[a.type]?`Reference photo · <a href="${
+        const credit=a.image?'Farm photo':photos[a.type]?`Representative photo · <a href="${
   photos[a.type].page
 }
-" target="_blank" rel="noopener">${photos[a.type].credit}</a>`:'Illustrative image';
+" target="_blank" rel="noopener">${photos[a.type].credit}</a>`:'Photo not provided';
         const unit=a.unit&&a.unit!=='head'?` <small>/ ${esc(a.unit)}</small>`:'';
         return `<article class="card"><div class="card-pic">${pic}<span class="for-sale${
   guide?' market-badge':''
 }
-">${guide?'Market guide':'Available now'}</span><button class="save" type="button" aria-pressed="${
+">${guide?'Market guide':'Farm listed'}</span><button class="save" type="button" aria-pressed="${
   isSaved
 }
 " aria-label="${
@@ -130,7 +224,16 @@ your shortlist" onclick="toggleSave(${
 }
 )">Ask about it&nbsp; ↗</button></div></div></article>`
       }
-      ).join(''):'<div class="empty">No animals match your search. Try a different word or animal type, or get in touch with the farm.</div>';
+      ).join(''):emptyMessage;
+      syncCategoryShortcuts();
+    }
+    function syncCategoryShortcuts(){
+      const selectedType=document.getElementById('listingType').value;
+      document.querySelectorAll('[data-livestock-type]').forEach(button=>{
+        const isSelected=button.dataset.livestockType===selectedType;
+        button.setAttribute('aria-pressed',String(isSelected));
+        button.classList.toggle('is-active',isSelected);
+      });
     }
     function toggleSave(i){
       const a=livestock[i];if(!a)return;let list=favs();const id=favId(a);list=list.some(f=>f.id===id)?list.filter(f=>f.id!==id):[...list,{
@@ -146,7 +249,7 @@ your shortlist" onclick="toggleSave(${
       document.getElementById('enquiry').classList.remove('open')
     }
     function sendEnquiry(){
-      const name=document.getElementById('buyerName').value.trim(),contact=document.getElementById('buyerContact').value.trim(),message=document.getElementById('buyerMessage').value.trim();const animal=selected?`Animal: ${selected.name} (${selected.type})\n`:'';const body=`Hello Mark's Savanna Stock,\n\n${message}\n\n${animal}My name: ${name||'Not provided'}\nMy contact: ${contact||'Not provided'}`;window.open('https://wa.me/254706894568?text='+encodeURIComponent(body),'_blank','noopener')
+      const name=document.getElementById('buyerName').value.trim(),contact=document.getElementById('buyerContact').value.trim(),message=document.getElementById('buyerMessage').value.trim();const animal=selected?`Animal: ${selected.name} (${selected.type})\n`:'';const body=`Hello Mark's Savannah Farm,\n\n${message}\n\n${animal}My name: ${name||'Not provided'}\nMy contact: ${contact||'Not provided'}`;window.open('https://wa.me/254706894568?text='+encodeURIComponent(body),'_blank','noopener')
     }
     document.getElementById('enquiry').addEventListener('click',e=>{
       if(e.target.id==='enquiry')closeEnquiry()
@@ -158,6 +261,27 @@ your shortlist" onclick="toggleSave(${
     );
     document.getElementById('year').textContent=new Date().getFullYear();
     draw();['listingSearch','listingType','listingSort'].forEach(id=>document.getElementById(id).addEventListener(id==='listingSearch'?'input':'change',draw));
+    document.getElementById('cards').addEventListener('click',event=>{
+      if(!event.target.closest('[data-clear-listing-filters]'))return;
+      document.getElementById('listingSearch').value='';
+      document.getElementById('listingType').value='all';
+      draw();
+    });
+    document.querySelectorAll('[data-livestock-type]').forEach(button=>button.addEventListener('click',()=>{
+      const typeFilter=document.getElementById('listingType');
+      typeFilter.value=button.dataset.livestockType;
+      typeFilter.dispatchEvent(new Event('change',{bubbles:true}));
+      document.getElementById('livestock').scrollIntoView({
+        behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',
+        block:'start'
+      });
+    }));
+    document.querySelectorAll('[data-nav-livestock-type]').forEach(link=>link.addEventListener('click',()=>{
+      const typeFilter=document.getElementById('listingType');
+      if(!typeFilter)return;
+      typeFilter.value=link.dataset.navLivestockType;
+      typeFilter.dispatchEvent(new Event('change',{bubbles:true}));
+    }));
     try{
       if(localStorage.getItem('savanna-customer-session')||sessionStorage.getItem('savanna-customer-session')){
         document.querySelectorAll('a[href="sign-in.html"]').forEach(a=>{
@@ -186,35 +310,6 @@ your shortlist" onclick="toggleSave(${
     if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(()=>{
     }
     ));
-    // Accessible photo slideshow controls and image credits.
-    (()=>{
-      const slides=[
-      {
-        image:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Maasai_cattle%2C_Kenya.jpg/1280px-Maasai_cattle%2C_Kenya.jpg',eyebrow:'Maasai cattle · Kenya',caption:'Livestock traditions of the Kenyan savanna',author:'imaginextra',license:'CC BY 2.0',source:'https://commons.wikimedia.org/wiki/File:Maasai_cattle,_Kenya.jpg',licenseUrl:'https://creativecommons.org/licenses/by/2.0/'
-      }
-      ,
-      {
-        image:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg/1280px-Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg',eyebrow:'Maasai goats and sheep · Kenya',caption:'Goats and sheep resting in the shade',author:'Yganyana',license:'CC BY-SA 4.0',source:'https://commons.wikimedia.org/wiki/File:Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/'
-      }
-      ,
-      {
-        image:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Maasai_sheep%2C_Kenya.jpg/1280px-Maasai_sheep%2C_Kenya.jpg',eyebrow:'Maasai Red sheep · Kenya',caption:'A traditional fat-tailed sheep breed',author:'John Atherton',license:'CC BY-SA 2.0',source:'https://commons.wikimedia.org/wiki/File:Maasai_sheep,_Kenya.jpg',licenseUrl:'https://creativecommons.org/licenses/by-sa/2.0/'
-      }
-      ];
-      const frame=document.getElementById('livestockSlideshow');let index=0,paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(!frame)return;
-      function show(next){
-        index=(next+slides.length)%slides.length;const s=slides[index];frame.style.backgroundImage=`url("${s.image}")`;document.getElementById('slideEyebrow').textContent=s.eyebrow;document.getElementById('slideCaption').textContent=s.caption;document.getElementById('slideCredit').innerHTML=`Photo: <a href="${s.source}" target="_blank" rel="noopener">${s.author}</a> · <a href="${s.licenseUrl}" target="_blank" rel="noopener">${s.license}</a>`;document.getElementById('slideStatus').textContent=`Photo ${index+1} of ${slides.length}: ${s.eyebrow}. ${s.caption}`;
-      }
-      function setPaused(value){
-        paused=value;const button=document.getElementById('slidePause');button.textContent=paused?'Play':'Pause';button.setAttribute('aria-label',paused?'Play slideshow':'Pause slideshow');
-      }
-      document.getElementById('slidePrev').addEventListener('click',()=>show(index-1));document.getElementById('slideNext').addEventListener('click',()=>show(index+1));document.getElementById('slidePause').addEventListener('click',()=>setPaused(!paused));show(0);setPaused(paused);setInterval(()=>{
-        if(!paused)show(index+1)
-      }
-      ,6500);
-    }
-    )();
     Object.assign(window, {
       toggleSave, openEnquiry, closeEnquiry, sendEnquiry
     }
