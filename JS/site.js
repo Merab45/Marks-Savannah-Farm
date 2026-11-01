@@ -11,10 +11,24 @@ document.querySelectorAll('[data-contact-whatsapp]').forEach(link => {
 document.querySelectorAll('[data-contact-phone]').forEach(link => { link.href = `tel:${FARM_CONTACT.phone}`; });
 document.querySelectorAll('[data-contact-email]').forEach(link => { link.href = `mailto:${FARM_CONTACT.email}`; });
 document.querySelectorAll('[data-farm-phone]').forEach(el => { el.textContent = FARM_CONTACT.phoneDisplay; });
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js').catch(() => {}));
+}
 
-// Accessible primary navigation for the homepage.
-if (document.documentElement.classList.contains('page-index')) {
-  const nav = document.querySelector('.page-index .nav');
+// Copyright year for the standalone About page.
+if (document.documentElement.classList.contains('page-about')) {
+  const year = document.getElementById('about-year');
+  if (year) year.textContent = new Date().getFullYear();
+}
+
+// Accessible primary navigation shared by the homepage and About page.
+if (document.documentElement.matches('.page-index, .page-about, .page-sign-in, .page-create-account, .page-customer-account')) {
+  const nav = document.querySelector('nav.nav');
+  if (nav) {
+    const syncNavScrollState = () => nav.classList.toggle('is-scrolled', window.scrollY > 40);
+    syncNavScrollState();
+    window.addEventListener('scroll', syncNavScrollState, { passive: true });
+  }
   const menuToggle = nav?.querySelector('.nav-menu-toggle');
   const links = nav?.querySelector('.links');
   const servicesToggle = nav?.querySelector('.nav-dropdown-toggle');
@@ -97,8 +111,11 @@ if (document.documentElement.classList.contains('page-index')) {
   });
 
   servicesToggle?.addEventListener('click', event => {
-    // A mouse click on a hover-driven menu does nothing; keyboard activation (detail 0) still toggles.
-    if (hoverMenu.matches && event.detail > 0) return;
+    // Keep desktop hover, and let an intentional mouse click open the menu too.
+    if (hoverMenu.matches && event.detail > 0) {
+      setServicesOpen(true);
+      return;
+    }
     setServicesOpen(servicesToggle.getAttribute('aria-expanded') !== 'true');
   });
 
@@ -238,7 +255,7 @@ ${
 your shortlist" onclick="toggleSave(${
   i
 }
-)">${isSaved?'♥':'♡'}</button></div><div class="card-body"><div class="card-title">${esc(a.name)}${guide?'':' · '+esc(a.type)}</div><div class="card-desc">${esc(a.breed||'Breed on request')} &nbsp;·&nbsp; ${esc(a.age||'Age on request')} &nbsp;·&nbsp; ${esc(a.weight||'Weight on request')}</div><div class="listing-loc">⌖ ${esc(a.location||'Kajiado, Kenya')} · Health and vaccination details: ${esc(a.health||'ask the farm')}</div><div class="photo-credit">${credit}</div><div class="card-bottom"><span class="card-price">${fmt(a.price)}${unit}</span><button class="ask" onclick="openEnquiry(${
+)">${isSaved?'♥':'♡'}</button></div><div class="card-body"><div class="card-title">${esc(a.name)}${guide?'':' · '+esc(a.type)}</div><div class="card-desc">${esc(a.breed||'Breed on request')} &nbsp;·&nbsp; ${esc(a.age||'Age on request')} &nbsp;·&nbsp; ${esc(a.weight||'Weight on request')}</div><div class="listing-loc">⌖ ${esc(a.location||'Kenya')} · Health and vaccination details: ${esc(a.health||'ask the farm')}</div><div class="photo-credit">${credit}</div><div class="card-bottom"><span class="card-price">${fmt(a.price)}${unit}</span><button class="ask" onclick="openEnquiry(${
   i
 }
 )">Ask about it&nbsp; </button></div></div></article>`
@@ -279,6 +296,8 @@ your shortlist" onclick="toggleSave(${
     }
     );
     document.getElementById('year').textContent=new Date().getFullYear();
+    const requestedAnimal = new URLSearchParams(location.search).get('animal');
+    if (['Cattle','Goat','Sheep','Chicken','Pig','Camel'].includes(requestedAnimal)) document.getElementById('listingType').value = requestedAnimal;
     draw();['listingSearch','listingType','listingSort'].forEach(id=>document.getElementById(id).addEventListener(id==='listingSearch'?'input':'change',draw));
     document.getElementById('cards').addEventListener('click',event=>{
       if(!event.target.closest('[data-clear-listing-filters]'))return;
@@ -326,9 +345,6 @@ your shortlist" onclick="toggleSave(${
       }
     }
     );
-    if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(()=>{
-    }
-    ));
     Object.assign(window, {
       toggleSave, openEnquiry, closeEnquiry, sendEnquiry
     }
@@ -427,7 +443,7 @@ if (document.documentElement.classList.contains('page-herdbook')) {
       let mq=(document.getElementById('marketSearch')?.value||'').toLowerCase(),mf=document.getElementById('marketFilter')?.value||'all';
       let cards=animals.filter(a=>a.status==='Listed'&&(mf==='all'||a.type===mf)&&[a.name,a.type,a.breed].join(' ').toLowerCase().includes(mq));
       document.getElementById('listingCount').textContent=cards.length+' listing'+(cards.length===1?'':'s');
-      document.getElementById('listingGrid').innerHTML=cards.length?cards.map(a=>`<article class="listing-card"><div class="listing-photo"><span class="tag listed" style="z-index:1">For sale</span>${a.image?`<img src="${esc(a.image)}" alt="${esc(a.name)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()">`:''}${animalEmoji(a)}</div><div class="listing-body"><div class="listing-name">${esc(a.name)} <span style="font-weight:400;color:var(--muted)">· ${esc(a.type)}</span></div><div class="listing-detail">${esc(a.breed||'Breed not specified')} · ${esc(a.age||'Age not specified')} · ${esc(a.weight||'Weight not specified')}</div><div class="listing-detail">${esc(a.location||'Kajiado')} · ${esc(a.health||'Health details on request')}</div><div class="listing-bottom"><div class="listing-price">${money(a.price)}</div><div class="listing-actions"><button class="icon-btn" title="Mark sold" onclick="markSold(${a.id})">${icons.cash}</button><button class="icon-btn" title="Remove listing" onclick="unlist(${a.id})">×</button></div></div></div></article>`).join(''):'<div class="panel empty" style="grid-column:1/-1">No listings match yet. Add an animal and set its status to Listed to advertise it here.</div>';
+      document.getElementById('listingGrid').innerHTML=cards.length?cards.map(a=>`<article class="listing-card"><div class="listing-photo"><span class="tag listed" style="z-index:1">For sale</span>${a.image?`<img src="${esc(a.image)}" alt="${esc(a.name)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()">`:''}${animalEmoji(a)}</div><div class="listing-body"><div class="listing-name">${esc(a.name)} <span style="font-weight:400;color:var(--muted)">· ${esc(a.type)}</span></div><div class="listing-detail">${esc(a.breed||'Breed not specified')} · ${esc(a.age||'Age not specified')} · ${esc(a.weight||'Weight not specified')}</div><div class="listing-detail">${esc(a.location||'Kenya')} · ${esc(a.health||'Health details on request')}</div><div class="listing-bottom"><div class="listing-price">${money(a.price)}</div><div class="listing-actions"><button class="icon-btn" title="Mark sold" onclick="markSold(${a.id})">${icons.cash}</button><button class="icon-btn" title="Remove listing" onclick="unlist(${a.id})">×</button></div></div></div></article>`).join(''):'<div class="panel empty" style="grid-column:1/-1">No listings match yet. Add an animal and set its status to Listed to advertise it here.</div>';
       document.getElementById('salesTable').innerHTML=sold.length?sold.map(a=>`<tr><td><div class="table-animal"><span class="table-emoji">${animalEmoji(a)}</span>${esc(a.name)}</div></td><td>${esc(a.type)} · ${esc(a.breed||'—')}</td><td>${dateFormat(a.saleDate)}</td><td>${esc(a.notes||'—')}</td><td><b>${money(a.price)}</b></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No sales recorded yet. Mark a listed animal as sold to record a sale.</td></tr>';
       document.getElementById('salesStats').innerHTML=[[icons.cash,'Sales completed',sold.length],[icons.tag,'Total sales value',money(sold.reduce((n,a)=>n+(+a.price||0),0))],[icons.cow,'Animals on farm',animals.filter(a=>a.status!=='Sold').length],[icons.cart,'Currently listed',listed]].map(([i,l,v])=>`<div class="stat"><div class="stat-top">${l}<span class="stat-icon">${i}</span></div><div class="stat-value">${v}</div><div class="stat-foot">Updated with your records</div></div>`).join('')
     }

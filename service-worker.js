@@ -1,19 +1,27 @@
 // Change this value whenever a site update should replace the cached files.
-const CACHE = 'marks-savannah-farm-v63';
+const CACHE = 'marks-savannah-farm-v93';
 
 // These core pages and assets remain available when the visitor is offline.
 const FILES = [
   './',
   './index.html',
+  './about-us.html',
+  './products-and-services.html',
   './herdbook.html',
   './sign-in.html',
   './create-account.html',
   './customer-account.html',
   './CSS/site.css',
+  './CSS/site.css?v=93',
   './JS/site.js',
+  './JS/site.js?v=76',
   './manifest.webmanifest',
   './Assets/login page background.png',
   './Assets/Hero background.png',
+  './Assets/About us Image.jpg',
+  './Assets/About us.png',
+  './Assets/product and services.png',
+  './Assets/Our Story.jpg',
   './Assets/marks-savannah-farm-logo.svg',
   './Assets/Mark’s Savannah Farm Logo.png',
   './Assets/Marks Savannah Farm Logo 2.png',
@@ -28,6 +36,8 @@ const FILES = [
   './Assets/Goats.jpg',
   './Assets/Sheep.jpg',
   './Assets/Pigs.jpg',
+  './Assets/placeholder-about-banner.svg',
+  './Assets/placeholder-about-story.svg',
 ];
 
 self.addEventListener('install', event => {
@@ -70,14 +80,14 @@ self.addEventListener('fetch', event => {
           }
           return response;
         })
-        .catch(() => caches.match(request).then(hit => hit || caches.match('./index.html'))),
+        .catch(() => caches.match(request, { ignoreSearch: true }).then(hit => hit || caches.match('./index.html'))),
     );
     return;
   }
 
   // Static files use the cache first, then save successful network responses.
   event.respondWith(
-    caches.match(request).then(
+    caches.match(request, { ignoreSearch: true }).then(
       cached =>
         cached ||
         fetch(request).then(response => {
