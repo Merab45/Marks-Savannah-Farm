@@ -43,10 +43,15 @@ if (document.documentElement.classList.contains('page-index')) {
   const defaultCaption = megaCaption ? megaCaption.textContent : '';
   const previewImages = {
     default: 'Assets/Hero%20background.png',
-    cattle: 'https://upload.wikimedia.org/wikipedia/commons/b/bb/Boran_cattle_in_Kenya.jpg',
-    chicken: 'https://upload.wikimedia.org/wikipedia/commons/f/fe/Kenyan_backyard_chicken_rooster.jpg',
-    goat: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg/1280px-Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg',
-    sheep: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg/1280px-Maasai_Goats_and_Sheep_Gathering_under_a_tree.jpg',
+    cattle: 'Assets/Cattle%20dropdown.jpg',
+    chicken: 'Assets/Turkeys.jpg',
+    poultryFarming: 'Assets/poultry%20Frming.jpg',
+    crops: 'Assets/Crops.jpg',
+    dairy: 'Assets/Dairy%20Products.jpg',
+    consultancy: 'Assets/Agri-Consultancy.jpg',
+    goat: 'Assets/Goats.jpg',
+    sheep: 'Assets/Sheep.jpg',
+    pig: 'Assets/Pigs.jpg',
   };
   let activeLayer = 0;
   let currentImage = previewImages.default;

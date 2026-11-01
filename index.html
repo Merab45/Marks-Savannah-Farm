@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="CSS/site.css?v=59">
+    <link rel="stylesheet" href="CSS/site.css?v=63">
   </head>
   <body class="page-index">
     <nav class="nav">
@@ -39,21 +39,22 @@
                 <a href="#livestock" data-nav-livestock-type="Goat" data-preview="goat">Goats</a>
                 <a href="#livestock" data-nav-livestock-type="Sheep" data-preview="sheep">Sheep</a>
                 <a href="#livestock" data-nav-livestock-type="Chicken" data-preview="chicken">Poultry</a>
+                <a href="#livestock" data-nav-livestock-type="Pig" data-preview="pig">Pigs</a>
                 <a class="mega-all" href="#livestock" data-nav-livestock-type="all">View all livestock</a>
               </div>
             </div>
             <div class="mega-col">
               <div class="mega-title">From the farm</div>
               <div class="mega-links">
-                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20crops." target="_blank" rel="noopener">Crops</a>
-                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20poultry%20farming." target="_blank" rel="noopener" data-preview="chicken">Poultry Farming</a>
-                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20dairy%20products." target="_blank" rel="noopener" data-preview="cattle">Dairy Products</a>
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20crops." target="_blank" rel="noopener" data-preview="crops">Crops</a>
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20poultry%20farming." target="_blank" rel="noopener" data-preview="poultryFarming">Poultry Farming</a>
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20dairy%20products." target="_blank" rel="noopener" data-preview="dairy">Dairy Products</a>
               </div>
             </div>
             <div class="mega-col">
               <div class="mega-title">Services</div>
               <div class="mega-links">
-                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20agri-consultancy." target="_blank" rel="noopener">Agri-Consultancy</a>
+                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20agri-consultancy." target="_blank" rel="noopener" data-preview="consultancy">Agri-Consultancy</a>
                 <a href="#buying-guide">Buying guide</a>
               </div>
             </div>
@@ -154,6 +155,7 @@
           <button type="button" class="category-shortcut" data-livestock-type="Goat" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐐</span><span>Goats</span></button>
           <button type="button" class="category-shortcut" data-livestock-type="Sheep" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐑</span><span>Sheep</span></button>
           <button type="button" class="category-shortcut" data-livestock-type="Chicken" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐓</span><span>Poultry</span></button>
+          <button type="button" class="category-shortcut" data-livestock-type="Pig" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐖</span><span>Pigs</span></button>
           <button type="button" class="category-shortcut" data-livestock-type="Camel" aria-pressed="false" aria-controls="cards"><span class="category-icon" aria-hidden="true">🐪</span><span>Camels</span></button>
         </div>
       </section>
@@ -173,7 +175,7 @@
           <a class="see-all" href="#contact">Have a question? &nbsp;</a>
         </div>
         <div class="market-tools">
-          <input id="listingSearch" type="search" placeholder="Search livestock, breed, or tag" aria-label="Search listings"><select id="listingType" aria-label="Filter by animal type"><option value="all">All animal types</option><option>Cattle</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Camel</option></select><select id="listingSort" aria-label="Sort listings"><option value="recent">Recently listed</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name A–Z</option></select><span id="listingCount" class="listing-count"></span>
+          <input id="listingSearch" type="search" placeholder="Search livestock, breed, or tag" aria-label="Search listings"><select id="listingType" aria-label="Filter by animal type"><option value="all">All animal types</option><option>Cattle</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Pig</option><option>Camel</option></select><select id="listingSort" aria-label="Sort listings"><option value="recent">Recently listed</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name A–Z</option></select><span id="listingCount" class="listing-count"></span>
         </div>
         <div class="cards" id="cards" aria-live="polite"></div>
       </section>
