@@ -11,7 +11,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
 
-    <link rel="stylesheet" href="CSS/site.css">
+    <link rel="stylesheet" href="CSS/site.css?v=59">
     <script>document.documentElement.classList.add('is-loading');window.addEventListener('load',()=>document.documentElement.classList.remove('is-loading'),{once:true});window.setTimeout(()=>document.documentElement.classList.remove('is-loading'),3000);</script>
   </head>
   <body class="page-herdbook">
@@ -37,7 +37,7 @@
         <nav class="nav" id="nav">
           <button class="active" data-page="overview"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="11" width="7" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>Overview</button><button data-page="animals"><svg viewBox="0 0 24 24"><path d="M4 16.5c2-5 4-8 8-8s6 3 8 8M7 15h10M9 8l-1-3m7 3 1-3M5 17v2m14-2v2M8 12l-2-1m10 1 2-1"/></svg>My animals</button><button data-page="market"><svg viewBox="0 0 24 24"><path d="M3 10h18l-1.5-6h-15L3 10Zm2 0v10h14V10M9 20v-6h6v6M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg>Marketplace</button><button data-page="sales"><svg viewBox="0 0 24 24"><path d="M4 5h16v15H4zM8 3v4m8-4v4M4 10h16"/><path d="m8 15 2 2 5-5"/></svg>Sales & records</button>
         </nav>
-        <a href="index.html" style="display:block;margin:15px 6px;padding:10px 12px;border:1px solid #e8e9e1;border-radius:8px;color:#315b43;text-decoration:none;font-size:11px;font-weight:700">↗ &nbsp; Public farm website</a>
+        <a href="index.html" style="display:block;margin:15px 6px;padding:10px 12px;border:1px solid #e8e9e1;border-radius:8px;color:#315b43;text-decoration:none;font-size:13px;font-weight:700"> &nbsp; Public farm website</a>
         <div class="farm-card">
           <div class="small">
             YOUR FARM
@@ -81,7 +81,7 @@
                 <p class="subtitle">
                   Here’s what’s happening across your farm.
                 </p>
-                <div id="demoBanner" style="display:none;margin-top:10px;font-size:12px;color:#7a5f2a;background:#faf4e2;border:1px solid #eee2bd;border-radius:8px;padding:8px 11px">
+                <div id="demoBanner" style="display:none;margin-top:10px;font-size:14px;color:#7a5f2a;background:#faf4e2;border:1px solid #eee2bd;border-radius:8px;padding:8px 11px">
                   You are seeing sample animals. <button class="text-link" type="button" onclick="clearDemo()" style="color:#7a5f2a;text-decoration:underline">Remove sample animals</button>
                 </div>
               </div>
@@ -99,7 +99,7 @@
                       Your latest animal records
                     </div>
                   </div>
-                  <button class="text-link" onclick="navigate('animals')">View all →</button>
+                  <button class="text-link" onclick="navigate('animals')">View all </button>
                 </div>
                 <div class="animal-list" id="recentAnimals"></div>
               </div>
@@ -127,7 +127,7 @@
                   <p>
                     Put your available livestock in front of people looking to buy.
                   </p>
-                  <button onclick="navigate('market')">Explore marketplace &nbsp;↗</button>
+                  <button onclick="navigate('market')">Explore marketplace &nbsp;</button>
                 </div>
               </div>
             </div>
@@ -194,7 +194,7 @@
               <button class="primary" onclick="openModal()">＋ Add an animal</button>
             </div>
             <div class="toolbar">
-              <input class="search" id="marketSearch" placeholder="Search listings…"><select class="filter" id="marketFilter"><option value="all">All animals</option><option>Cattle</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Donkey</option><option>Camel</option></select><span style="margin-left:auto;color:var(--muted);font-size:11px" id="listingCount"></span>
+              <input class="search" id="marketSearch" placeholder="Search listings…"><select class="filter" id="marketFilter"><option value="all">All animals</option><option>Cattle</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Camel</option></select><span style="margin-left:auto;color:var(--muted);font-size:13px" id="listingCount"></span>
             </div>
             <div class="listing-grid" id="listingGrid"></div>
           </section>
@@ -268,7 +268,7 @@
               <label>Animal name or tag *</label><input name="name" required placeholder="e.g. Nia or C-014">
             </div>
             <div class="field">
-              <label>Type *</label><select name="type" required><option value="">Choose type</option><option>Cattle</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Donkey</option><option>Camel</option><option>Pig</option><option>Other</option></select>
+              <label>Type *</label><select name="type" required><option value="">Choose type</option><option>Cattle</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Camel</option><option>Pig</option><option>Other</option></select>
             </div>
             <div class="field">
               <label>Breed</label><input name="breed" placeholder="e.g. Boran">

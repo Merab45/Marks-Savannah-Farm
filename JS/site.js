@@ -1,3 +1,17 @@
+// Farm contact details live here; links marked data-contact-* are filled in below.
+const FARM_CONTACT = {
+  whatsapp: '254706894568',
+  phone: '+254706894568',
+  phoneDisplay: '0706 894 568',
+  email: 'meraprenish@gmail.com',
+};
+document.querySelectorAll('[data-contact-whatsapp]').forEach(link => {
+  link.href = `https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent("Hello Mark's Savannah Farm, I have an enquiry.")}`;
+});
+document.querySelectorAll('[data-contact-phone]').forEach(link => { link.href = `tel:${FARM_CONTACT.phone}`; });
+document.querySelectorAll('[data-contact-email]').forEach(link => { link.href = `mailto:${FARM_CONTACT.email}`; });
+document.querySelectorAll('[data-farm-phone]').forEach(el => { el.textContent = FARM_CONTACT.phoneDisplay; });
+
 // Accessible primary navigation for the homepage.
 if (document.documentElement.classList.contains('page-index')) {
   const nav = document.querySelector('.page-index .nav');
@@ -56,7 +70,7 @@ if (document.documentElement.classList.contains('page-index')) {
   }
 
   servicesDropdown?.querySelectorAll('.mega-links a, .mega-promo').forEach(link => {
-    const preview = () => showPreview(link.dataset.preview, link.textContent.replace(/\s*[→›]+\s*$/, '').trim() + ' ›');
+    const preview = () => showPreview(link.dataset.preview, link.textContent.trim());
     link.addEventListener('mouseenter', preview);
     link.addEventListener('focus', preview);
   });
@@ -222,7 +236,7 @@ your shortlist" onclick="toggleSave(${
 )">${isSaved?'♥':'♡'}</button></div><div class="card-body"><div class="card-title">${esc(a.name)}${guide?'':' · '+esc(a.type)}</div><div class="card-desc">${esc(a.breed||'Breed on request')} &nbsp;·&nbsp; ${esc(a.age||'Age on request')} &nbsp;·&nbsp; ${esc(a.weight||'Weight on request')}</div><div class="listing-loc">⌖ ${esc(a.location||'Kajiado, Kenya')} · Health and vaccination details: ${esc(a.health||'ask the farm')}</div><div class="photo-credit">${credit}</div><div class="card-bottom"><span class="card-price">${fmt(a.price)}${unit}</span><button class="ask" onclick="openEnquiry(${
   i
 }
-)">Ask about it&nbsp; ↗</button></div></div></article>`
+)">Ask about it&nbsp; </button></div></div></article>`
       }
       ).join(''):emptyMessage;
       syncCategoryShortcuts();
@@ -369,7 +383,7 @@ if (document.documentElement.classList.contains('page-herdbook')) {
     }
     function animalEmoji(a){
       return a.emoji||({
-        Cattle:'🐄',Goat:'🐐',Sheep:'🐑',Chicken:'🐓',Donkey:'🫏',Camel:'🐪',Pig:'🐖'
+        Cattle:'🐄',Goat:'🐐',Sheep:'🐑',Chicken:'🐓',Camel:'🐪',Pig:'🐖'
       }
       [a.type]||'🐂')
     }
@@ -459,7 +473,7 @@ if (document.documentElement.classList.contains('page-herdbook')) {
     );document.getElementById('animalForm').addEventListener('submit',async e=>{
       e.preventDefault();let d=Object.fromEntries(new FormData(e.target));const photoFile=d.photoFile;delete d.photoFile;if(photoFile&&photoFile.size)d.image=await compressAnimalPhoto(photoFile);if(d.status==='Sold'&&!d.saleDate)d.saleDate=new Date().toISOString().slice(0,10);animals.push({
         id:Date.now(),...d,price:+d.price||0,emoji:({
-          Cattle:'🐄',Goat:'🐐',Sheep:'🐑',Chicken:'🐓',Donkey:'🫏',Camel:'🐪',Pig:'🐖'
+          Cattle:'🐄',Goat:'🐐',Sheep:'🐑',Chicken:'🐓',Camel:'🐪',Pig:'🐖'
         }
         [d.type]||'🐂')
       }
@@ -547,7 +561,7 @@ if (document.documentElement.classList.contains('page-customer-account')) {
       const safeOrders=Array.isArray(orders)?orders.filter(order=>!order.email||String(order.email).toLowerCase()===email):[];
       document.getElementById('orderCount').textContent=String(safeOrders.length);
       if(!safeOrders.length){
-        list.innerHTML='<div class="orders-empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="m4.5 7.8 7.5 4.4 7.5-4.4M12 12.2V21"/></svg></div><div class="empty-copy"><h3>No orders recorded yet</h3><p>When you agree a livestock purchase with the farm, order updates can appear here.</p><a class="btn primary" href="index.html#livestock">Browse livestock ↗</a></div></div>';
+        list.innerHTML='<div class="orders-empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="m4.5 7.8 7.5 4.4 7.5-4.4M12 12.2V21"/></svg></div><div class="empty-copy"><h3>No orders recorded yet</h3><p>When you agree a livestock purchase with the farm, order updates can appear here.</p><a class="btn primary" href="index.html#livestock">Browse livestock </a></div></div>';
         return;
       }
       list.innerHTML=safeOrders.slice(0,5).map(order=>`<div class="order-row"><div><div class="order-name">${escapeHtml(order.animalName||order.listingName||'Livestock order')}</div><div class="order-meta">${escapeHtml(order.orderNumber||order.createdAt||'Farm order')}</div></div><span class="status ${String(order.status).toLowerCase()==='paid'?'paid':''}">${escapeHtml(order.status||'Pending')}</span><div class="order-price">${order.amount?`KSh ${
