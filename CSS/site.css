@@ -40,14 +40,37 @@ html.page-about .about-offerings { background:#f1f4ee; padding:82px 0 90px; }
 html.page-about .about-section-heading { text-align:center; max-width:680px; margin:0 auto 38px; }
 html.page-about .about-section-heading .about-eyebrow { justify-content:center; }
 html.page-about .about-section-heading p { margin:14px 0 0; color:var(--about-muted); font-size:16px; }
-html.page-about .about-offering-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; }
-html.page-about .about-offering-grid article { min-height:300px; padding:0; overflow:hidden; border:1px solid #e6ebe3; border-radius:16px; background:#fff; box-shadow:0 10px 28px #142b200a; }
+html.page-about .about-offering-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+html.page-about .about-offering-grid article { display:flex; min-height:300px; flex-direction:column; padding:0; overflow:hidden; border:1px solid #e6ebe3; border-radius:16px; background:#fff; box-shadow:0 10px 28px #142b200a; }
 html.page-about .about-offering-grid article[id] { scroll-margin-top:90px; }
 html.page-about .about-offering-image { display:block; width:100%; aspect-ratio:1.55; object-fit:cover; }
-html.page-about .about-offering-copy { padding:16px 18px 20px; }
+html.page-about .about-offering-copy { display:flex; flex:1; flex-direction:column; align-items:flex-start; padding:16px 18px 20px; }
 html.page-about .about-card-number { display:grid; place-items:center; width:32px; height:32px; border-radius:10px; background:#eaf6df; color:#16813d; font:800 12px Manrope,sans-serif; }
 html.page-about .about-offering-grid h3 { margin:12px 0 7px; font:800 18px Manrope,sans-serif; letter-spacing:-.4px; }
 html.page-about .about-offering-grid p { margin:0; color:var(--about-muted); font-size:14px; line-height:1.55; }
+html.page-about .about-offering-more { display:inline-flex; align-items:center; margin-top:auto; padding-top:14px; color:#087a35 !important; font-size:15px; font-weight:800; text-decoration:underline !important; text-decoration-color:#63b875 !important; text-decoration-thickness:2px !important; text-underline-offset:4px; }
+html.page-about .about-offering-more:hover, html.page-about .about-offering-more:focus-visible { color:#064c2a !important; text-decoration-color:#064c2a !important; }
+html.page-about .about-product-details { padding:22px 0 58px; background:#f7f9f5; }
+html.page-about .product-detail { display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(24px,5vw,62px); align-items:center; padding:34px 0; border-bottom:1px solid #dfe8dc; scroll-margin-top:90px; }
+html.page-about .product-detail:nth-child(even) > img { order:2; }
+html.page-about .product-detail > img { display:block; width:100%; max-height:340px; aspect-ratio:1.45; object-fit:cover; border-radius:18px; }
+html.page-about .product-detail h2 { margin:9px 0 12px; color:#0f4a2a; font:800 clamp(27px,3vw,38px)/1.1 Manrope,sans-serif; letter-spacing:-1px; }
+html.page-about .product-detail p { margin:0 0 20px; color:var(--about-muted); font-size:16px; line-height:1.7; }
+html.page-about .product-detail#details-livestock, html.page-about .product-detail.product-catalog-detail { grid-template-columns:1fr; }
+html.page-about .product-detail#details-livestock > img, html.page-about .product-detail.product-catalog-detail > img { max-height:300px; aspect-ratio:2.8; }
+html.page-about .livestock-catalog { display:grid; gap:18px; margin:24px 0 12px; }
+html.page-about .livestock-group { overflow:hidden; border:1px solid #dce8dc; border-radius:15px; background:#fff; }
+html.page-about .livestock-group > header { display:flex; justify-content:space-between; gap:16px; align-items:center; padding:16px 18px; background:#edf5e9; }
+html.page-about .livestock-group > header h3 { margin:0 0 4px; color:#123d25; font:800 19px Manrope,sans-serif; }
+html.page-about .livestock-group > header p { margin:0; font-size:13px; line-height:1.45; }
+html.page-about .livestock-group > header > strong { color:#0b6933; font-size:14px; text-align:right; white-space:nowrap; }
+html.page-about .livestock-group > header > strong small { font-size:11px; font-weight:600; }
+html.page-about .livestock-products { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; padding:12px; }
+html.page-about .livestock-product { display:flex; flex-direction:column; align-items:flex-start; min-height:172px; padding:14px; border:1px solid #e6ece4; border-radius:11px; background:#fbfcfa; }
+html.page-about .livestock-product h4 { margin:0 0 7px; color:#173d27; font:800 15px Manrope,sans-serif; }
+html.page-about .livestock-product p { margin:0 0 12px; font-size:13px; line-height:1.5; }
+html.page-about .livestock-product a { margin-top:auto; color:#087a35; font-size:13px; font-weight:800; text-decoration:underline; text-underline-offset:3px; }
+html.page-about .livestock-price-note { margin:12px 0 18px !important; color:#53665a !important; font-size:12px !important; line-height:1.55 !important; }
 html.page-about .about-regions { background:var(--about-deep); color:#fff; padding:72px 0; }
 html.page-about .about-region-inner { display:grid; grid-template-columns:1fr 1fr; gap:22px 8%; align-items:center; }
 html.page-about .about-regions h2 { font-size:38px; }
@@ -77,6 +100,17 @@ html.page-index .about-footer small { grid-column:1/-1; border-top:1px solid #ff
   html.page-about .about-offering-grid { grid-template-columns:repeat(2,1fr); }
   html.page-about .about-offering-grid article { min-height:0;padding:0; }
   html.page-about .about-offering-copy { padding:13px 14px 17px; }
+  html.page-about .about-offering-more { padding-top:10px; font-size:14px; }
+  html.page-about .about-product-details { padding:12px 0 42px; }
+  html.page-about .product-detail { grid-template-columns:1fr; gap:18px; padding:25px 0; }
+  html.page-about .product-detail:nth-child(even) > img { order:0; }
+  html.page-about .product-detail > img { max-height:260px; aspect-ratio:1.6; }
+  html.page-about .product-detail p { font-size:15px; }
+  html.page-about .product-detail#details-livestock > img, html.page-about .product-detail.product-catalog-detail > img { aspect-ratio:1.7; }
+  html.page-about .livestock-products { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  html.page-about .livestock-product { min-height:0; }
+  html.page-about .livestock-group > header { align-items:flex-start; flex-direction:column; gap:8px; }
+  html.page-about .livestock-group > header > strong { text-align:left; }
   html.page-about .about-regions { padding:58px 0; }
   html.page-about .about-region-inner { grid-template-columns:1fr;gap:10px; }
   html.page-about .about-region-list { grid-column:auto;flex-wrap:wrap;margin-top:8px; }
@@ -88,12 +122,141 @@ html.page-index .about-footer small { grid-column:1/-1; border-top:1px solid #ff
   html.page-about .about-footer small { grid-column:auto; }
   html.page-index .about-footer small { grid-column:auto; }
 }
+@media(max-width:430px) {
+  html.page-about .livestock-products { grid-template-columns:1fr; }
+}
 
+/* Contact page */
+html.page-contact .contact-main { display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(28px,5vw,70px); align-items:start; padding-top:64px; padding-bottom:76px; }
+html.page-contact .contact-intro h2, html.page-contact .contact-regions-heading h2 { margin:14px 0; color:#103e26; font:800 clamp(30px,3.3vw,42px)/1.15 Manrope,sans-serif; letter-spacing:-1.4px; }
+html.page-contact .contact-intro > p, html.page-contact .contact-regions-heading > p { color:#5c6b61; font-size:16px; line-height:1.7; }
+html.page-contact .contact-methods { display:grid; gap:11px; margin-top:26px; }
+html.page-contact .contact-method { display:flex; align-items:center; gap:14px; padding:14px 16px; border:1px solid #e1e9df; border-radius:14px; background:#fff; color:#173d27; text-decoration:none; transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+html.page-contact .contact-method:hover { transform:translateY(-2px); border-color:#9bcba4; box-shadow:0 10px 26px #123d2510; }
+html.page-contact .contact-method-icon { display:grid; flex:0 0 42px; place-items:center; width:42px; height:42px; border-radius:13px; background:#eaf5e9; color:#0c7a39; font-size:20px; font-weight:800; }
+html.page-contact .contact-method-icon svg { width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+html.page-contact .contact-method-icon svg path:nth-of-type(2) { fill:none; }
+html.page-contact .contact-method strong, html.page-contact .contact-method small { display:block; }
+html.page-contact .contact-method strong { font:800 15px Manrope,sans-serif; }
+html.page-contact .contact-method small { margin-top:3px; color:#65746a; font-size:13px; }
+html.page-contact .contact-form { padding:clamp(22px,3vw,34px); border:1px solid #e1e9df; border-radius:22px; background:#fff; box-shadow:0 18px 48px #183c2510; }
+html.page-contact .contact-form-heading { margin-bottom:20px; }
+html.page-contact .contact-form-heading > span { color:#123d25; font:800 24px Manrope,sans-serif; }
+html.page-contact .contact-form-heading p { margin:5px 0 0; color:#718076; font-size:13px; }
+html.page-contact .contact-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+html.page-contact .contact-form label { display:grid; gap:7px; color:#294a34; font-size:13px; font-weight:700; }
+html.page-contact .contact-form input, html.page-contact .contact-form select, html.page-contact .contact-form textarea { width:100%; min-height:48px; padding:12px 13px; border:1px solid #d8e2d7; border-radius:10px; outline:none; background:#fbfcfa; color:#173d27; font:500 14px 'DM Sans',sans-serif; }
+html.page-contact .contact-form textarea { min-height:122px; resize:vertical; }
+html.page-contact .contact-form input:focus, html.page-contact .contact-form select:focus, html.page-contact .contact-form textarea:focus { border-color:#138344; box-shadow:0 0 0 3px #13834420; }
+html.page-contact .contact-form-message { grid-column:1/-1; }
+html.page-contact .contact-form .about-primary-button { margin-top:18px; border:0; cursor:pointer; font:700 15px 'DM Sans',sans-serif; }
+html.page-contact .contact-form-note { margin:11px 0 0; color:#6e7c72; font-size:12px; line-height:1.5; }
+html.page-contact .contact-regions { padding:65px 0 78px; background:#f1f5ef; }
+html.page-contact .contact-regions-heading { max-width:720px; margin-bottom:28px; }
+html.page-contact .contact-regions-heading h2 { margin-bottom:10px; }
+html.page-contact .contact-region-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+html.page-contact .contact-region-cards article { min-height:175px; padding:22px; border:1px solid #e1e9df; border-radius:16px; background:#fff; }
+html.page-contact .contact-region-cards article > span { color:#188545; font:800 12px Manrope,sans-serif; }
+html.page-contact .contact-region-cards h3 { margin:10px 0 7px; color:#123d25; font:800 21px Manrope,sans-serif; }
+html.page-contact .contact-region-cards p { margin:0; color:#647168; font-size:14px; line-height:1.6; }
+html.page-contact .contact-info-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; width:min(1000px,calc(100% - 64px)); margin:0 auto; padding-top:50px; padding-bottom:34px; }
+html.page-contact .contact-info-card { position:relative; min-height:174px; padding:37px 22px 22px; border:1px dashed #84906f; border-radius:19px; background:#f2ecd9; color:#34513b; }
+html.page-contact .contact-info-card-featured { border-color:#315734; background:#315734; color:#fff; }
+html.page-contact .contact-info-icon { position:absolute; top:-19px; left:20px; display:grid; place-items:center; width:42px; height:42px; border:3px solid #fff; border-radius:50%; background:#355f38; color:#fff; box-shadow:0 3px 8px #132d1826; }
+html.page-contact .contact-info-card-featured .contact-info-icon { background:#a8ca54; color:#24472b; }
+html.page-contact .contact-info-icon svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+html.page-contact .contact-info-card h2 { margin:0 0 7px; font:800 18px Manrope,sans-serif; }
+html.page-contact .contact-info-card p { min-height:22px; margin:0 0 13px; font-size:14px; }
+html.page-contact .contact-info-card p a { color:inherit; text-decoration:none; }
+html.page-contact .contact-info-link { display:inline-flex; gap:7px; align-items:center; color:inherit; font-size:12px; font-weight:700; text-decoration:none; }
+html.page-contact .contact-info-link:hover { text-decoration:underline; text-underline-offset:3px; }
+html.page-contact .contact-work { display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,70px); align-items:start; padding-top:28px; padding-bottom:78px; }
+html.page-contact .contact-location-column h2 { margin:10px 0 12px; color:#31513a; font:800 clamp(28px,3.3vw,40px)/1.15 Manrope,sans-serif; letter-spacing:-1.1px; }
+html.page-contact .contact-location-column > div:first-child p { color:#67746a; font-size:15px; line-height:1.7; }
+html.page-contact .contact-service-area { margin-top:24px; padding:22px; border:1px dashed #a8b49e; border-radius:16px; background:#f5f1e4; }
+html.page-contact .contact-service-area-label { display:block; margin-bottom:14px; color:#456047; font:800 14px Manrope,sans-serif; }
+html.page-contact .contact-location-list { display:flex; flex-wrap:wrap; gap:8px; }
+html.page-contact .contact-location-list span { padding:9px 13px; border:1px solid #d9e5d6; border-radius:999px; background:#fff; color:#31513a; font-size:13px; font-weight:700; }
+html.page-contact .contact-service-area small { display:block; margin-top:13px; color:#667366; font-size:12px; line-height:1.55; }
+html.page-contact .contact-work .contact-form { padding:clamp(22px,3vw,34px); }
+html.page-contact .contact-work .contact-form-heading > span { color:#31513a; font-size:clamp(29px,3vw,38px); }
+@media(max-width:850px) {
+  html.page-contact .contact-work { grid-template-columns:1fr; gap:36px; }
+}
+@media(max-width:650px) {
+  html.page-contact .contact-info-grid { grid-template-columns:1fr; gap:24px; width:calc(100% - 40px); padding-top:42px; padding-bottom:25px; }
+  html.page-contact .contact-info-card { min-height:0; }
+  html.page-contact .contact-work { padding-top:18px; padding-bottom:54px; }
+  html.page-contact .contact-form-grid { grid-template-columns:1fr; }
+  html.page-contact .contact-form-message { grid-column:auto; }
+}
+
+/* Farm photo gallery */
+html.page-gallery .gallery-heading { max-width:760px; margin:0 auto 28px; text-align:center; }
+html.page-gallery .gallery-heading .about-eyebrow { justify-content:center; }
+html.page-gallery .gallery-heading h2 { margin:15px 0 10px; color:#113f26; font:800 clamp(30px,3.5vw,44px)/1.13 Manrope,sans-serif; letter-spacing:-1.3px; }
+html.page-gallery .gallery-heading p { margin:0; color:#65746a; font-size:16px; line-height:1.7; }
+html.page-gallery .gallery-section { padding:68px 0 78px; background:#f5f7f3; }
+html.page-gallery .gallery-filters { display:flex; flex-wrap:wrap; justify-content:center; gap:9px; margin:0 0 26px; }
+html.page-gallery .gallery-filters button { padding:10px 16px; border:1px solid #d8e3d6; border-radius:999px; background:#fff; color:#34513b; cursor:pointer; font:700 13px 'DM Sans',sans-serif; transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease; }
+html.page-gallery .gallery-filters button:hover { transform:translateY(-1px); border-color:#178442; }
+html.page-gallery .gallery-filters button[aria-pressed="true"] { border-color:#0c6132; background:#0c6132; color:#fff; }
+html.page-gallery .gallery-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+html.page-gallery .gallery-card[hidden] { display:none; }
+html.page-gallery .gallery-card { position:relative; display:block; overflow:hidden; width:100%; min-width:0; height:285px; padding:0; border:0; border-radius:16px; background:#dce7da; color:#fff; cursor:pointer; text-align:left; box-shadow:0 10px 26px #183c2510; }
+html.page-gallery .gallery-card img { display:block; width:100%; height:100%; object-fit:cover; transition:transform .45s cubic-bezier(.2,.7,.2,1); }
+html.page-gallery .gallery-card::after { position:absolute; inset:30% 0 0; background:linear-gradient(transparent,#071b11d9); content:""; }
+html.page-gallery .gallery-card:hover img, html.page-gallery .gallery-card:focus-visible img { transform:scale(1.045); }
+html.page-gallery .gallery-card:focus-visible { outline:3px solid #95d84e; outline-offset:3px; }
+html.page-gallery .gallery-card-caption { position:absolute; z-index:1; right:18px; bottom:17px; left:18px; display:grid; gap:4px; }
+html.page-gallery .gallery-card-caption small { color:#d5f28c; font-size:11px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+html.page-gallery .gallery-card-caption strong { font:800 19px Manrope,sans-serif; }
+html.page-gallery .gallery-card-caption > span { margin-top:3px; color:#e5eee7; font-size:12px; }
+html.page-gallery .gallery-cta { display:flex; min-height:235px; align-items:center; justify-content:space-between; gap:30px; padding-top:55px; padding-bottom:55px; }
+html.page-gallery .gallery-cta h2 { margin:12px 0 8px; color:#103e26; font:800 clamp(29px,3.3vw,40px)/1.15 Manrope,sans-serif; letter-spacing:-1px; }
+html.page-gallery .gallery-cta p { margin:0; color:#65746a; font-size:16px; line-height:1.6; }
+html.page-gallery .gallery-lightbox { position:relative; display:none; grid-template-columns:48px minmax(0,1fr) 48px; gap:12px; align-items:center; width:min(1060px,94vw); max-width:none; max-height:94vh; padding:28px 24px 22px; overflow:visible; border:1px solid #ffffff35; border-radius:22px; background:#102a1d; color:#fff; box-shadow:0 30px 90px #0008; }
+html.page-gallery .gallery-lightbox[open] { display:grid; }
+html.page-gallery .gallery-lightbox::backdrop { background:#06140edb; backdrop-filter:blur(5px); }
+html.page-gallery .gallery-lightbox figure { grid-column:2; margin:0; text-align:center; }
+html.page-gallery .gallery-lightbox figure img { display:block; width:100%; max-height:70vh; object-fit:contain; border-radius:12px; }
+html.page-gallery .gallery-lightbox figcaption { padding:14px 8px 3px; }
+html.page-gallery .gallery-lightbox figcaption span { color:#b8df70; font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+html.page-gallery .gallery-lightbox figcaption h2 { margin:4px 0 0; font:800 22px Manrope,sans-serif; }
+html.page-gallery .gallery-lightbox-close { position:absolute; z-index:2; top:-15px; right:-15px; display:grid; place-items:center; width:42px; height:42px; border:2px solid #102a1d; border-radius:50%; background:#9ccc4c; color:#102a1d; cursor:pointer; font-size:28px; line-height:1; }
+html.page-gallery .gallery-lightbox-nav { display:grid; place-items:center; width:42px; height:48px; border:1px solid #ffffff55; border-radius:999px; background:#ffffff12; color:#fff; cursor:pointer; font-size:32px; line-height:1; }
+html.page-gallery .gallery-lightbox-nav:hover { background:#ffffff2b; }
+html.page-gallery .gallery-lightbox-prev { grid-column:1; grid-row:1; }
+html.page-gallery .gallery-lightbox-next { grid-column:3; grid-row:1; }
+html.page-gallery .gallery-lightbox-enquiry { grid-column:2; justify-self:center; margin-top:3px; }
+@media(max-width:850px) {
+  html.page-gallery .gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  html.page-gallery .gallery-card { height:260px; }
+}
+@media(max-width:600px) {
+  html.page-gallery .gallery-section { padding:52px 0 60px; }
+  html.page-gallery .gallery-heading { margin-bottom:22px; }
+  html.page-gallery .gallery-filters { justify-content:flex-start; gap:7px; }
+  html.page-gallery .gallery-filters button { padding:9px 12px; font-size:12px; }
+  html.page-gallery .gallery-grid { gap:10px; }
+  html.page-gallery .gallery-card { height:215px; border-radius:12px; }
+  html.page-gallery .gallery-card-caption { right:12px; bottom:12px; left:12px; }
+  html.page-gallery .gallery-card-caption strong { font-size:15px; }
+  html.page-gallery .gallery-cta { align-items:flex-start; flex-direction:column; justify-content:center; padding-top:46px; padding-bottom:46px; }
+  html.page-gallery .gallery-lightbox { grid-template-columns:35px minmax(0,1fr) 35px; gap:6px; padding:34px 10px 18px; }
+  html.page-gallery .gallery-lightbox-nav { width:34px; height:42px; font-size:26px; }
+  html.page-gallery .gallery-lightbox figure img { max-height:62vh; }
+  html.page-gallery .gallery-lightbox-close { right:-5px; }
+}
 /* About page: banner, story and shared nav tweaks. */
 html.page-sign-in .nav.is-solid, html.page-create-account .nav.is-solid, html.page-customer-account .nav.is-solid { background:rgba(7,61,38,.96); }
 html.page-about .about-banner { position:relative; overflow:hidden; padding:158px 0 132px; color:#fff; background:#0d4a2b url('../Assets/About%20us.png') center/cover no-repeat; }
 html.page-services .about-banner { background-image:url('../Assets/product%20and%20services.png'); background-position:center 46%; }
+html.page-contact .contact-banner { background:#0d4a2b url('../Assets/Mark%E2%80%99s%20Savannah%20contact.png') center 20%/cover no-repeat; }
 html.page-about .about-banner::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,rgba(3,40,22,.92) 0%,rgba(5,70,38,.62) 45%,rgba(5,70,38,.06) 100%); }
+html.page-contact .contact-banner::before { background:linear-gradient(90deg,rgba(3,40,22,.92) 0%,rgba(5,70,38,.68) 52%,rgba(5,70,38,.2) 100%); }
+html.page-gallery .gallery-banner { background:#0d4a2b url('../Assets/Hero%20background.png') center/cover no-repeat; }
+html.page-gallery .gallery-banner::before { background:linear-gradient(90deg,rgba(3,40,22,.92) 0%,rgba(5,70,38,.62) 45%,rgba(5,70,38,.12) 100%); }
 html.page-about .about-banner::after { content:''; position:absolute; left:0; right:0; bottom:-1px; height:96px; background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'><path d='M0 58C220 18 420 18 640 54S1100 104 1440 38V120H0Z' fill='%230a8a3f' fill-opacity='.85'/><path d='M0 86C260 46 520 70 760 90S1180 112 1440 70V120H0Z' fill='white'/></svg>") bottom/100% 100% no-repeat; }
 html.page-about .about-banner-inner { position:relative; z-index:1; width:min(1200px,calc(100% - 64px)); margin:0 auto; }
 html.page-about .about-banner h1 { margin:0 0 12px; font:800 clamp(44px,6vw,72px)/1 Manrope,sans-serif; letter-spacing:-2px; }
@@ -4040,7 +4203,7 @@ html.page-index .offerings-heading p {
 
 html.page-index .offering-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 

@@ -21,8 +21,78 @@ if (document.documentElement.classList.contains('page-about')) {
   if (year) year.textContent = new Date().getFullYear();
 }
 
+// Open a prefilled WhatsApp message from the contact form.
+if (document.documentElement.classList.contains('page-contact')) {
+  const form = document.getElementById('contact-enquiry-form');
+  form?.addEventListener('submit', event => {
+    event.preventDefault();
+    const fields = new FormData(form);
+    const message = [
+      "Hello Mark's Savannah Farm, I'd like to make an enquiry.",
+      `Name: ${fields.get('name')}`,
+      `Phone: ${fields.get('phone')}`,
+      `Interested in: ${fields.get('interest')}`,
+      `Location: ${fields.get('location') || 'Not provided'}`,
+      `Enquiry: ${fields.get('message')}`,
+    ].join('\n');
+    window.location.href = `https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent(message)}`;
+  });
+}
+
+// Filter the gallery and provide an accessible photo viewer with category enquiry links.
+if (document.documentElement.classList.contains('page-gallery')) {
+  const gallery = document.getElementById('gallery-grid');
+  const lightbox = document.getElementById('gallery-lightbox');
+  const cards = gallery ? [...gallery.querySelectorAll('[data-gallery-category]')] : [];
+  const filters = [...document.querySelectorAll('[data-gallery-filter]')];
+  const photo = document.getElementById('gallery-lightbox-image');
+  const title = document.getElementById('gallery-lightbox-title');
+  const category = document.getElementById('gallery-lightbox-category');
+  const enquiry = document.getElementById('gallery-lightbox-enquiry');
+  let currentCard = null;
+
+  const visibleCards = () => cards.filter(card => !card.hidden);
+  const showCard = card => {
+    if (!card) return;
+    currentCard = card;
+    photo.src = card.dataset.galleryImage;
+    photo.alt = card.querySelector('img')?.alt || card.dataset.galleryTitle;
+    title.textContent = card.dataset.galleryTitle;
+    category.textContent = card.dataset.galleryCategory;
+    const message = `Hello Mark's Savannah Farm, I'd like to ask about ${card.dataset.galleryEnquiry}.`;
+    enquiry.href = `https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent(message)}`;
+  };
+
+  cards.forEach(card => card.addEventListener('click', () => {
+    showCard(card);
+    lightbox?.showModal();
+  }));
+
+  filters.forEach(filter => filter.addEventListener('click', () => {
+    const activeFilter = filter.dataset.galleryFilter;
+    filters.forEach(button => button.setAttribute('aria-pressed', String(button === filter)));
+    cards.forEach(card => { card.hidden = activeFilter !== 'all' && card.dataset.galleryCategory !== activeFilter; });
+  }));
+
+  const movePhoto = step => {
+    const visible = visibleCards();
+    const index = visible.indexOf(currentCard);
+    const nextIndex = (index + step + visible.length) % visible.length;
+    showCard(visible[nextIndex]);
+  };
+
+  document.querySelector('[data-gallery-close]')?.addEventListener('click', () => lightbox?.close());
+  document.querySelector('[data-gallery-prev]')?.addEventListener('click', () => movePhoto(-1));
+  document.querySelector('[data-gallery-next]')?.addEventListener('click', () => movePhoto(1));
+  lightbox?.addEventListener('click', event => { if (event.target === lightbox) lightbox.close(); });
+  lightbox?.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') movePhoto(-1);
+    if (event.key === 'ArrowRight') movePhoto(1);
+  });
+}
+
 // Accessible primary navigation shared by the homepage and About page.
-if (document.documentElement.matches('.page-index, .page-about, .page-sign-in, .page-create-account, .page-customer-account')) {
+if (document.documentElement.matches('.page-index, .page-about, .page-contact, .page-sign-in, .page-create-account, .page-customer-account')) {
   const nav = document.querySelector('nav.nav');
   if (nav) {
     const syncNavScrollState = () => nav.classList.toggle('is-scrolled', window.scrollY > 40);
@@ -62,6 +132,7 @@ if (document.documentElement.matches('.page-index, .page-about, .page-sign-in, .
     poultryFarming: 'Assets/poultry%20Frming.jpg',
     crops: 'Assets/Crops.jpg',
     dairy: 'Assets/Dairy%20Products.jpg',
+    equipment: 'Assets/Farm%20Equipments.jpg',
     consultancy: 'Assets/Agri-Consultancy.jpg',
     goat: 'Assets/Goats.jpg',
     sheep: 'Assets/Sheep.jpg',
@@ -261,15 +332,6 @@ your shortlist" onclick="toggleSave(${
 )">Ask about it&nbsp; </button></div></div></article>`
       }
       ).join(''):emptyMessage;
-      syncCategoryShortcuts();
-    }
-    function syncCategoryShortcuts(){
-      const selectedType=document.getElementById('listingType').value;
-      document.querySelectorAll('[data-livestock-type]').forEach(button=>{
-        const isSelected=button.dataset.livestockType===selectedType;
-        button.setAttribute('aria-pressed',String(isSelected));
-        button.classList.toggle('is-active',isSelected);
-      });
     }
     function toggleSave(i){
       const a=livestock[i];if(!a)return;let list=favs();const id=favId(a);list=list.some(f=>f.id===id)?list.filter(f=>f.id!==id):[...list,{
@@ -305,15 +367,6 @@ your shortlist" onclick="toggleSave(${
       document.getElementById('listingType').value='all';
       draw();
     });
-    document.querySelectorAll('[data-livestock-type]').forEach(button=>button.addEventListener('click',()=>{
-      const typeFilter=document.getElementById('listingType');
-      typeFilter.value=button.dataset.livestockType;
-      typeFilter.dispatchEvent(new Event('change',{bubbles:true}));
-      document.getElementById('livestock').scrollIntoView({
-        behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',
-        block:'start'
-      });
-    }));
     document.querySelectorAll('[data-nav-livestock-type]').forEach(link=>link.addEventListener('click',()=>{
       const typeFilter=document.getElementById('listingType');
       if(!typeFilter)return;

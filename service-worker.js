@@ -1,20 +1,22 @@
 // Change this value whenever a site update should replace the cached files.
-const CACHE = 'marks-savannah-farm-v93';
+const CACHE = 'marks-savannah-farm-v110';
 
 // These core pages and assets remain available when the visitor is offline.
 const FILES = [
   './',
   './index.html',
   './about-us.html',
+  './contact.html',
+  './gallery.html',
   './products-and-services.html',
   './herdbook.html',
   './sign-in.html',
   './create-account.html',
   './customer-account.html',
   './CSS/site.css',
-  './CSS/site.css?v=93',
+  './CSS/site.css?v=103',
   './JS/site.js',
-  './JS/site.js?v=76',
+  './JS/site.js?v=80',
   './manifest.webmanifest',
   './Assets/login page background.png',
   './Assets/Hero background.png',
@@ -22,6 +24,7 @@ const FILES = [
   './Assets/About us.png',
   './Assets/product and services.png',
   './Assets/Our Story.jpg',
+  './Assets/Mark’s Savannah contact.png',
   './Assets/marks-savannah-farm-logo.svg',
   './Assets/Mark’s Savannah Farm Logo.png',
   './Assets/Marks Savannah Farm Logo 2.png',
@@ -30,6 +33,7 @@ const FILES = [
   './Assets/Cattle dropdown.jpg',
   './Assets/Crops.jpg',
   './Assets/Dairy Products.jpg',
+  './Assets/Farm Equipments.jpg',
   './Assets/Agri-Consultancy.jpg',
   './Assets/Turkeys.jpg',
   './Assets/poultry Frming.jpg',
