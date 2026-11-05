@@ -75,6 +75,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       setAuthMode(mode);
       window.location.hash = mode === 'sign-up' ? 'sign-up' : 'sign-in';
     };
+    const googleMark = '<svg class="google-mark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11c-.5 2.5-1.9 4.6-4 6v5h6.5c3.8-3.5 6.1-8.7 6.1-14.7Z"/><path fill="#34A853" d="M24 44c5.4 0 9.9-1.8 13.2-4.8l-6.5-5c-1.8 1.2-4 2-6.7 2-5.2 0-9.6-3.5-11.2-8.2H6.1v5.2C9.4 39.6 16.1 44 24 44Z"/><path fill="#FBBC05" d="M12.8 28a12 12 0 0 1 0-8v-5.2H6.1a20 20 0 0 0 0 18.4l6.7-5.2Z"/><path fill="#EA4335" d="M24 11.8c2.9 0 5.5 1 7.5 3l5.6-5.6C33.9 6 29.4 4 24 4 16.1 4 9.4 8.4 6.1 14.8l6.7 5.2c1.6-4.7 6-8.2 11.2-8.2Z"/></svg>';
     const setAuthMode = mode => {
       const signupMode = mode === 'sign-up';
       document.getElementById('app-sign-in').hidden = signupMode;
@@ -83,7 +84,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       auth.querySelector('[data-auth-subtitle]').textContent = signupMode ? 'Join our growing community' : 'Sign in to continue your farming journey';
       auth.querySelector('[data-auth-back]').setAttribute('aria-label', signupMode ? 'Back to sign in' : 'Back to introduction');
       auth.querySelector('[data-auth-back]').dataset.backToSignIn = String(signupMode);
-      auth.querySelectorAll('[data-google-auth]').forEach(button => { button.textContent = 'Continue with Google'; button.insertAdjacentHTML('afterbegin','<span class="google-mark" aria-hidden="true">G</span>'); });
+      auth.querySelectorAll('[data-google-auth]').forEach(button => { button.innerHTML = `${googleMark}Continue with Google`; });
     };
     const updateStep = index => {
       currentStep = Math.max(0, Math.min(index, steps.length - 1));
@@ -106,19 +107,19 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
     };
     const startOnboarding = () => { showScreen(onboarding); updateStep(0); };
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const savedSession = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session');
+    function continueFromSplash() {
+      if (savedSession) window.location.replace('customer-account.html');
+      else if (localStorage.getItem('marks-farm-app-onboarding-complete')) openAuth('sign-in');
+      else startOnboarding();
+    }
     function leaveSplash() {
       if (splash.hidden || splash.classList.contains('is-leaving')) return;
-      sessionStorage.setItem('marks-farm-app-splash-seen','true');
       splash.classList.add('is-leaving');
-      window.setTimeout(startOnboarding, reduceMotion ? 0 : 380);
+      window.setTimeout(continueFromSplash, reduceMotion ? 0 : 380);
     }
 
-    const savedSession = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session');
-    if (savedSession) window.location.replace('customer-account.html');
-    else if (localStorage.getItem('marks-farm-app-onboarding-complete')) openAuth('sign-in');
-    else if (sessionStorage.getItem('marks-farm-app-splash-seen')) startOnboarding();
-    else window.setTimeout(leaveSplash, 2700);
-    splash.querySelector('[data-skip-splash]').addEventListener('click', leaveSplash);
+    window.setTimeout(leaveSplash, reduceMotion ? 0 : 2700);
     onboarding.querySelector('[data-onboarding-next]').addEventListener('click', () => {
       if (currentStep < steps.length - 1) updateStep(currentStep + 1);
       else openAuth('sign-in');
@@ -134,13 +135,12 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       const input = button.closest('.app-input').querySelector('input');
       input.type = input.type === 'password' ? 'text' : 'password';
       button.setAttribute('aria-label', input.type === 'password' ? 'Show password' : 'Hide password');
+      button.textContent = input.type === 'password' ? 'Show' : 'Hide';
     }));
     const signupPassword = document.querySelector('#app-sign-up [name="password"]');
     const passwordRules = {
       length: value => value.length >= 8,
       upper: value => /[A-Z]/.test(value),
-      lower: value => /[a-z]/.test(value),
-      number: value => /[0-9]/.test(value),
       symbol: value => /[^A-Za-z0-9\s]/.test(value),
     };
     const updatePasswordRules = () => {
