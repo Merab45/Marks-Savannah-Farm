@@ -5738,8 +5738,10 @@ html.page-farm-app .password-rules li { min-height:22px; padding:3px 8px 3px 6px
 html.page-farm-app .password-rules li::before { content:'✓'; font-size:10px; color:#8b938c; }
 html.page-farm-app .password-rules li.is-met { background:#e4f7e8; color:#17743a; }
 html.page-farm-app .password-rules li.is-met::before { color:#07963b; }
-html.page-farm-app .app-auth.is-sign-up { height:100dvh; min-height:0; max-height:100dvh; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; scroll-padding-bottom:24px; padding-bottom:calc(18px + env(safe-area-inset-bottom)); }
-@media(min-width:700px) { html.page-farm-app .app-auth.is-sign-up { height:min(884px,calc(100vh - 48px)); max-height:min(884px,calc(100vh - 48px)); } }
+html.page-farm-app .app-shell { height:100dvh; min-height:0; overflow-x:hidden; overflow-y:auto; overscroll-behavior-y:contain; }
+html.page-farm-app .app-auth.is-sign-up { height:auto; min-height:100dvh; max-height:none; overflow:visible; padding-bottom:calc(18px + env(safe-area-inset-bottom)); }
+html.page-farm-app .app-auth.is-sign-up > * { flex:0 0 auto; }
+@media(min-width:700px) { html.page-farm-app .app-shell { height:min(900px,calc(100vh - 48px)); } html.page-farm-app .app-auth.is-sign-up { min-height:100%; } }
 
 @media (prefers-reduced-motion:reduce) {
   html.page-farm-app *, html.page-farm-app *::before, html.page-farm-app *::after { animation:none!important; transition:none!important; }
