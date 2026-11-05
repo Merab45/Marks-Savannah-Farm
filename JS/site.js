@@ -164,9 +164,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
     signupPassword.addEventListener('input', updatePasswordRules);
     updatePasswordRules();
     auth.querySelectorAll('[data-google-auth]').forEach(button => button.addEventListener('click', () => showToast('Google sign-in needs the farm’s OAuth setup before it can create or access an account.')));
-    auth.querySelector('[data-whatsapp-auth]').addEventListener('click', () => {
-      window.open(`https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent('Hello Mark’s Savannah Farm, I need help with my account.')}`, '_blank', 'noopener');
-    });
+    auth.querySelectorAll('[data-facebook-auth]').forEach(button => button.addEventListener('click', () => showToast('Facebook sign-in needs the farm’s OAuth setup before it can create or access an account.')));
     auth.querySelector('[data-forgot-password]').addEventListener('click', () => showToast('Password recovery will be available when accounts are connected to an online service.'));
 
     const accountUsers = () => JSON.parse(localStorage.getItem('savanna-customer-accounts') || '[]');

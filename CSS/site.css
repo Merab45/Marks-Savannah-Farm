@@ -5731,6 +5731,7 @@ html.page-farm-app .app-field-label span { color:#cf4034; font-weight:800; }
 html.page-farm-app .app-input.is-required::after { display:none; }
 html.page-farm-app .password-toggle { display:block; width:auto; height:auto; margin:0 -4px 0 4px; padding:5px 3px; border-radius:0; color:#515a52; font:500 12px 'DM Sans',sans-serif; text-decoration:underline; text-underline-offset:2px; }
 html.page-farm-app .google-mark { display:block; width:19px; height:19px; flex:none; color:initial; text-shadow:none; }
+html.page-farm-app .facebook-mark { display:block; width:19px; height:19px; flex:none; }
 html.page-farm-app .password-rules { margin:-5px 0 0; }
 html.page-farm-app .password-rules > p { margin:0 0 5px; color:#828a82; font-size:11px; font-weight:500; }
 html.page-farm-app .password-rules ul { display:flex; flex-wrap:wrap; gap:5px; }
