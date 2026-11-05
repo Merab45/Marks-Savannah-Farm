@@ -5,6 +5,11 @@ const FARM_CONTACT = {
   phoneDisplay: '0706 894 568',
   email: 'meraprenish@gmail.com',
 };
+// Older Android installs may still launch the homepage saved as their start URL.
+if (document.documentElement.classList.contains('page-index') && /Android/i.test(navigator.userAgent) && (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true)) {
+  const appUrl = new URL('app.html', window.location.href);
+  if (window.location.pathname !== appUrl.pathname) window.location.replace(appUrl.href);
+}
 document.querySelectorAll('[data-contact-whatsapp]').forEach(link => {
   link.href = `https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent("Hello Mark's Savannah Farm, I have an enquiry.")}`;
 });
