@@ -64,7 +64,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 3200);
     };
     const showScreen = screen => {
-      [splash, onboarding, auth].forEach(item => {
+      [splash, onboarding, auth, document.getElementById('screen-home')].filter(Boolean).forEach(item => {
         item.hidden = item !== screen;
         item.classList.toggle('is-active', item === screen);
       });
@@ -106,13 +106,14 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       const content = onboarding.querySelector('.onboarding-content');
       content.classList.remove('is-swap'); void content.offsetWidth; content.classList.add('is-swap');
     };
+    window.openFarmHome = () => { showScreen(document.getElementById('screen-home')); window.dispatchEvent(new Event('farm-home-open')); };
     const startOnboarding = () => { showScreen(onboarding); updateStep(0); };
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const savedSession = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session');
     const SPLASH_HOLD_MS = 2700;
     const SPLASH_FADE_MS = reduceMotion ? 0 : 400;
     function continueFromSplash() {
-      if (savedSession) window.location.replace('customer-account.html');
+      if (savedSession) window.openFarmHome();
       else if (localStorage.getItem('marks-farm-app-onboarding-complete')) openAuth('sign-in');
       else startOnboarding();
     }
@@ -188,7 +189,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       }
       if (form.elements.remember.checked) { localStorage.setItem('savanna-customer-session',email); sessionStorage.removeItem('savanna-customer-session'); }
       else { localStorage.removeItem('savanna-customer-session'); sessionStorage.setItem('savanna-customer-session',email); }
-      window.location.href = 'customer-account.html';
+      window.openFarmHome();
     });
     document.getElementById('app-sign-up').addEventListener('submit', async event => {
       event.preventDefault();
@@ -217,7 +218,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
         error.classList.add('is-visible');
         return;
       }
-      window.location.href = 'customer-account.html';
+      window.openFarmHome();
     });
   })();
 }
