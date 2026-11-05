@@ -42,14 +42,23 @@
     { id:'layers', name:'Layers (Brown)', cat:'Poultry', meta:'20 hens', price:3500, imgs:['poultry%20Frming.jpg'], tag:'For Sale', stock:'In Stock', specs:[['Type','Layers (brown)'],['Quantity','20 hens']], desc:'Ask the farm about age and laying history.' },
     { id:'fresh-milk', name:'Fresh Milk', cat:'Dairy', meta:'1 litre', price:120, imgs:['Dairy%20Products.jpg'], tag:'For Sale', stock:'In Stock', specs:[['Product','Fresh milk'],['Volume','1 litre']], desc:'Ask the farm about daily availability and delivery.' },
     { id:'sheep', name:'Sheep', cat:'Sheep', meta:'Ask for details', price:null, imgs:['Sheep.jpg'], tag:'Available', stock:'Available', specs:[], desc:'Contact the farm for breed, age, price and availability.' },
-    { id:'pigs', name:'Pigs', cat:'Pigs', meta:'Ask for details', price:null, imgs:['Pigs.jpg'], tag:'Available', stock:'Available', specs:[], desc:'Contact the farm for breed, age, price and availability.' }
+    { id:'pigs', name:'Pigs', cat:'Pigs', meta:'Ask for details', price:null, imgs:['Pigs.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[], desc:'Contact the farm for breed, age, price and availability.' },
+    { id:'maize', name:'Maize', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Category','Grain'],['Supply','Seasonal']], desc:'Ask about available quantities, harvest timing, and bulk supply.' },
+    { id:'wheat', name:'Wheat', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Category','Grain'],['Supply','Seasonal']], desc:'Enquire about seasonal availability and suitable order volumes.' },
+    { id:'sorghum', name:'Sorghum', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Category','Grain'],['Supply','Seasonal']], desc:'Ask about available varieties, quantities, and collection or delivery.' },
+    { id:'beans', name:'Beans', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Category','Legume'],['Supply','Seasonal']], desc:'Share the type and quantity you need and ask what is currently available.' },
+    { id:'eggs', name:'Farm Eggs', cat:'Poultry', meta:'Chicken eggs', price:null, imgs:['poultry%20Frming.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product','Chicken eggs'],['Supply','Ask for current quantities']], desc:'Ask about egg sizes, quantities, collection, and delivery options.' },
+    { id:'ducks', name:'Ducks', cat:'Poultry', meta:'Birds for sale', price:null, imgs:['poultry%20Frming.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Type','Duck'],['Price','On request']], desc:'Contact the farm to confirm duck type, age, quantity, and availability.' },
+    { id:'turkeys', name:'Turkeys', cat:'Poultry', meta:'Birds for sale', price:null, imgs:['Turkeys.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Type','Turkey'],['Price','On request']], desc:'Contact the farm to confirm age, quantity, and current availability.' },
+    { id:'ghee', name:'Farm Ghee', cat:'Dairy', meta:'Dairy product', price:null, imgs:['Dairy%20Products.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product','Ghee'],['Price','On request']], desc:'Ask about pack sizes, current availability, and collection or delivery.' },
+    { id:'equipment', name:'Farm Equipment', cat:'Equipment', meta:'Equipment enquiries', price:null, imgs:['Farm%20Equipments.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Category','Farm equipment'],['Price','On request']], desc:'Tell us what equipment you need so the farm can confirm specifications and availability.' },
+    { id:'consultancy', name:'Agri-consultancy', cat:'Services', meta:'Farm advice and planning', price:null, imgs:['Agri-Consultancy.jpg'], tag:'Enquire', stock:'By consultation', specs:[['Service','Farm planning and advice'],['Fee','On request']], desc:'Share your farm goals and location to discuss suitable support and consultation fees.' }
   ];
-  const CATS = ['All', 'Cattle', 'Goats', 'Sheep', 'Poultry', 'Pigs'];
+  const CATS = ['All', 'Cattle', 'Goats', 'Sheep', 'Poultry', 'Pigs', 'Crops', 'Dairy', 'Equipment', 'Services'];
   const DAY = 864e5, HR = 36e5, MIN = 6e4;
   const auctionEnd = () => { let t = store.get('farm-app-demo-auction', null); if (!t) { t = { start: Date.now(), end: Date.now() + 2 * DAY + 14 * HR + 32 * MIN }; store.set('farm-app-demo-auction', t); } return t; };
   // SAMPLE auction data and rules: replace with the farm's real details. Bids are sent to the farm on WhatsApp for confirmation.
   const RULES = ['Each bid must be at least the current highest bid plus the minimum increment.','Bids are confirmed by the farm on WhatsApp before they count.','The winning bidder arranges payment and collection with the farm.','The farm confirms availability and final details before any payment.'];
-  const HIST = [[85000,'2 mins ago','john_doe'],[82000,'5 mins ago','farm_kenya'],[80000,'8 mins ago','agri_pro']];
   const AUCTIONS = { live: { name:'Premium Boran Bull', meta:'Male · 3 years · Excellent genetics', bid:85000, start:60000, inc:2000, bidders:12, imgs:['Cattle%20dropdown.jpg'], img:'Cattle%20dropdown.jpg', specs:[['Breed','Boran'],['Age','3 years'],['Sex','Male']] },
                      upcoming: { name:'Boer Goats – 10 Heads', meta:'10 heads · Boer goats', img:'Goats.jpg', imgs:['Goats.jpg'], days:3, start:60000, inc:1000, specs:[['Breed','Boer'],['Quantity','10 heads']] } };
   const AU = id => id === 'goats' ? AUCTIONS.upcoming : AUCTIONS.live;
@@ -66,7 +75,7 @@
   const title = (t, back) => `<header class="fh-top fh-top-title">${back ? `<button class="fh-icon" data-tab="home" aria-label="Back">${ic('back')}</button>` : '<span></span>'}<h1>${t}</h1><span></span></header>`;
   const heart = (id, n) => `<button class="fh-heart ${saved().includes(id) ? 'is-on' : ''}" data-save="${id}" aria-label="Save ${esc(n)}" aria-pressed="${saved().includes(id)}">${ic('heart')}</button>`;
   const card = p => `<article class="fh-card"><div class="fh-card-img" style="background-image:url('${img(p.imgs[0])}')"><span class="fh-tag">${p.tag}</span>${heart(p.id, p.name)}</div><div class="fh-card-body"><h3>${p.name}</h3><p>${p.meta}</p><strong>${p.price ? ksh(p.price) : 'Ask for price'}</strong><button class="fh-soft" data-open="product:${p.id}">View Details ${ic('arrow')}</button></div></article>`;
-  const gallery = (imgs, badge) => `<div class="fh-galwrap"><div class="fh-gal" tabindex="0" aria-label="Photos, swipe to see more">${imgs.map((f, i) => `<img src="${img(f)}" alt="Photo ${i + 1} of ${imgs.length}" ${i ? 'loading="lazy"' : ''}>`).join('')}</div>${badge || ''}${imgs.length > 1 ? `<span class="fh-count"><b data-gcur>1</b> / ${imgs.length}</span><button class="fh-arr fh-prev" data-gal="-1" aria-label="Previous photo">${ic('back')}</button><button class="fh-arr fh-next" data-gal="1" aria-label="Next photo">${ic('arrow')}</button><div class="fh-dots">${imgs.map(() => '<i></i>').join('')}</div>` : ''}</div>${imgs.length > 1 ? `<div class="fh-thumbs">${imgs.map((f, i) => `<button data-gal-to="${i}" aria-label="Show photo ${i + 1}" style="background-image:url('${img(f)}')"></button>`).join('')}</div>` : ''}`;
+  const gallery = (imgs, badge, label = 'Farm listing') => `<div class="fh-galwrap"><div class="fh-gal" tabindex="0" aria-label="Photos, swipe to see more">${imgs.map((f, i) => `<img src="${img(f)}" alt="${esc(label)} photo ${i + 1} of ${imgs.length}" ${i ? 'loading="lazy"' : ''}>`).join('')}</div>${badge || ''}${imgs.length > 1 ? `<span class="fh-count"><b data-gcur>1</b> / ${imgs.length}</span><button class="fh-arr fh-prev" data-gal="-1" aria-label="Previous photo">${ic('back')}</button><button class="fh-arr fh-next" data-gal="1" aria-label="Next photo">${ic('arrow')}</button><div class="fh-dots">${imgs.map(() => '<i></i>').join('')}</div>` : ''}</div>${imgs.length > 1 ? `<div class="fh-thumbs">${imgs.map((f, i) => `<button data-gal-to="${i}" aria-label="Show photo ${i + 1}" style="background-image:url('${img(f)}')"></button>`).join('')}</div>` : ''}`;
   const seller = `<a class="fh-seller" href="about-us.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span><small>Sold by:</small><b>Mark’s Savannah Farm</b></span>${ic('arrow')}</a>`;
   const specs = L => L.length ? `<section class="fh-spec"><h3>${ic('file')} Specifications</h3><dl>${L.map(([k, v]) => `<div><dt>${k}:</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : '';
   const dtop = t => `<header class="fh-top fh-top-title"><button class="fh-icon" data-back aria-label="Back">${ic('back')}</button><h1>${t}</h1><span></span></header>`;
@@ -75,26 +84,29 @@
   function product(id) {
     const p = LISTINGS.find(x => x.id === id) || LISTINGS[0], rel = LISTINGS.filter(x => x.id !== p.id && x.cat === p.cat).concat(LISTINGS.filter(x => x.id !== p.id && x.cat !== p.cat)).slice(0, 2);
     const call = '<a class="fh-ghost" href="tel:+254706894568">' + ic('phone') + ' Call</a>';
-    return `<header class="fh-top fh-top-title fh-top-brand"><button class="fh-icon" data-back aria-label="Back">${ic('back')}</button><a class="fh-brand" href="index.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span>Mark’s<br>Savannah Farm</span></a>${heart(p.id, p.name).replace('fh-heart', 'fh-icon fh-heart-top')}</header>
-    ${gallery(p.imgs)}<h1 class="fh-ptitle">${p.name}</h1><div class="fh-meta"><span class="fh-cat">${p.cat}</span><span class="fh-ok">${ic('check')} ${p.stock}</span></div><p class="fh-price">${p.price ? ksh(p.price) : 'Ask for price'}</p>
-    ${specs(p.specs)}<section class="fh-desc"><h3>${ic('info')} Description</h3><p>${p.desc}</p></section>${seller}
-    <div class="fh-two"><a class="fh-dark fh-wide" href="${wa(`Hello Mark's Savannah Farm, I'm interested in: ${p.name}${p.price ? ' (' + ksh(p.price) + ')' : ''}.`)}" target="_blank" rel="noopener">${ic('chat')} WhatsApp</a>${call}</div>
-    <a class="fh-gold fh-full" href="${wa(`Hello Mark's Savannah Farm, I'd like to enquire about: ${p.name}.`)}" target="_blank" rel="noopener">${ic('chat')} Enquire Now</a>
+    return `<header class="fh-top fh-top-title fh-top-brand"><button class="fh-icon" data-back aria-label="Back to marketplace">${ic('back')}</button><a class="fh-brand" href="index.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span>Mark’s<br>Savannah Farm</span></a>${heart(p.id, p.name).replace('fh-heart', 'fh-icon fh-heart-top')}</header>
+    ${gallery(p.imgs, '', p.name)}<h1 class="fh-ptitle">${esc(p.name)}</h1><div class="fh-meta"><span class="fh-cat">${esc(p.cat)}</span><span class="fh-ok">${ic('check')} ${esc(p.stock)}</span></div><p class="fh-price">${p.price ? ksh(p.price) : 'Price on request'}</p>
+    ${specs(p.specs)}<section class="fh-desc"><h3>${ic('info')} About this item</h3><p>${esc(p.desc)}</p></section>${seller}
+    <div class="fh-two"><a class="fh-dark fh-wide" href="${wa(`Hello Mark's Savannah Farm, I'm interested in: ${p.name}${p.price ? ' (' + ksh(p.price) + ')' : ''}. Please confirm current availability and details.`)}" target="_blank" rel="noopener">${ic('chat')} Ask on WhatsApp</a>${call}</div>
     ${rel.length ? `<h3 class="fh-h3">Related products</h3><div class="fh-grid">${rel.map(card).join('')}</div>` : ''}`;
   }
   function auctionDetail(id) {
     const a = AU(id), st = auState(a, id), t = auctionEnd(), left = t.end - Date.now(), pct = Math.min(100, Math.max(4, (Date.now() - t.start) / (t.end - t.start) * 100));
     const badge = `<span class="fh-pill fh-status fh-${st}">${st === 'live' ? '<i></i>' : ''}${st.toUpperCase()}</span>`;
     const mine = bidsList().filter(b => b.id === id);
-    const action = st === 'live' ? `<button class="fh-dark fh-full" data-bid="${id}">${ic('auctions')} Place Your Bid</button><p class="fh-note-box">${ic('bell')} Keep this app open and check My Bids for updates.</p>`
+    const action = st === 'live' ? `<button class="fh-dark fh-full" data-bid="${id}">${ic('auctions')} Place Your Bid</button><p class="fh-note-box">${ic('info')} Preview auction. Bids are sent to the farm on WhatsApp and confirmed by the farm.</p>`
       : st === 'upcoming' ? `<button class="fh-soft fh-full" data-remind aria-pressed="${!!store.get('farm-app-remind', false)}">${ic('bell')} ${store.get('farm-app-remind', false) ? 'Reminder set' : 'Set Reminder'}</button>`
-      : `<div class="fh-result">${ic('check')}<div><b>Auction ended</b><p>Closing bid: ${ksh(a.bid)}. Contact the farm about the result.</p></div></div><a class="fh-ghost fh-full" href="${wa(`Hello Mark's Savannah Farm, I'm asking about the result of the ${a.name} auction.`)}" target="_blank" rel="noopener">${ic('chat')} Ask about the result</a>`;
-    return dtop('Auctions').replace('<span></span></header>', heart('auction-' + id, a.name).replace('fh-heart', 'fh-icon fh-heart-top') + '</header>') + gallery(a.imgs, badge) + `<h1 class="fh-ptitle">${a.name}</h1><p class="fh-sub">${a.meta || 'Male · 3 years · Excellent genetics'}</p>
-    <div class="fh-stats"><div><small>${st === 'upcoming' ? 'Starting Bid' : 'Current Highest Bid'}</small><b>${ksh(st === 'upcoming' ? a.start : a.bid)}</b></div><div><small>Starting Bid</small><b>${ksh(a.start)}</b></div></div>
+      : `<div class="fh-result">${ic('check')}<div><b>Auction ended</b><p>Contact the farm to confirm the outcome and current availability.</p></div></div><a class="fh-ghost fh-full" href="${wa(`Hello Mark's Savannah Farm, I'm asking about the result of the ${a.name} auction.`)}" target="_blank" rel="noopener">${ic('chat')} Ask about the result</a>`;
+    const stats = st === 'upcoming'
+      ? `<div class="fh-stats"><div><small>Opening Bid</small><b>${ksh(a.start)}</b></div><div><small>Minimum Increment</small><b>${ksh(a.inc)}</b></div></div>`
+      : `<div class="fh-stats"><div><small>Current Highest Bid</small><b>${ksh(a.bid)}</b></div><div><small>Starting Bid</small><b>${ksh(a.start)}</b></div></div>`;
+    const userBids = mine.length ? `<h3 class="fh-h3">Your bid activity</h3><table class="fh-hist"><tbody>${mine.map(b => `<tr><td>${ksh(b.amount)}</td><td>${new Date(b.time).toLocaleString('en-KE', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</td><td>Sent to farm</td></tr>`).join('')}</tbody></table>` : '<p class="fh-fine">Your bids will appear here after you send one to the farm.</p>';
+    return dtop('Auction details').replace('<span></span></header>', heart('auction-' + id, a.name).replace('fh-heart', 'fh-icon fh-heart-top') + '</header>') + gallery(a.imgs, badge, a.name) + `<h1 class="fh-ptitle">${esc(a.name)}</h1><p class="fh-sub">${esc(a.meta || 'Livestock auction')}</p>
+    ${stats}
     ${st === 'upcoming' ? `<p class="fh-ends">${ic('clock')} Starts in <b>${a.days} days</b></p>` : `<p class="fh-ends">${ic('clock')} ${st === 'live' ? 'Ends in' : 'Ended'} <b data-left>${st === 'live' ? fmtLeft(left) : '00d : 00h : 00m'}</b></p><div class="fh-bar"><span style="width:${st === 'live' ? pct.toFixed(0) : 100}%"></span></div>`}
     <div class="fh-two fh-info"><div>${ic('market')}<span><small>Minimum Increment</small><b>${ksh(a.inc)}</b></span></div>${a.bidders ? `<div>${ic('user')}<b>${a.bidders} Bidders</b></div>` : ''}</div>
     ${specs(a.specs)}
-    ${id === 'goats' ? '' : `<h3 class="fh-h3">${ic('auctions')} Bidding History</h3><table class="fh-hist"><tbody>${HIST.map(r => `<tr><td>${ksh(r[0])}</td><td>${r[1]}</td><td>(${r[2]})</td></tr>`).join('')}</tbody></table><p class="fh-fine">Sample bids shown for this prototype.</p>${mine.length ? `<h3 class="fh-h3">Your bids</h3><table class="fh-hist"><tbody>${mine.map(b => `<tr><td>${ksh(b.amount)}</td><td>${new Date(b.time).toLocaleString('en-KE', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</td><td>Sent to farm</td></tr>`).join('')}</tbody></table>` : ''}`}
+    ${userBids}
     <details class="fh-rules"><summary>${ic('file')} Auction Rules ${ic('chev')}</summary><ul>${RULES.map(r => `<li>${r}</li>`).join('')}</ul></details>${seller}${action}`;
   }
   function sheet(id) {
@@ -110,7 +122,7 @@
       if (b.dataset.done !== undefined) { close(); render(); return; }
       if (b.dataset.q) { $('#fh-amt', el).value = b.dataset.q; return; }
       if (b.dataset.go === '1') return step1();
-      if (b.dataset.go === '2') { const v = Math.round(Number($('#fh-amt', el).value)); if (!v || v < min) return step1(`Your bid must be at least ${ksh(min)}.`); amt = v; return step2(); }
+      if (b.dataset.go === '2') { const v = Math.round(Number($('#fh-amt', el).value)); if (!v || v < min || (v - min) % a.inc !== 0) return step1(`Enter at least ${ksh(min)} in increments of ${ksh(a.inc)}.`); amt = v; return step2(); }
       if (b.dataset.go === '3') step3();
     });
     el.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
@@ -157,7 +169,9 @@
   }
   function savedView() {
     const L = LISTINGS.filter(p => saved().includes(p.id));
-    return title('Saved') + (L.length ? `<div class="fh-grid">${L.map(card).join('')}</div>` : `<div class="fh-empty fh-blank">${ic('saved', 'fh-big-i')}<p>Nothing saved yet. Tap the heart on any listing to keep it here.</p><button class="fh-dark" data-tab="market">Browse the marketplace</button></div>`);
+    const A = saved().filter(id => id === 'auction-bull' || id === 'auction-goats');
+    const auctionCards = A.map(id => { const key = id === 'auction-goats' ? 'goats' : 'bull', a = AU(key); return `<button class="fh-list-saved" data-open="auction:${key}">${ic('auctions')}<span>${esc(a.name)}<small>Open auction details</small></span>${ic('arrow')}</button>`; }).join('');
+    return title('Saved') + (L.length || A.length ? `${L.length ? `<div class="fh-grid">${L.map(card).join('')}</div>` : ''}${auctionCards ? `<div class="fh-list">${auctionCards}</div>` : ''}` : `<div class="fh-empty fh-blank">${ic('saved', 'fh-big-i')}<p>Nothing saved yet. Tap the heart on any listing or auction to keep it here.</p><button class="fh-dark" data-tab="market">Browse the marketplace</button></div>`);
   }
   function profile() {
     const u = user();
@@ -185,7 +199,7 @@
     const d = b.dataset;
     if (d.open) { const [type, id] = d.open.split(':'); S.detail = { type, id }; render(); return; }
     if (d.back !== undefined) { S.detail = null; render(); return; }
-    if (d.bid) { sheet(d.bid); return; }
+    if (d.bid) { if (auctionEnd().end <= Date.now()) { S.detail = { type:'auction', id:d.bid }; render(); toast('This preview auction has ended.'); return; } sheet(d.bid); return; }
     if (d.tab) S.detail = null;
     if (d.signout !== undefined) { ['savanna-customer-session'].forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); }); location.reload(); return; }
     if (d.save) { const s = saved(), i = s.indexOf(d.save); i < 0 ? s.push(d.save) : s.splice(i, 1); store.set('farm-app-saved', s); render(); toast(i < 0 ? 'Saved' : 'Removed from saved'); return; }

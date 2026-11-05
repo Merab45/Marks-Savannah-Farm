@@ -6094,6 +6094,8 @@ html.page-farm-app .app-home:not([hidden]) { display:flex; }
 .fh-up { display:grid; grid-template-columns:96px 1fr; gap:12px; padding:10px; border-radius:16px; background:#fffdf6; box-shadow:0 1px 6px #2a3a2224; } .fh-up h3 { margin:0 0 2px; font-size:17px; } .fh-up small { color:#4a5a4e; } .fh-up .fh-soft { width:100%; }
 .fh-me { display:flex; flex-direction:column; align-items:center; padding:10px 0 16px; } .fh-me h2 { margin:8px 0 0; font:800 22px Georgia,serif; } .fh-me p { margin:2px 0; color:#55655a; word-break:break-all; }
 .fh-list { display:flex; flex-direction:column; gap:8px; } .fh-list > * { display:flex; align-items:center; gap:12px; width:100%; padding:14px; border:0; border-radius:14px; background:#fffdf6; color:#1b2b20; font-size:15px; font-weight:600; text-decoration:none; text-align:left; box-shadow:0 1px 5px #2a3a2220; } .fh-list .fh-i { color:#1f4d2c; }
+.fh-list .fh-list-saved span { flex:1; display:flex; flex-direction:column; }
+.fh-list .fh-list-saved small { color:#55655a; font-size:12px; font-weight:500; }
 .fh-nav { display:flex; padding:8px 4px calc(env(safe-area-inset-bottom) + 8px); border-top:1px solid #e4dcc6; background:#fffdf6; } .fh-nav button { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:4px 0; border:0; background:none; color:#6a766d; font-size:11px; font-weight:600; } .fh-nav button.is-on { color:#1f4d2c; font-weight:800; }
 .fh-scroll :focus-visible, .fh-nav :focus-visible { outline:3px solid #f5b82e; outline-offset:2px; }
 
