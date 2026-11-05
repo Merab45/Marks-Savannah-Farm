@@ -5537,6 +5537,10 @@ html.page-blog .blog-article h3 { margin:20px 0 8px; color:#183c29; font:800 17p
 html.page-blog .blog-article p,html.page-blog .blog-article li { color:#525f56; font-size:15px; line-height:1.72; }
 html.page-blog .blog-article ul { padding-left:20px; }
 html.page-blog .blog-inline-link { display:inline-block; margin-top:5px; }
+html.page-blog .blog-share { display:flex; flex-wrap:wrap; align-items:center; gap:9px; margin-top:24px; padding-top:17px; border-top:1px solid #e8eee7; }
+html.page-blog .blog-share strong { width:100%; color:#34463a; font:800 13px Manrope,sans-serif; }
+html.page-blog .blog-share a,html.page-blog .blog-share button { display:inline-flex; align-items:center; min-height:36px; padding:7px 12px; border:1px solid #dce7dc; border-radius:999px; background:#f6f9f4; color:#126b35; font:700 13px 'DM Sans',sans-serif; text-decoration:none; cursor:pointer; }
+html.page-blog .blog-share a:hover,html.page-blog .blog-share button:hover { border-color:#168341; background:#e9f4e8; }
 html.page-blog .blog-cta { display:flex; align-items:center; justify-content:space-between; gap:28px; margin-top:8px; margin-bottom:76px; padding:32px 38px; border-radius:18px; background:#eef5eb; }
 html.page-blog .blog-cta h2 { margin:10px 0; color:#153d28; font:800 clamp(25px,3vw,36px)/1.16 Manrope,sans-serif; }
 html.page-blog .blog-cta p { margin:0; color:#5d685f; }

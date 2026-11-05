@@ -39,6 +39,39 @@ if (document.documentElement.classList.contains('page-contact')) {
   });
 }
 
+// Share each guide with a direct link to its section.
+document.querySelectorAll('[data-share]').forEach(shareBar => {
+  const article = document.getElementById(shareBar.dataset.share);
+  if (!article) return;
+
+  const title = article.querySelector('h2')?.textContent?.trim() || document.title;
+  const shareUrl = new URL(`#${article.id}`, window.location.href);
+  const encodedUrl = encodeURIComponent(shareUrl.href);
+  const encodedTitle = encodeURIComponent(title);
+
+  shareBar.querySelector('[data-share-facebook]')?.setAttribute('href', `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`);
+  shareBar.querySelector('[data-share-x]')?.setAttribute('href', `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`);
+  shareBar.querySelector('[data-share-whatsapp]')?.setAttribute('href', `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`);
+  shareBar.querySelector('[data-native-share]')?.addEventListener('click', async () => {
+    if (navigator.share) {
+      await navigator.share({ title, url: shareUrl.href }).catch(() => {});
+    } else {
+      shareBar.querySelector('[data-copy-share]')?.click();
+    }
+  });
+
+  shareBar.querySelector('[data-copy-share]')?.addEventListener('click', async event => {
+    const button = event.currentTarget;
+    try {
+      await navigator.clipboard.writeText(shareUrl.href);
+      button.textContent = 'Link copied';
+      window.setTimeout(() => { button.textContent = 'Copy link'; }, 1800);
+    } catch {
+      window.prompt('Copy this guide link:', shareUrl.href);
+    }
+  });
+});
+
 // Filter the gallery and provide an accessible photo viewer with category enquiry links.
 if (document.documentElement.classList.contains('page-gallery')) {
   const gallery = document.getElementById('gallery-grid');
