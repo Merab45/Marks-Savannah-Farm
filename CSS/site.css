@@ -5713,6 +5713,10 @@ html.page-farm-app .social-auth-button { min-height:50px; border-width:1.5px; bo
 html.page-farm-app .whatsapp-mark { display:grid; place-items:center; color:#16a34a; }
 html.page-farm-app .app-prototype-note { color:#6c786f; font-size:11px; }
 html.page-farm-app .app-toast { border-radius:14px; box-shadow:0 12px 30px -12px #06472a99; }
+html.page-farm-app .app-required-note { margin:-4px 0 0; color:#647168; font-size:11px; line-height:1.2; text-align:right; }
+html.page-farm-app .app-required-note span, html.page-farm-app .app-input.is-required::after, html.page-farm-app .terms-check.is-required::after { color:#b43a2d; font-weight:800; }
+html.page-farm-app .app-input.is-required::after { flex:none; margin-left:-4px; content:'*'; }
+html.page-farm-app .terms-check.is-required::after { content:'*'; }
 
 @media (prefers-reduced-motion:reduce) {
   html.page-farm-app *, html.page-farm-app *::before, html.page-farm-app *::after { animation:none!important; transition:none!important; }

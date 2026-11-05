@@ -135,6 +135,21 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       input.type = input.type === 'password' ? 'text' : 'password';
       button.setAttribute('aria-label', input.type === 'password' ? 'Show password' : 'Hide password');
     }));
+    const signupPassword = document.querySelector('#app-sign-up [name="password"]');
+    const passwordRules = {
+      length: value => value.length >= 8,
+      upper: value => /[A-Z]/.test(value),
+      lower: value => /[a-z]/.test(value),
+      number: value => /[0-9]/.test(value),
+      symbol: value => /[^A-Za-z0-9\s]/.test(value),
+    };
+    const updatePasswordRules = () => {
+      document.querySelectorAll('[data-password-rule]').forEach(rule => {
+        rule.classList.toggle('is-met', passwordRules[rule.dataset.passwordRule](signupPassword.value));
+      });
+    };
+    signupPassword.addEventListener('input', updatePasswordRules);
+    updatePasswordRules();
     auth.querySelectorAll('[data-google-auth]').forEach(button => button.addEventListener('click', () => showToast('Google sign-in needs the farm’s OAuth setup before it can create or access an account.')));
     auth.querySelector('[data-whatsapp-auth]').addEventListener('click', () => {
       window.open(`https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent('Hello Mark’s Savannah Farm, I need help with my account.')}`, '_blank', 'noopener');
@@ -172,6 +187,11 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       const email = form.elements.email.value.trim().toLowerCase();
       const password = form.elements.password.value;
       error.classList.remove('is-visible');
+      if (!Object.values(passwordRules).every(rule => rule(password))) {
+        error.textContent = 'Choose a password that meets all the requirements above.';
+        error.classList.add('is-visible');
+        return;
+      }
       if (password !== form.elements.confirm.value) { error.textContent = 'Those passwords do not match.'; error.classList.add('is-visible'); return; }
       if (accountUsers().some(account => account.email === email)) { error.textContent = 'An account with this email already exists. Sign in instead.'; error.classList.add('is-visible'); return; }
       const salt = crypto.getRandomValues(new Uint8Array(16));
