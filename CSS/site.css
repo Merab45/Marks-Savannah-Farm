@@ -5918,13 +5918,12 @@ html.page-customer-account .buyer-header-actions { display:flex; align-items:cen
 html.page-customer-account .buyer-icon-button { display:grid; width:39px; height:39px; place-items:center; border:0; border-radius:50%; background:transparent; color:#18231b; cursor:pointer; }
 html.page-customer-account .buyer-icon-button:hover { background:#eee9dc; }
 html.page-customer-account .buyer-icon-button svg { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-html.page-customer-account .buyer-main { gap:20px; padding-top:83px; }
+html.page-customer-account .buyer-main { gap:20px; padding-top:68px; }
 html.page-customer-account .buyer-screen { display:grid; gap:18px; min-width:0; animation:buyer-screen-in .24s ease-out both; }
 html.page-customer-account .buyer-screen[hidden] { display:none!important; }
 html.page-customer-account .buyer-topbar { position:fixed; top:0; left:50%; width:min(100%,560px); transform:translateX(-50%); }
 @keyframes buyer-screen-in { from { opacity:.5; transform:translateY(5px); } to { opacity:1; transform:none; } }
 html.page-customer-account .home-greeting h1 { margin:0; color:#101811; font:800 24px/1.2 Manrope,'DM Sans',sans-serif; letter-spacing:-.7px; }
-html.page-customer-account .home-greeting h1 span:last-child { font-size:20px; }
 html.page-customer-account .home-greeting p { margin:3px 0 0; color:#28342b; font-size:14px; }
 html.page-customer-account .buyer-home-hero { position:relative; min-height:245px; overflow:hidden; border-radius:19px; background:#244b2a; }
 html.page-customer-account .buyer-home-hero::after { position:absolute; inset:0; background:linear-gradient(0deg,#001908d9 0%,#00190849 56%,transparent 100%); content:''; }
@@ -6050,4 +6049,5 @@ html.page-customer-account .buyer-signout { display:block; padding:10px; text-al
 }
 @media (min-width:700px) {
   html.page-customer-account .buyer-topbar { top:20px; }
+  html.page-customer-account .buyer-main { padding-top:88px; }
 }
