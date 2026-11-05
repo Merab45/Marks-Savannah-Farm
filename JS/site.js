@@ -80,6 +80,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       const signupMode = mode === 'sign-up';
       document.getElementById('app-sign-in').hidden = signupMode;
       document.getElementById('app-sign-up').hidden = !signupMode;
+      auth.classList.toggle('is-sign-up', signupMode);
       auth.querySelector('[data-auth-mode-label]').textContent = signupMode ? 'Create Your Account' : 'Welcome Back!';
       auth.querySelector('[data-auth-subtitle]').textContent = signupMode ? 'Join our growing community' : 'Sign in to continue your farming journey';
       auth.querySelector('[data-auth-back]').setAttribute('aria-label', signupMode ? 'Back to sign in' : 'Back to introduction');

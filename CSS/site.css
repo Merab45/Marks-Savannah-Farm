@@ -5724,9 +5724,8 @@ html.page-farm-app .password-rules li { display:flex; align-items:center; gap:5p
 html.page-farm-app .password-rules li::before { content:'○'; color:#9aa59a; font-size:12px; font-weight:800; }
 html.page-farm-app .password-rules li.is-met { color:#08713b; }
 html.page-farm-app .password-rules li.is-met::before { content:'✓'; color:#08713b; }
-html.page-farm-app .auth-logo-lockup { display:flex; align-items:center; justify-content:center; gap:10px; margin:2px 0 6px; color:#0a502b; text-align:left; }
-html.page-farm-app .auth-logo-lockup img { width:48px; height:48px; object-fit:contain; }
-html.page-farm-app .auth-logo-lockup span { font:800 15px/1.05 Manrope,'DM Sans',sans-serif; letter-spacing:-.25px; text-transform:uppercase; }
+html.page-farm-app .auth-logo-lockup { display:flex; width:min(210px,70%); align-items:center; justify-content:center; margin:2px 0 6px; }
+html.page-farm-app .auth-logo-lockup img { display:block; width:100%; height:54px; object-fit:contain; }
 html.page-farm-app .app-field-label { display:block; margin:0 0 -9px; color:#818981; font:500 13px/1.2 'DM Sans',sans-serif; }
 html.page-farm-app .app-field-label span { color:#cf4034; font-weight:800; }
 html.page-farm-app .app-input.is-required::after { display:none; }
@@ -5739,6 +5738,8 @@ html.page-farm-app .password-rules li { min-height:22px; padding:3px 8px 3px 6px
 html.page-farm-app .password-rules li::before { content:'✓'; font-size:10px; color:#8b938c; }
 html.page-farm-app .password-rules li.is-met { background:#e4f7e8; color:#17743a; }
 html.page-farm-app .password-rules li.is-met::before { color:#07963b; }
+html.page-farm-app .app-auth.is-sign-up { height:100dvh; min-height:0; max-height:100dvh; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; scroll-padding-bottom:24px; padding-bottom:calc(18px + env(safe-area-inset-bottom)); }
+@media(min-width:700px) { html.page-farm-app .app-auth.is-sign-up { height:min(884px,calc(100vh - 48px)); max-height:min(884px,calc(100vh - 48px)); } }
 
 @media (prefers-reduced-motion:reduce) {
   html.page-farm-app *, html.page-farm-app *::before, html.page-farm-app *::after { animation:none!important; transition:none!important; }
