@@ -120,27 +120,24 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       window.setTimeout(continueFromSplash, reduceMotion ? 0 : 380);
     }
 
-    window.setTimeout(leaveSplash, reduceMotion ? 0 : 2700);
+    const returning = !!localStorage.getItem('marks-farm-app-onboarding-complete') || !!savedSession;
+    splash.classList.toggle('is-quick', returning);
+    // Hold the animation and the timer until the photo, logo and fonts are ready (or 4s passes).
+    let splashReady = false;
+    const waitFor = img => (!img || img.complete) ? Promise.resolve() : new Promise(done => { img.addEventListener('load', done, { once: true }); img.addEventListener('error', done, { once: true }); });
+    const photoReady = new Promise(done => { const photo = new Image(); photo.onload = photo.onerror = done; photo.src = 'Assets/Splash%20Screen.png'; });
+    const assetsReady = Promise.all([photoReady, waitFor(splash.querySelector('.splash-brand img')), document.fonts ? document.fonts.ready : null]);
+    Promise.race([assetsReady, new Promise(done => window.setTimeout(done, 4000))]).then(() => {
+      splashReady = true;
+      splash.classList.add('is-ready');
+      window.setTimeout(leaveSplash, reduceMotion ? 0 : (returning ? 900 : 1800));
+    });
+    splash.addEventListener('click', () => { if (splashReady) leaveSplash(); });
     onboarding.querySelector('[data-onboarding-next]').addEventListener('click', () => {
       if (currentStep < steps.length - 1) updateStep(currentStep + 1);
       else openAuth('sign-in');
     });
     onboarding.querySelectorAll('[data-go-step]').forEach(dot => dot.addEventListener('click', () => updateStep(Number(dot.dataset.goStep))));
-    // Let mobile visitors move through onboarding with horizontal finger swipes.
-    let swipeStart = null;
-    onboarding.addEventListener('pointerdown', event => {
-      if (!['touch', 'pen'].includes(event.pointerType) || event.target.closest('button, a, input, select, textarea')) return;
-      swipeStart = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
-    });
-    onboarding.addEventListener('pointerup', event => {
-      if (!swipeStart || event.pointerId !== swipeStart.pointerId) return;
-      const deltaX = event.clientX - swipeStart.x;
-      const deltaY = event.clientY - swipeStart.y;
-      swipeStart = null;
-      if (Math.abs(deltaX) < 48 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
-      updateStep(currentStep + (deltaX < 0 ? 1 : -1));
-    });
-    onboarding.addEventListener('pointercancel', () => { swipeStart = null; });
     onboarding.querySelector('[data-open-auth]').addEventListener('click', event => { event.preventDefault(); openAuth('sign-in'); });
     auth.querySelector('[data-auth-back]').addEventListener('click', event => {
       if (event.currentTarget.dataset.backToSignIn === 'true') setAuthMode('sign-in');
