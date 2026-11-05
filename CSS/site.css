@@ -5717,6 +5717,13 @@ html.page-farm-app .app-required-note { margin:-4px 0 0; color:#647168; font-siz
 html.page-farm-app .app-required-note span, html.page-farm-app .app-input.is-required::after, html.page-farm-app .terms-check.is-required::after { color:#b43a2d; font-weight:800; }
 html.page-farm-app .app-input.is-required::after { flex:none; margin-left:-4px; content:'*'; }
 html.page-farm-app .terms-check.is-required::after { content:'*'; }
+html.page-farm-app .password-rules { margin:-3px 1px 0; }
+html.page-farm-app .password-rules > p { margin:0 0 5px; color:#68756b; font-size:11px; font-weight:700; }
+html.page-farm-app .password-rules ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:5px 9px; margin:0; padding:0; list-style:none; }
+html.page-farm-app .password-rules li { display:flex; align-items:center; gap:5px; color:#68756b; font-size:10px; line-height:1.25; }
+html.page-farm-app .password-rules li::before { content:'○'; color:#9aa59a; font-size:12px; font-weight:800; }
+html.page-farm-app .password-rules li.is-met { color:#08713b; }
+html.page-farm-app .password-rules li.is-met::before { content:'✓'; color:#08713b; }
 
 @media (prefers-reduced-motion:reduce) {
   html.page-farm-app *, html.page-farm-app *::before, html.page-farm-app *::after { animation:none!important; transition:none!important; }
