@@ -106,7 +106,11 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       const content = onboarding.querySelector('.onboarding-content');
       content.classList.remove('is-swap'); void content.offsetWidth; content.classList.add('is-swap');
     };
-    window.openFarmHome = () => { showScreen(document.getElementById('screen-home')); window.dispatchEvent(new Event('farm-home-open')); };
+    window.openFarmHome = () => {
+      // If the app screens script did not load, fall back to the buyer account page instead of a blank screen.
+      if (!window.farmHomeReady) { window.location.href = 'customer-account.html'; return; }
+      showScreen(document.getElementById('screen-home')); window.dispatchEvent(new Event('farm-home-open'));
+    };
     const startOnboarding = () => { showScreen(onboarding); updateStep(0); };
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const savedSession = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session');

@@ -1,5 +1,5 @@
 // Change this value whenever a site update should replace the cached files.
-const CACHE = 'marks-savannah-farm-v144';
+const CACHE = 'marks-savannah-farm-v145';
 
 // These core pages and assets remain available when the visitor is offline.
 const FILES = [
@@ -42,6 +42,7 @@ const FILES = [
   './CSS/site.css?v=128',
   './CSS/site.css?v=129',
   './CSS/site.css?v=130',
+  './CSS/site.css?v=131',
   './JS/site.js',
   './JS/site.js?v=86',
   './JS/site.js?v=87',
@@ -58,8 +59,11 @@ const FILES = [
   './JS/site.js?v=98',
   './JS/site.js?v=99',
   './JS/site.js?v=100',
+  './JS/site.js?v=101',
   './JS/farm-home.js',
   './JS/farm-home.js?v=1',
+  './JS/farm-home.js?v=2',
+  './JS/farm-home.js?v=3',
   './manifest.webmanifest',
   './Assets/login page background.png',
   './Assets/Splash Screen.png',
@@ -92,7 +96,8 @@ const FILES = [
 ];
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)));
+  // Add files one by one so a single missing file can never block an update.
+  event.waitUntil(caches.open(CACHE).then(cache => Promise.allSettled(FILES.map(file => cache.add(file)))));
   self.skipWaiting();
 });
 
@@ -136,7 +141,23 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Static files use the cache first, then save successful network responses.
+  // Code (JS, CSS, manifest) always tries the network first so updates are never stuck behind old cached copies.
+  if (/\.(js|css|webmanifest)$/.test(new URL(request.url).pathname)) {
+    event.respondWith(
+      fetch(request)
+        .then(response => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then(cache => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request, { ignoreSearch: true })),
+    );
+    return;
+  }
+
+  // Images and other static files use the cache first, then save successful network responses.
   event.respondWith(
     caches.match(request, { ignoreSearch: true }).then(
       cached =>
