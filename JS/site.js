@@ -100,18 +100,25 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
         if (dotIndex === currentStep) dot.setAttribute('aria-current','step');
         else dot.removeAttribute('aria-current');
       });
-      onboarding.querySelector('[data-onboarding-next]').innerHTML = currentStep === steps.length - 1 ? 'Get Started <span aria-hidden="true">→</span>' : 'Next <span aria-hidden="true">→</span>';
+      onboarding.querySelector('[data-onboarding-next]').textContent = currentStep === steps.length - 1 ? 'Get started' : 'Next';
+      const content = onboarding.querySelector('.onboarding-content');
+      content.classList.remove('is-swap'); void content.offsetWidth; content.classList.add('is-swap');
     };
     const startOnboarding = () => { showScreen(onboarding); updateStep(0); };
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function leaveSplash() {
+      if (splash.hidden || splash.classList.contains('is-leaving')) return;
+      sessionStorage.setItem('marks-farm-app-splash-seen','true');
+      splash.classList.add('is-leaving');
+      window.setTimeout(startOnboarding, reduceMotion ? 0 : 380);
+    }
 
     const savedSession = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session');
     if (savedSession) window.location.replace('customer-account.html');
     else if (localStorage.getItem('marks-farm-app-onboarding-complete')) openAuth('sign-in');
     else if (sessionStorage.getItem('marks-farm-app-splash-seen')) startOnboarding();
-    else window.setTimeout(() => {
-      if (!splash.hidden) { sessionStorage.setItem('marks-farm-app-splash-seen','true'); startOnboarding(); }
-    }, 2100);
-    splash.querySelector('[data-skip-splash]').addEventListener('click', () => { sessionStorage.setItem('marks-farm-app-splash-seen','true'); startOnboarding(); });
+    else window.setTimeout(leaveSplash, 2700);
+    splash.querySelector('[data-skip-splash]').addEventListener('click', leaveSplash);
     onboarding.querySelector('[data-onboarding-next]').addEventListener('click', () => {
       if (currentStep < steps.length - 1) updateStep(currentStep + 1);
       else openAuth('sign-in');
