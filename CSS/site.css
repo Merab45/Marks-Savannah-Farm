@@ -6051,3 +6051,9 @@ html.page-customer-account .buyer-signout { display:block; padding:10px; text-al
   html.page-customer-account .buyer-topbar { top:20px; }
   html.page-customer-account .buyer-main { padding-top:88px; }
 }
+@media (max-width:699px) {
+  html.page-customer-account .buyer-topbar { height:58px; padding-right:15px; padding-left:15px; }
+  html.page-customer-account .buyer-brand img { width:36px; height:36px; }
+  html.page-customer-account .buyer-icon-button { width:36px; height:36px; }
+  html.page-customer-account .buyer-main { padding-top:58px; }
+}
