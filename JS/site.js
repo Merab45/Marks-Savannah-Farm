@@ -886,20 +886,30 @@ if (document.documentElement.classList.contains('page-customer-account')) {
       }));
       document.querySelectorAll('[data-market-filter]').forEach(button => button.addEventListener('click',() => { marketFilter=button.dataset.marketFilter; renderMarket(); }));
       document.getElementById('marketSearch').addEventListener('input',renderMarket);
-      document.querySelector('[data-market-filter-help]').addEventListener('click',() => showToast('Use the category chips or search box to narrow the marketplace.'));
-      document.querySelector('[data-app-notifications]').addEventListener('click',() => showToast('Farm and auction notifications will appear here when alerts are connected.'));
+      document.querySelector('[data-market-filter-help]').addEventListener('click',event => {
+        const button=event.currentTarget, filters=document.querySelector('.buyer-market-filters'), expanded=button.getAttribute('aria-expanded')==='true';
+        filters.classList.toggle('is-collapsed',expanded);button.setAttribute('aria-expanded',String(!expanded));button.setAttribute('aria-label',expanded?'Show marketplace categories':'Hide marketplace categories');
+      });
+      const notifications=document.getElementById('notificationsModal');
+      document.querySelector('[data-app-notifications]').addEventListener('click',() => {notifications.classList.add('is-open');notifications.setAttribute('aria-hidden','false');document.querySelector('[data-close-notifications]').focus();});
+      document.querySelector('[data-close-notifications]').addEventListener('click',closeNotifications);
+      notifications.addEventListener('click',event=>{if(event.target===notifications)closeNotifications();});
+      document.querySelector('[data-notifications-marketplace]').addEventListener('click',()=>{closeNotifications();showView('marketplace');});
       document.querySelectorAll('[data-auction-tab]').forEach(button => button.addEventListener('click',() => renderAuctionTab(button.dataset.auctionTab)));
-      document.querySelector('[data-auction-filter]').addEventListener('click',() => showToast('Auction filters will be available when live auctions are connected.'));
+      document.querySelector('[data-auction-filter]').addEventListener('click',event=>{
+        const button=event.currentTarget,tabs=document.querySelector('.buyer-auction-tabs'),expanded=button.getAttribute('aria-expanded')==='true';
+        tabs.classList.toggle('is-collapsed',expanded);button.setAttribute('aria-expanded',String(!expanded));button.setAttribute('aria-label',expanded?'Show auction views':'Hide auction views');
+      });
       document.getElementById('auctionContent').addEventListener('click',event => {
-        if(event.target.closest('[data-auction-preview-bid]')) showToast('Bidding is not active in this preview. Contact the farm to ask about livestock.');
-        if(event.target.closest('[data-auction-reminder]')) showToast('Auction reminders will be available when auction dates are connected.');
+        if(event.target.closest('[data-auction-preview-bid]')) openQuoteSheet('Livestock','Premium Boran Bull auction enquiry');
+        if(event.target.closest('[data-auction-reminder]')) openQuoteSheet('Livestock','Upcoming Boer Goat auction enquiry');
       });
       document.querySelector('[data-close-enquiry]').addEventListener('click',closeQuoteSheet);
       document.getElementById('enquiryModal').addEventListener('click',event => { if(event.target.id==='enquiryModal') closeQuoteSheet(); });
       document.getElementById('dashboardEnquiryForm').addEventListener('submit',sendEnquiry);
       document.getElementById('editModal').addEventListener('click',event => { if(event.target.id==='editModal') closeEdit(); });
       document.getElementById('editForm').addEventListener('submit',saveProfile);
-      document.addEventListener('keydown',event => { if(event.key==='Escape'){closeEdit();closeQuoteSheet();} });
+      document.addEventListener('keydown',event => { if(event.key==='Escape'){closeEdit();closeQuoteSheet();closeNotifications();} });
     }
 
     function showView(view) {
@@ -938,7 +948,9 @@ if (document.documentElement.classList.contains('page-customer-account')) {
     function renderMarket() {
       marketItems=getMarketItems();
       const search=(document.getElementById('marketSearch').value||'').trim().toLowerCase();
-      const filtered=marketItems.filter(item=>(marketFilter==='All'||item.group===marketFilter)&&[item.name,item.group,item.category,item.description].join(' ').toLowerCase().includes(search));
+      const filterGroups={Dairy:'Dairy products',Equipment:'Farm equipment',Services:'Agri-consultancy'};
+      const matchingGroup=filterGroups[marketFilter]||marketFilter;
+      const filtered=marketItems.filter(item=>(marketFilter==='All'||item.group===matchingGroup)&&[item.name,item.group,item.category,item.description].join(' ').toLowerCase().includes(search));
       document.getElementById('market-result-note').textContent=`${filtered.length} listings and categories · Confirm availability and prices with the farm.`;
       const grid=document.getElementById('marketGrid');
       grid.innerHTML=filtered.length?filtered.map(marketCard).join(''):'<div class="buyer-market-empty"><strong>No matches found</strong><p>Try a different search or category.</p></div>';
@@ -1001,8 +1013,8 @@ if (document.documentElement.classList.contains('page-customer-account')) {
         const active=button.dataset.auctionTab===auctionTab;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));
       });
       const content=document.getElementById('auctionContent');
-      if(auctionTab==='live') content.innerHTML=`<article class="buyer-auction-card"><div class="buyer-auction-photo"><img src="Assets/Cattle%20dropdown.jpg" alt="Boran bull in a green field"><span>Preview only</span></div><div class="buyer-auction-copy"><h2>Premium Boran Bull</h2><p>Male · 3 years · Sample listing details</p><div class="buyer-auction-prices"><div><small>Sample current bid</small><strong>KSh 85,000</strong></div><div><small>Sample starting bid</small><strong>KSh 60,000</strong></div></div><div class="buyer-auction-countdown">Sample countdown · 02d : 14h : 32m</div><div class="buyer-auction-progress"><span></span></div><button type="button" class="buyer-place-bid" data-auction-preview-bid>Place Your Bid</button><p class="buyer-demo-caption">Illustrative values only. This preview does not accept bids.</p></div></article>`;
-      else if(auctionTab==='upcoming') content.innerHTML=`<article class="buyer-upcoming-card"><img src="Assets/Goats.jpg" alt="Goats at a farm"><div><span class="buyer-market-badge">Preview</span><h2>Boer Goats — 10 Heads</h2><p>Sample upcoming auction · starts in 3 days</p><button type="button" data-auction-reminder>Set Reminder</button></div></article><p class="buyer-demo-caption">Example event only. Confirm auction dates with the farm.</p>`;
+      if(auctionTab==='live') content.innerHTML=`<article class="buyer-auction-card"><div class="buyer-auction-photo"><img src="Assets/Cattle%20dropdown.jpg" alt="Boran bull in a green field"><span>Preview only</span></div><div class="buyer-auction-copy"><h2>Premium Boran Bull</h2><p>Male · 3 years · Sample listing details</p><div class="buyer-auction-prices"><div><small>Sample current bid</small><strong>KSh 85,000</strong></div><div><small>Sample starting bid</small><strong>KSh 60,000</strong></div></div><div class="buyer-auction-countdown">Sample countdown · 02d : 14h : 32m</div><div class="buyer-auction-progress"><span></span></div><button type="button" class="buyer-place-bid" data-auction-preview-bid>Ask about this animal</button><p class="buyer-demo-caption">Illustrative values only. This preview does not accept bids.</p></div></article>`;
+      else if(auctionTab==='upcoming') content.innerHTML=`<article class="buyer-upcoming-card"><img src="Assets/Goats.jpg" alt="Goats at a farm"><div><span class="buyer-market-badge">Preview</span><h2>Boer Goats — 10 Heads</h2><p>Sample upcoming auction · starts in 3 days</p><button type="button" data-auction-reminder>Ask about this sale</button></div></article><p class="buyer-demo-caption">Example event only. Confirm auction dates with the farm.</p>`;
       else if(auctionTab==='my-bids') content.innerHTML='<div class="buyer-market-empty"><strong>No bids yet</strong><p>Your bids will appear here when live bidding is connected to the app.</p></div>';
       else content.innerHTML='<div class="buyer-market-empty"><strong>No auction results yet</strong><p>Completed auctions and confirmed winners will appear here when auction history is available.</p></div>';
     }
@@ -1026,6 +1038,11 @@ if (document.documentElement.classList.contains('page-customer-account')) {
     function closeQuoteSheet() {
       const modal=document.getElementById('enquiryModal');if(!modal.classList.contains('is-open'))return;
       modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');quoteTrigger?.focus();
+    }
+
+    function closeNotifications() {
+      const modal=document.getElementById('notificationsModal');if(!modal.classList.contains('is-open'))return;
+      modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.querySelector('[data-app-notifications]').focus();
     }
 
     function sendEnquiry(event) {

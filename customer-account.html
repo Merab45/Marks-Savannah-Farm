@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
     <title>Mark’s Savannah Farm App</title>
-    <link rel="stylesheet" href="CSS/site.css?v=126">
+    <link rel="stylesheet" href="CSS/site.css?v=128">
   </head>
   <body class="page-customer-account">
     <div class="buyer-app">
@@ -75,7 +75,7 @@
         </section>
 
         <section class="buyer-screen" data-app-screen="marketplace" aria-labelledby="market-title" hidden>
-          <div class="buyer-view-heading"><div><p class="buyer-kicker">FARM PRODUCTS</p><h1 id="market-title">Our Marketplace</h1><p>Quality livestock and farm products</p></div><button class="buyer-icon-button" type="button" data-market-filter-help aria-label="Marketplace filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button></div>
+          <div class="buyer-view-heading"><div><p class="buyer-kicker">FARM PRODUCTS</p><h1 id="market-title">Our Marketplace</h1><p>Quality livestock and farm products</p></div><button class="buyer-icon-button" type="button" data-market-filter-help aria-label="Hide marketplace categories" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button></div>
           <label class="buyer-market-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="marketSearch" type="search" placeholder="Search livestock, products..." aria-label="Search marketplace"></label>
           <div class="buyer-market-filters" role="group" aria-label="Filter marketplace categories">
             <button class="is-active" type="button" data-market-filter="All">All</button><button type="button" data-market-filter="Cattle">Cattle</button><button type="button" data-market-filter="Goats">Goats</button><button type="button" data-market-filter="Sheep">Sheep</button><button type="button" data-market-filter="Poultry">Poultry</button><button type="button" data-market-filter="Pigs">Pigs</button><button type="button" data-market-filter="Crops">Crops</button><button type="button" data-market-filter="Dairy">Dairy</button><button type="button" data-market-filter="Equipment">Equipment</button><button type="button" data-market-filter="Services">Services</button>
@@ -85,7 +85,7 @@
         </section>
 
         <section class="buyer-screen" data-app-screen="auctions" aria-labelledby="auction-title" hidden>
-          <div class="buyer-auction-title-row"><button class="buyer-back-button" type="button" data-app-view="home" aria-label="Back to home">‹</button><h1 id="auction-title">Auctions</h1><button class="buyer-icon-button" type="button" data-auction-filter aria-label="Auction filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6.5 7.5V19l-3 1v-7.5z"/></svg></button></div>
+          <div class="buyer-auction-title-row"><button class="buyer-back-button" type="button" data-app-view="home" aria-label="Back to home">‹</button><h1 id="auction-title">Auctions</h1><button class="buyer-icon-button" type="button" data-auction-filter aria-label="Hide auction views" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6.5 7.5V19l-3 1v-7.5z"/></svg></button></div>
           <div class="buyer-auction-tabs" role="tablist" aria-label="Auction views"><button class="is-active" type="button" role="tab" aria-selected="true" data-auction-tab="live">Live (1)</button><button type="button" role="tab" aria-selected="false" data-auction-tab="upcoming">Upcoming (1)</button><button type="button" role="tab" aria-selected="false" data-auction-tab="my-bids">My Bids</button><button type="button" role="tab" aria-selected="false" data-auction-tab="results">Results</button></div>
           <div class="buyer-demo-note"><strong>Design preview:</strong> auction details and amounts below are examples; no real bids are accepted.</div>
           <div class="buyer-auction-content" id="auctionContent"></div>
@@ -94,6 +94,12 @@
         <section class="buyer-screen" data-app-screen="saved" aria-labelledby="saved-title" hidden>
           <div class="buyer-view-heading"><div><p class="buyer-kicker">YOUR SHORTLIST</p><h1 id="saved-title">Saved</h1><p>Products and livestock saved on this device</p></div></div>
           <div class="buyer-market-grid" id="savedList"></div>
+        </section>
+
+        <section class="buyer-screen" data-app-screen="more" aria-labelledby="more-title" hidden>
+          <div class="buyer-view-heading"><div><p class="buyer-kicker">MARKS SAVANNAH FARM</p><h1 id="more-title">More</h1><p>Explore the farm and get support</p></div></div>
+          <section class="buyer-panel"><div class="buyer-section-heading"><div><p class="buyer-kicker">DISCOVER</p><h2>Learn about the farm</h2></div></div><div class="buyer-contact-actions buyer-more-links"><a href="products-and-services.html"><span>Products &amp; services</span><small>Explore what the farm offers</small></a><a href="blog.html"><span>Farm guides</span><small>Practical tips and insights</small></a><a href="about-us.html"><span>About us</span><small>Our story and locations</small></a><a href="gallery.html"><span>Gallery</span><small>See farm life and products</small></a></div></section>
+          <section class="buyer-panel"><div class="buyer-section-heading"><div><p class="buyer-kicker">WE’RE HERE TO HELP</p><h2>Contact the farm</h2></div></div><div class="buyer-contact-actions"><a href="#" data-contact-whatsapp target="_blank" rel="noopener"><span>WhatsApp</span><small>Message the farm</small></a><a href="#" data-contact-phone><span>Call</span><small data-farm-phone></small></a><a href="#" data-contact-email><span>Email</span><small>Send us a message</small></a></div></section>
         </section>
 
         <section class="buyer-screen" data-app-screen="profile" aria-labelledby="profile-title" hidden>
@@ -112,7 +118,7 @@
         <button type="button" data-app-view="marketplace"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18l-1.5 12h-15z"/><path d="M8 8a4 4 0 0 1 8 0m-7 5v3m6-3v3"/></svg><span>Marketplace</span></button>
         <button type="button" data-app-view="auctions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5 5 5m-8-2 5 5m-7-9 8 8-2 2-8-8zm-3 9 5 5m-8 1 8-8 2 2-8 8z"/></svg><span>Auctions</span></button>
         <button type="button" data-app-view="saved"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Saved</span></button>
-        <button type="button" data-app-view="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Profile</span></button>
+        <button type="button" data-app-view="more" aria-label="More options"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span>More</span></button>
       </nav>
     </div>
 
@@ -129,6 +135,14 @@
       </form>
     </div>
 
+    <div class="buyer-modal" id="notificationsModal" role="dialog" aria-modal="true" aria-labelledby="notificationsTitle" aria-hidden="true">
+      <section class="buyer-modal-card buyer-notifications-card">
+        <div class="buyer-modal-heading"><div><p class="buyer-kicker">FARM UPDATES</p><h2 id="notificationsTitle">Notifications</h2></div><button class="buyer-close" type="button" data-close-notifications aria-label="Close notifications">×</button></div>
+        <div class="buyer-market-empty"><strong>You’re all caught up</strong><p>Farm updates and auction alerts will appear here when notification services are connected.</p></div>
+        <button class="buyer-primary-action" type="button" data-notifications-marketplace>Browse Marketplace</button>
+      </section>
+    </div>
+
     <div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
       <form class="dialog" id="editForm">
         <div class="dialog-head"><h2 id="editTitle">Edit personal details</h2><button class="close" type="button" onclick="closeEdit()" aria-label="Close">×</button></div>
@@ -139,6 +153,6 @@
       </form>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="JS/site.js?v=98"></script>
+    <script src="JS/site.js?v=99"></script>
   </body>
 </html>

@@ -5893,6 +5893,7 @@ html.page-customer-account .buyer-submit { width:100%; margin-top:2px; backgroun
 html.page-customer-account .buyer-submit:hover { background:#075b31; }
 html.page-customer-account .buyer-form-footnote { margin:0; color:#718075; font-size:10px; text-align:center; }
 @media (min-width:700px) {
+  html.page-customer-account .buyer-topbar { top:20px; }
   html.page-customer-account .buyer-app { margin-top:20px; margin-bottom:20px; overflow:hidden; min-height:calc(100vh - 40px); border:1px solid #e1e9df; border-radius:28px; box-shadow:0 18px 55px #173d2514; }
   html.page-customer-account .buyer-topbar { border-radius:28px 28px 0 0; }
   html.page-customer-account .buyer-bottom-nav { bottom:20px; border:1px solid #e5ebe3; border-radius:0 0 28px 28px; }
@@ -5917,9 +5918,10 @@ html.page-customer-account .buyer-header-actions { display:flex; align-items:cen
 html.page-customer-account .buyer-icon-button { display:grid; width:39px; height:39px; place-items:center; border:0; border-radius:50%; background:transparent; color:#18231b; cursor:pointer; }
 html.page-customer-account .buyer-icon-button:hover { background:#eee9dc; }
 html.page-customer-account .buyer-icon-button svg { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-html.page-customer-account .buyer-main { gap:20px; padding-top:15px; }
+html.page-customer-account .buyer-main { gap:20px; padding-top:83px; }
 html.page-customer-account .buyer-screen { display:grid; gap:18px; min-width:0; animation:buyer-screen-in .24s ease-out both; }
 html.page-customer-account .buyer-screen[hidden] { display:none!important; }
+html.page-customer-account .buyer-topbar { position:fixed; top:0; left:50%; width:min(100%,560px); transform:translateX(-50%); }
 @keyframes buyer-screen-in { from { opacity:.5; transform:translateY(5px); } to { opacity:1; transform:none; } }
 html.page-customer-account .home-greeting h1 { margin:0; color:#101811; font:800 24px/1.2 Manrope,'DM Sans',sans-serif; letter-spacing:-.7px; }
 html.page-customer-account .home-greeting h1 span:last-child { font-size:20px; }
@@ -5969,6 +5971,8 @@ html.page-customer-account .buyer-market-search { display:flex; min-height:46px;
 html.page-customer-account .buyer-market-search svg { width:20px; height:20px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; }
 html.page-customer-account .buyer-market-search input { width:100%; border:0; outline:0; background:transparent; color:#1b291f; font:500 13px 'DM Sans',sans-serif; }
 html.page-customer-account .buyer-market-filters { display:flex; gap:7px; overflow:auto; padding:1px 0 5px; scrollbar-width:none; }
+html.page-customer-account .buyer-market-filters.is-collapsed, html.page-customer-account .buyer-auction-tabs.is-collapsed { display:none; }
+html.page-customer-account .buyer-notifications-card { gap:14px; }
 html.page-customer-account .buyer-market-filters::-webkit-scrollbar, html.page-customer-account .buyer-auction-tabs::-webkit-scrollbar { display:none; }
 html.page-customer-account .buyer-market-filters button, html.page-customer-account .buyer-auction-tabs button { flex:none; min-height:36px; padding:0 13px; border:1px solid #e8e2d4; border-radius:999px; background:#f3eddf; color:#1f2b21; font:700 11px 'DM Sans',sans-serif; cursor:pointer; }
 html.page-customer-account .buyer-market-filters button.is-active, html.page-customer-account .buyer-auction-tabs button.is-active { border-color:#08703b; background:#08703b; color:#fff; }
@@ -6043,4 +6047,7 @@ html.page-customer-account .buyer-signout { display:block; padding:10px; text-al
 }
 @media (prefers-reduced-motion:reduce) {
   html.page-customer-account .buyer-screen { animation:none; }
+}
+@media (min-width:700px) {
+  html.page-customer-account .buyer-topbar { top:20px; }
 }
