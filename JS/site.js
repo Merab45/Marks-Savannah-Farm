@@ -109,6 +109,8 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
     const startOnboarding = () => { showScreen(onboarding); updateStep(0); };
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const savedSession = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session');
+    const SPLASH_HOLD_MS = 2700;
+    const SPLASH_FADE_MS = reduceMotion ? 0 : 400;
     function continueFromSplash() {
       if (savedSession) window.location.replace('customer-account.html');
       else if (localStorage.getItem('marks-farm-app-onboarding-complete')) openAuth('sign-in');
@@ -117,12 +119,10 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
     function leaveSplash() {
       if (splash.hidden || splash.classList.contains('is-leaving')) return;
       splash.classList.add('is-leaving');
-      window.setTimeout(continueFromSplash, reduceMotion ? 0 : 380);
+      window.setTimeout(continueFromSplash, SPLASH_FADE_MS);
     }
 
-    const returning = !!localStorage.getItem('marks-farm-app-onboarding-complete') || !!savedSession;
-    splash.classList.toggle('is-quick', returning);
-    // Hold the animation and the timer until the photo, logo and fonts are ready (or 4s passes).
+    // Start the fixed hold once the photo, logo and fonts are ready (or 4s passes).
     let splashReady = false;
     const waitFor = img => (!img || img.complete) ? Promise.resolve() : new Promise(done => { img.addEventListener('load', done, { once: true }); img.addEventListener('error', done, { once: true }); });
     const photoReady = new Promise(done => { const photo = new Image(); photo.onload = photo.onerror = done; photo.src = 'Assets/Splash%20Screen.png'; });
@@ -130,9 +130,8 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
     Promise.race([assetsReady, new Promise(done => window.setTimeout(done, 4000))]).then(() => {
       splashReady = true;
       splash.classList.add('is-ready');
-      window.setTimeout(leaveSplash, reduceMotion ? 0 : (returning ? 900 : 1800));
+      window.setTimeout(leaveSplash, SPLASH_HOLD_MS);
     });
-    splash.addEventListener('click', () => { if (splashReady) leaveSplash(); });
     onboarding.querySelector('[data-onboarding-next]').addEventListener('click', () => {
       if (currentStep < steps.length - 1) updateStep(currentStep + 1);
       else openAuth('sign-in');

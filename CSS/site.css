@@ -5789,17 +5789,17 @@ html.page-farm-app .splash-name { display:none; }
   html.page-legal .legal-brand img { width:48px; height:44px; max-height:none; object-fit:contain; border-radius:0; }
 }
 
-/* ===== Faster launch (v120): whole splash sequence finishes in ~1.6s ===== */
+/* ===== Fixed splash sequence: 2.7 second hold followed by a 0.4 second fade ===== */
 html.page-farm-app .splash-photo { animation:splash-open .8s cubic-bezier(.22,.7,.2,1) both, splash-drift 2s ease-out both; }
 html.page-farm-app .splash-brand img { animation:splash-rise .55s cubic-bezier(.2,.8,.2,1) .2s both; }
 html.page-farm-app .splash-name { animation-duration:.55s; animation-delay:.35s; }
 html.page-farm-app .splash-brand p { animation:splash-rise .55s cubic-bezier(.2,.8,.2,1) .45s both; }
 html.page-farm-app .splash-bottom { animation:splash-panel .5s cubic-bezier(.2,.8,.2,1) .55s both; }
 html.page-farm-app .splash-progress span { animation:splash-progress .9s ease-in-out .7s forwards; }
-html.page-farm-app .app-splash.is-leaving { transition-duration:.25s; }
-/* returning users: near-instant brand flash */
-html.page-farm-app .app-splash.is-quick *, html.page-farm-app .app-splash.is-quick { animation-delay:0s!important; animation-duration:.3s!important; }
-html.page-farm-app .app-splash.is-quick .splash-progress span { animation-duration:.8s!important; }
+html.page-farm-app .app-splash.is-leaving { transition-duration:.4s; }
+@media (prefers-reduced-motion:reduce) {
+  html.page-farm-app .app-splash.is-leaving { transition:none!important; }
+}
 
 /* ===== Splash waits for its assets (v121): animation starts only once .is-ready is set ===== */
 html.page-farm-app .app-splash:not(.is-ready), html.page-farm-app .app-splash:not(.is-ready) * { animation-play-state:paused!important; }
