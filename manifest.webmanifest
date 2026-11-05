@@ -10,6 +10,7 @@
   "background_color": "#f8f7f1",
   "theme_color": "#06472a",
   "icons": [
+    { "src": "./Assets/farm-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
     { "src": "./Assets/Glossy%20Green%20Agriculture%20Emblem.png", "sizes": "any", "type": "image/png", "purpose": "any" }
   ]
 }

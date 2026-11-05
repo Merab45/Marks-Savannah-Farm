@@ -5622,3 +5622,30 @@ html.page-farm-app .app-toast { position:fixed; z-index:20; right:16px; bottom:c
 html.page-farm-app .app-toast.is-visible { transform:translateY(0); opacity:1; }
 @media(max-height:720px) { html.page-farm-app .app-screen { padding-right:20px; padding-left:20px; } html.page-farm-app .app-onboarding { gap:8px; } html.page-farm-app .onboarding-copy { padding:3px 0 7px; } html.page-farm-app .onboarding-image { min-height:165px; max-height:34vh; } html.page-farm-app .onboarding-benefits { gap:4px; padding-top:8px; } html.page-farm-app .benefit-icon { flex-basis:34px; width:34px; height:34px; } html.page-farm-app .onboarding-benefits > div { min-height:36px; font-size:13px; } html.page-farm-app .app-auth { gap:6px; } html.page-farm-app .app-input { min-height:43px; } html.page-farm-app .app-input input { height:40px; } html.page-farm-app .social-auth-button { min-height:40px; } }
 @media(min-width:700px) { html.page-farm-app .app-shell { min-height:min(900px,100vh); margin:24px auto; border:8px solid #17241d; border-radius:34px; } html.page-farm-app .app-screen { min-height:min(884px,calc(100vh - 48px)); border-radius:26px; } body.farm-app { display:flow-root; } }
+
+/* Homepage app install prompt. */
+html.page-index .app-install-dialog { position:fixed; width:min(410px,calc(100% - 32px)); max-width:none; max-height:min(92dvh,740px); padding:26px; overflow:auto; border:1px solid #dfe7dd; border-radius:24px; background:#fffdf6; color:#17251b; box-shadow:0 24px 90px #061d1290; text-align:center; }
+html.page-index .app-install-dialog::backdrop { background:#071b11a6; backdrop-filter:blur(4px); }
+html.page-index .app-install-dialog[open] { animation:install-dialog-in .24s ease-out both; }
+@keyframes install-dialog-in { from { opacity:0; transform:translateY(12px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+html.page-index .app-install-close { position:absolute; top:12px; right:14px; width:34px; height:34px; border:0; border-radius:50%; background:#eff3eb; color:#31513a; font-size:24px; line-height:1; cursor:pointer; }
+html.page-index .app-install-mark { width:48px; height:48px; margin:0 auto 8px; overflow:hidden; border-radius:15px; background:#eaf3e5; }
+html.page-index .app-install-mark img { width:100%; height:100%; object-fit:cover; }
+html.page-index .app-install-kicker { margin:0; color:#08743a; font:800 12px Manrope,sans-serif; letter-spacing:.07em; text-transform:uppercase; }
+html.page-index .app-install-dialog h2 { margin:8px 0; color:#133b26; font:800 28px/1.12 Manrope,sans-serif; letter-spacing:-.8px; }
+html.page-index .app-install-copy { max-width:330px; margin:0 auto 16px; color:#56645a; font-size:15px; line-height:1.5; }
+html.page-index .app-install-photo { display:block; width:100%; height:145px; margin:0 0 16px; border-radius:15px; object-fit:cover; object-position:center 48%; }
+html.page-index .app-install-primary { display:flex; width:100%; min-height:49px; align-items:center; justify-content:center; border:0; border-radius:999px; background:#00602f; color:#fff; font:800 16px Manrope,sans-serif; cursor:pointer; }
+html.page-index .app-install-primary:hover { background:#004d28; }
+html.page-index .app-install-open { display:block; margin:12px 0 0; color:#086536; font-size:14px; font-weight:800; text-decoration:underline; text-underline-offset:3px; }
+html.page-index .app-install-later { margin-top:13px; padding:7px 16px; border:0; background:transparent; color:#69756b; font:600 13px 'DM Sans',sans-serif; cursor:pointer; }
+html.page-index .app-install-help { margin:14px 0 0; padding:12px 14px; border-radius:12px; background:#eff5eb; color:#394b3d; font-size:13px; line-height:1.5; text-align:left; }
+@media(max-width:560px) { html.page-index .app-install-dialog { position:fixed; inset:auto 0 0; width:100%; max-width:none; max-height:92dvh; margin:0; padding:24px 22px calc(20px + env(safe-area-inset-bottom)); border:0; border-radius:24px 24px 0 0; box-shadow:0 -16px 60px #061d1238; } html.page-index .app-install-photo { height:125px; } }
+html.page-farm-app:not(.android-app) .app-shell { display:none; }
+html.page-farm-app .app-not-android { display:none; }
+html.page-farm-app:not(.android-app) .app-not-android { display:grid; min-height:100vh; min-height:100dvh; align-content:center; justify-items:center; gap:12px; padding:30px; background:#fffdf6; color:#193c29; text-align:center; }
+html.page-farm-app .app-not-android img { width:76px; height:76px; }
+html.page-farm-app .app-device-kicker { margin:0; color:#08743a; font:800 12px Manrope,sans-serif; letter-spacing:.08em; text-transform:uppercase; }
+html.page-farm-app .app-not-android h1 { margin:0; font:800 30px/1.15 Manrope,sans-serif; }
+html.page-farm-app .app-not-android p:not(.app-device-kicker) { max-width:360px; margin:0; color:#56645a; font-size:16px; line-height:1.6; }
+html.page-farm-app .app-not-android a { margin-top:7px; padding:13px 22px; border-radius:999px; background:#00602f; color:#fff; font-weight:800; text-decoration:none; }

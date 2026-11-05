@@ -22,7 +22,7 @@ if (document.documentElement.classList.contains('page-about')) {
 }
 
 // Intro, onboarding and buyer account flow for the phone-first app.
-if (document.documentElement.classList.contains('page-farm-app')) {
+if (document.documentElement.classList.contains('page-farm-app') && document.documentElement.classList.contains('android-app')) {
   (() => {
     const shell = document.getElementById('farm-app');
     const splash = document.getElementById('screen-splash');
@@ -65,6 +65,7 @@ if (document.documentElement.classList.contains('page-farm-app')) {
       });
     };
     const openAuth = mode => {
+      localStorage.setItem('marks-farm-app-onboarding-complete','true');
       showScreen(auth);
       setAuthMode(mode);
       window.location.hash = mode === 'sign-up' ? 'sign-up' : 'sign-in';
@@ -98,7 +99,10 @@ if (document.documentElement.classList.contains('page-farm-app')) {
     };
     const startOnboarding = () => { showScreen(onboarding); updateStep(0); };
 
-    if (sessionStorage.getItem('marks-farm-app-splash-seen')) startOnboarding();
+    const savedSession = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session');
+    if (savedSession) window.location.replace('customer-account.html');
+    else if (localStorage.getItem('marks-farm-app-onboarding-complete')) openAuth('sign-in');
+    else if (sessionStorage.getItem('marks-farm-app-splash-seen')) startOnboarding();
     else window.setTimeout(() => {
       if (!splash.hidden) { sessionStorage.setItem('marks-farm-app-splash-seen','true'); startOnboarding(); }
     }, 2100);
@@ -173,6 +177,57 @@ if (document.documentElement.classList.contains('page-farm-app')) {
       window.location.href = 'customer-account.html';
     });
   })();
+}
+
+// Offer the installable farm app when a visitor opens the website homepage.
+if (document.documentElement.classList.contains('page-index')) {
+  const installDialog = document.getElementById('app-install-dialog');
+  if (installDialog && /Android/i.test(navigator.userAgent)) {
+    const installAction = installDialog.querySelector('[data-install-action]');
+    const installHelp = installDialog.querySelector('[data-install-help]');
+    let pendingInstall = null;
+    const isInstalled = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+    const dismissForVisit = () => {
+      sessionStorage.setItem('marks-farm-install-dismissed','true');
+      if (installDialog.open) installDialog.close();
+    };
+
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      pendingInstall = event;
+      installAction.textContent = 'Install the app';
+      installHelp.hidden = true;
+    });
+    window.addEventListener('appinstalled', () => {
+      pendingInstall = null;
+      localStorage.setItem('marks-farm-app-installed','true');
+      if (installDialog.open) installDialog.close();
+    });
+    installDialog.querySelectorAll('[data-install-dismiss]').forEach(button => button.addEventListener('click', dismissForVisit));
+    installDialog.addEventListener('cancel', () => sessionStorage.setItem('marks-farm-install-dismissed','true'));
+    installAction.addEventListener('click', async () => {
+      if (!pendingInstall) {
+        const isAppleMobile = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        installHelp.textContent = isAppleMobile
+          ? 'To add the app on iPhone or iPad: tap the Share button in your browser, then choose “Add to Home Screen”.'
+          : 'To install the app, open your browser menu and choose “Install app” or “Add to Home Screen”. You can also open the app in your browser below.';
+        installHelp.hidden = false;
+        installAction.textContent = isAppleMobile ? 'Add to Home Screen' : 'Installation steps';
+        return;
+      }
+
+      const installEvent = pendingInstall;
+      pendingInstall = null;
+      await installEvent.prompt();
+      const choice = await installEvent.userChoice;
+      if (choice?.outcome === 'accepted') localStorage.setItem('marks-farm-app-installed','true');
+      dismissForVisit();
+    });
+
+    if (!isInstalled && !localStorage.getItem('marks-farm-app-installed') && !sessionStorage.getItem('marks-farm-install-dismissed')) {
+      window.setTimeout(() => { if (!installDialog.open) installDialog.showModal(); }, 900);
+    }
+  }
 }
 
 // Open a prefilled WhatsApp message from the contact form.
@@ -570,21 +625,6 @@ your shortlist" onclick="toggleSave(${
     }
     catch{
     }
-    let installPrompt;const installBtn=document.getElementById('installButton');
-    if(matchMedia('(display-mode: standalone)').matches)installBtn.hidden=true;
-    window.addEventListener('beforeinstallprompt',e=>{
-      e.preventDefault();installPrompt=e
-    }
-    );
-    installBtn.addEventListener('click',async()=>{
-      if(installPrompt){
-        installPrompt.prompt();await installPrompt.userChoice;installPrompt=null
-      }
-      else{
-        alert('To install, open your browser menu and choose “Install app” or “Add to Home Screen”.')
-      }
-    }
-    );
     Object.assign(window, {
       toggleSave, openEnquiry, closeEnquiry, sendEnquiry
     }

@@ -8,9 +8,17 @@
     <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
     <title>Mark’s Savannah Farm App</title>
     <meta name="description" content="Explore farm products, guides, and buyer account options from Mark’s Savannah Farm.">
-    <link rel="stylesheet" href="CSS/site.css?v=106">
+    <link rel="stylesheet" href="CSS/site.css?v=107">
+    <script>document.documentElement.classList.toggle('android-app', /Android/i.test(navigator.userAgent));</script>
   </head>
   <body class="farm-app">
+    <main class="app-not-android" aria-labelledby="app-device-title">
+      <img src="Assets/farm-icon.svg" alt="">
+      <p class="app-device-kicker">Mark’s Savannah Farm app</p>
+      <h1 id="app-device-title">Made for Android</h1>
+      <p>Our mobile app is currently available on Android phones. You can still browse the full farm website on this device.</p>
+      <a href="index.html">Visit the farm website</a>
+    </main>
     <main class="app-shell" id="farm-app">
       <section class="app-screen app-splash is-active" id="screen-splash" aria-label="Mark’s Savannah Farm">
         <div class="splash-photo" role="img" aria-label="Aerial view of green farmland"></div>
@@ -71,6 +79,6 @@
       </section>
       <div class="app-toast" role="status" aria-live="polite"></div>
     </main>
-    <script src="JS/site.js?v=82"></script>
+    <script src="JS/site.js?v=85"></script>
   </body>
 </html>
