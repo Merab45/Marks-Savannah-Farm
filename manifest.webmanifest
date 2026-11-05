@@ -2,13 +2,13 @@
   "id": "./index.html",
   "name": "Mark's Savannah Farm",
   "short_name": "Mark's Farm",
-  "description": "Explore livestock, crops, poultry, dairy products, and agri-consultancy from Mark's Savannah Farm in Kajiado.",
+  "description": "Farm products, services, and practical guides from Mark's Savannah Farm across Laikipia, Narok, and Nakuru, Kenya.",
   "lang": "en",
-  "start_url": "./index.html",
+  "start_url": "./app.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f8f7f1",
-  "theme_color": "#183727",
+  "theme_color": "#06472a",
   "icons": [
     { "src": "./Assets/Glossy%20Green%20Agriculture%20Emblem.png", "sizes": "any", "type": "image/png", "purpose": "any" }
   ]

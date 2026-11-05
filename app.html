@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" class="page-farm-app">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#06472a">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
+    <title>Mark’s Savannah Farm App</title>
+    <meta name="description" content="Explore farm products, guides, and buyer account options from Mark’s Savannah Farm.">
+    <link rel="stylesheet" href="CSS/site.css?v=106">
+  </head>
+  <body class="farm-app">
+    <main class="app-shell" id="farm-app">
+      <section class="app-screen app-splash is-active" id="screen-splash" aria-label="Mark’s Savannah Farm">
+        <div class="splash-photo" role="img" aria-label="Aerial view of green farmland"></div>
+        <div class="splash-brand">
+          <img src="Assets/marks-savannah-farm-logo.svg" alt="Mark’s Savannah Farm">
+          <p>Grow better. Farm smarter.</p>
+        </div>
+        <div class="splash-bottom">
+          <p>Your complete farming companion in Kenya</p>
+          <button class="splash-progress" type="button" data-skip-splash aria-label="Continue to app"><span></span></button>
+        </div>
+      </section>
+
+      <section class="app-screen app-onboarding" id="screen-onboarding" aria-label="App introduction" hidden>
+        <header class="app-topbar"><a href="index.html" class="app-back-site" aria-label="Back to website">‹</a><span class="app-step" aria-live="polite"><b data-step-number>1</b> / 3</span></header>
+        <div class="onboarding-content">
+          <div class="onboarding-copy"><h1 data-onboarding-title>Discover premium livestock and farm products</h1><p data-onboarding-copy>Buy quality cattle, goats, sheep, poultry, crops, and more — all in one convenient app.</p></div>
+          <div class="onboarding-image" data-onboarding-image="animals"><img src="Assets/Onboarding.png" alt="Cattle, goats, and poultry at a green farm" fetchpriority="high"></div>
+          <div class="onboarding-benefits" data-onboarding-benefits>
+            <div><span class="benefit-icon" aria-hidden="true">▣</span><span>Browse &amp; request quotes with ease</span></div>
+            <div><span class="benefit-icon" aria-hidden="true">✓</span><span>Trusted quality &amp; expert advice</span></div>
+            <div><span class="benefit-icon" aria-hidden="true">↗</span><span>Reliable delivery support</span></div>
+          </div>
+        </div>
+        <footer class="onboarding-footer"><div class="onboarding-dots" role="group" aria-label="Choose introduction screen"><button type="button" data-go-step="0" aria-label="Screen 1" aria-current="step"></button><button type="button" data-go-step="1" aria-label="Screen 2"></button><button type="button" data-go-step="2" aria-label="Screen 3"></button></div><button class="app-primary" type="button" data-onboarding-next>Next <span aria-hidden="true">→</span></button><a class="onboarding-skip" href="#sign-in" data-open-auth="sign-in">Skip introduction</a></footer>
+      </section>
+
+      <section class="app-screen app-auth" id="screen-auth" aria-label="Account access" hidden>
+        <header class="app-topbar"><button class="app-back-site" type="button" data-auth-back aria-label="Back">‹</button><a class="auth-skip" href="index.html">Farm website</a></header>
+        <div class="auth-brand"><img src="Assets/marks-savannah-farm-logo.svg" alt="Mark’s Savannah Farm"><span class="auth-mode-label" data-auth-mode-label>Welcome back</span><p data-auth-subtitle>Sign in to continue your farming journey</p></div>
+
+        <form class="app-form" id="app-sign-in">
+          <label class="app-input"><span aria-hidden="true">✉</span><input name="email" type="email" autocomplete="email" placeholder="Email address" aria-label="Email address" required></label>
+          <label class="app-input"><span aria-hidden="true">♙</span><input name="password" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" required><button type="button" class="password-toggle" data-toggle-password aria-label="Show password">◉</button></label>
+          <div class="form-meta"><label><input type="checkbox" name="remember" checked> Remember me</label><button type="button" data-forgot-password>Forgot password?</button></div>
+          <p class="app-error" data-sign-in-error role="alert"></p>
+          <button class="app-primary auth-submit" type="submit">Sign In</button>
+          <div class="app-divider"><span>or</span></div>
+          <button class="social-auth-button" type="button" data-google-auth><span class="google-mark" aria-hidden="true">G</span>Continue with Google</button>
+          <button class="social-auth-button" type="button" data-whatsapp-auth><span class="whatsapp-mark" aria-hidden="true">◉</span>Continue with WhatsApp</button>
+          <p class="auth-switch">Don’t have an account? <button type="button" data-switch-auth="sign-up">Sign Up</button></p>
+        </form>
+
+        <form class="app-form" id="app-sign-up" hidden>
+          <label class="app-input"><span aria-hidden="true">♙</span><input name="name" autocomplete="name" placeholder="Full name" aria-label="Full name" required></label>
+          <label class="app-input"><span aria-hidden="true">✉</span><input name="email" type="email" autocomplete="email" placeholder="Email address" aria-label="Email address" required></label>
+          <label class="app-input"><span aria-hidden="true">☎</span><input name="phone" type="tel" autocomplete="tel" placeholder="Phone number" aria-label="Phone number" required></label>
+          <label class="app-input"><span aria-hidden="true">▣</span><input name="password" type="password" autocomplete="new-password" minlength="8" placeholder="Password" aria-label="Password" required><button type="button" class="password-toggle" data-toggle-password aria-label="Show password">◉</button></label>
+          <label class="app-input"><span aria-hidden="true">▣</span><input name="confirm" type="password" autocomplete="new-password" minlength="8" placeholder="Confirm password" aria-label="Confirm password" required><button type="button" class="password-toggle" data-toggle-password aria-label="Show password">◉</button></label>
+          <label class="terms-check"><input type="checkbox" name="terms" required><span>I agree to the <a href="contact.html#terms">Terms &amp; Conditions</a> and <a href="contact.html#privacy">Privacy Policy</a></span></label>
+          <p class="app-error" data-sign-up-error role="alert"></p>
+          <button class="app-primary auth-submit" type="submit">Sign Up</button>
+          <div class="app-divider"><span>or</span></div>
+          <button class="social-auth-button" type="button" data-google-auth><span class="google-mark" aria-hidden="true">G</span>Continue with Google</button>
+          <p class="auth-switch">Already have an account? <button type="button" data-switch-auth="sign-in">Sign In</button></p>
+        </form>
+        <p class="app-prototype-note">Account forms save on this device for this prototype.</p>
+      </section>
+      <div class="app-toast" role="status" aria-live="polite"></div>
+    </main>
+    <script src="JS/site.js?v=82"></script>
+  </body>
+</html>

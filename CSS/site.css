@@ -5546,3 +5546,79 @@ html.page-blog .blog-cta h2 { margin:10px 0; color:#153d28; font:800 clamp(25px,
 html.page-blog .blog-cta p { margin:0; color:#5d685f; }
 @media(max-width:900px) { html.page-blog .blog-card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } html.page-blog .blog-featured { gap:24px; } }
 @media(max-width:640px) { html.page-blog .blog-intro { padding:46px 0 24px; } html.page-blog .blog-featured { grid-template-columns:1fr; gap:22px; padding:15px; margin-bottom:48px; } html.page-blog .blog-featured-image { height:240px; } html.page-blog .blog-list-section { padding:52px 0; } html.page-blog .blog-card-grid,html.page-blog .blog-articles { grid-template-columns:1fr; } html.page-blog .blog-card-image { height:210px; } html.page-blog .blog-articles { padding-top:52px; } html.page-blog .blog-article { padding:23px; } html.page-blog .blog-cta { display:block; padding:26px; } html.page-blog .blog-cta .about-primary-button { display:inline-flex; margin-top:20px; } }
+
+/* Phone-first farm app screens. */
+html.page-farm-app,html.page-farm-app *,html.page-farm-app *::before,html.page-farm-app *::after { box-sizing:border-box; }
+html.page-farm-app { min-height:100%; background:#eee9dc; color:#14251a; font-family:'DM Sans',Arial,sans-serif; }
+body.farm-app { min-height:100vh; min-height:100dvh; margin:0; background:#eee9dc; }
+html.page-farm-app [hidden] { display:none!important; }
+html.page-farm-app .app-shell { position:relative; width:100%; max-width:430px; min-height:100vh; min-height:100dvh; margin:0 auto; overflow:hidden; background:#fffdf6; box-shadow:0 0 42px #20382118; }
+html.page-farm-app .app-screen { min-height:100vh; min-height:100dvh; padding:env(safe-area-inset-top) 24px env(safe-area-inset-bottom); }
+html.page-farm-app .app-splash { position:relative; display:flex; flex-direction:column; justify-content:space-between; overflow:hidden; padding:0; color:#fff; background:#0a482a; }
+html.page-farm-app .splash-photo { position:absolute; inset:0; background:linear-gradient(180deg,#001b1260 0%,transparent 35%,transparent 62%,#00321d80 75%),url('../Assets/Splash%20Screen.png') center 48%/cover no-repeat; }
+html.page-farm-app .splash-brand { position:relative; z-index:1; display:flex; flex:1; flex-direction:column; align-items:center; justify-content:center; padding:45px 24px 90px; text-align:center; }
+html.page-farm-app .splash-brand img { width:min(300px,85%); filter:brightness(0) invert(1) drop-shadow(0 2px 10px #001b1277); }
+html.page-farm-app .splash-brand p { margin:5px 0 0; color:#fff; font:italic 700 18px Georgia,serif; text-shadow:0 1px 8px #052c1d; }
+html.page-farm-app .splash-bottom { position:relative; z-index:1; display:grid; justify-items:center; gap:22px; min-height:145px; padding:26px 24px calc(24px + env(safe-area-inset-bottom)); border-radius:50% 50% 0 0/18px 18px 0 0; background:#00572e; text-align:center; }
+html.page-farm-app .splash-bottom p { max-width:250px; margin:4px 0 0; font-size:16px; line-height:1.35; }
+html.page-farm-app .splash-progress { display:block; width:72px; height:6px; padding:0; border:0; border-radius:10px; background:#ffffff55; cursor:pointer; }
+html.page-farm-app .splash-progress span { display:block; width:50%; height:100%; border-radius:inherit; background:#fff; animation:splash-progress 1.8s ease-in-out forwards; }
+@keyframes splash-progress { to { width:100%; } }
+html.page-farm-app .app-onboarding { display:flex; flex-direction:column; gap:14px; background:#fffdf6; }
+html.page-farm-app .app-topbar { display:flex; min-height:35px; align-items:center; justify-content:space-between; }
+html.page-farm-app .app-back-site { display:grid; width:34px; height:34px; place-items:center; border:0; border-radius:50%; background:transparent; color:#101a14; font:400 34px/1 Arial,sans-serif; text-decoration:none; cursor:pointer; }
+html.page-farm-app .app-step { color:#101a14; font-size:14px; font-weight:800; }
+html.page-farm-app .onboarding-content { display:flex; flex:1; flex-direction:column; min-height:0; }
+html.page-farm-app .onboarding-copy { padding:10px 0 14px; }
+html.page-farm-app .onboarding-copy h1 { max-width:350px; margin:0 0 8px; color:#101613; font:800 clamp(27px,7.5vw,34px)/1.12 Manrope,'DM Sans',sans-serif; letter-spacing:-1.1px; }
+html.page-farm-app .onboarding-copy p { max-width:360px; margin:0; color:#263029; font-size:17px; line-height:1.36; }
+html.page-farm-app .onboarding-image { position:relative; flex:1; min-height:210px; max-height:42vh; overflow:hidden; border-radius:18px; background:#dce9d2; }
+html.page-farm-app .onboarding-image img { display:block; width:100%; height:100%; object-fit:cover; object-position:center; }
+html.page-farm-app .onboarding-image[data-onboarding-image="phone"] img { object-position:center 54%; }
+html.page-farm-app .onboarding-image[data-onboarding-image="farmer"] img { object-position:center 35%; }
+html.page-farm-app .onboarding-benefits { display:grid; gap:8px; padding:14px 0 2px; }
+html.page-farm-app .onboarding-benefits > div { display:flex; min-height:42px; align-items:center; gap:13px; color:#17211a; font-size:14px; font-weight:700; }
+html.page-farm-app .benefit-icon { display:grid; flex:0 0 40px; width:40px; height:40px; place-items:center; border-radius:50%; background:#066137; color:#fff; font:800 20px/1 Arial,sans-serif; }
+html.page-farm-app .onboarding-footer { display:grid; gap:13px; padding:4px 0 3px; }
+html.page-farm-app .onboarding-dots { display:flex; justify-content:center; gap:9px; }
+html.page-farm-app .onboarding-dots button { width:11px; height:11px; padding:0; border:0; border-radius:50%; background:#c9c9a9; cursor:pointer; }
+html.page-farm-app .onboarding-dots button[aria-current="step"] { background:#07582f; }
+html.page-farm-app .app-primary { display:flex; width:100%; min-height:52px; align-items:center; justify-content:center; gap:10px; padding:12px 18px; border:0; border-radius:999px; background:#00602f; color:#fff; font:800 17px Manrope,'DM Sans',sans-serif; cursor:pointer; transition:background .2s,transform .2s; }
+html.page-farm-app .app-primary:hover { transform:translateY(-1px); background:#004d28; }
+html.page-farm-app .onboarding-skip { justify-self:center; padding:3px 10px; color:#3d5845; font-size:12px; text-decoration:none; }
+html.page-farm-app .app-auth { display:flex; flex-direction:column; gap:10px; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding-top:max(12px,env(safe-area-inset-top)); background:linear-gradient(180deg,#fffdf8 0%,#fffdf8 84%,#eaf1de 84%,#f5f2de 100%); }
+html.page-farm-app .auth-skip { color:#17211a; font-size:14px; font-weight:700; text-decoration:none; }
+html.page-farm-app .auth-brand { display:grid; justify-items:center; gap:4px; padding:4px 0 7px; text-align:center; }
+html.page-farm-app .auth-brand img { width:min(188px,60%); height:54px; object-fit:contain; }
+html.page-farm-app .auth-mode-label { margin-top:2px; color:#101613; font:800 24px/1.15 Manrope,'DM Sans',sans-serif; letter-spacing:-.5px; }
+html.page-farm-app .auth-brand p { margin:0; color:#3c443f; font-size:14px; }
+html.page-farm-app .app-form { display:grid; gap:9px; }
+html.page-farm-app .app-input { display:flex; min-height:48px; align-items:center; gap:11px; padding:0 13px; border:1px solid #d7d7d0; border-radius:14px; background:#fff; color:#161e19; }
+html.page-farm-app .app-input:focus-within { border-color:#12814b; box-shadow:0 0 0 3px #12814b18; }
+html.page-farm-app .app-input > span { width:20px; flex:none; color:#16261c; font-size:20px; text-align:center; }
+html.page-farm-app .app-input input { width:100%; min-width:0; height:45px; padding:0; border:0; outline:0; background:transparent; color:#16221a; font:400 14px 'DM Sans',sans-serif; }
+html.page-farm-app .app-input input::placeholder { color:#737871; opacity:1; }
+html.page-farm-app .password-toggle { flex:none; padding:5px; border:0; background:transparent; color:#45524a; font-size:17px; cursor:pointer; }
+html.page-farm-app .form-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 3px; font-size:12px; }
+html.page-farm-app .form-meta label { display:flex; align-items:center; gap:6px; }
+html.page-farm-app .form-meta input,.terms-check input { width:16px; height:16px; accent-color:#076137; }
+html.page-farm-app .form-meta button,.auth-switch button { padding:0; border:0; background:transparent; color:#075a30; font:700 12px 'DM Sans',sans-serif; text-decoration:underline; cursor:pointer; }
+html.page-farm-app .auth-submit { margin-top:1px; }
+html.page-farm-app .app-divider { display:flex; align-items:center; gap:12px; color:#687169; font-size:13px; }
+html.page-farm-app .app-divider::before,html.page-farm-app .app-divider::after { height:1px; flex:1; background:#d8ddd5; content:''; }
+html.page-farm-app .social-auth-button { display:flex; min-height:44px; align-items:center; justify-content:center; gap:10px; border:1px solid #d0d2cc; border-radius:999px; background:#fff; color:#1e2c22; font:700 13px 'DM Sans',sans-serif; cursor:pointer; }
+html.page-farm-app .social-auth-button:hover { background:#f4f8f2; border-color:#99b69e; }
+html.page-farm-app .google-mark { color:#4285f4; font:800 18px Arial,sans-serif; text-shadow:1px 1px #34a853,-1px -1px #ea4335; }
+html.page-farm-app .whatsapp-mark { color:#16a34a; font-size:19px; }
+html.page-farm-app .auth-switch { margin:2px 0 1px; color:#2c352f; font-size:13px; text-align:center; }
+html.page-farm-app .auth-switch button { font-size:13px; }
+html.page-farm-app .app-prototype-note { margin:auto 0 0; padding:6px 0 3px; color:#758076; font-size:10px; line-height:1.3; text-align:center; }
+html.page-farm-app .terms-check { display:flex; align-items:flex-start; gap:8px; color:#263029; font-size:12px; line-height:1.4; }
+html.page-farm-app .terms-check input { flex:none; margin:1px 0 0; }
+html.page-farm-app .terms-check a { color:#075a30; font-weight:700; text-underline-offset:2px; }
+html.page-farm-app .app-error { display:none; margin:0; color:#a62e24; font-size:12px; line-height:1.35; }
+html.page-farm-app .app-error.is-visible { display:block; }
+html.page-farm-app .app-toast { position:fixed; z-index:20; right:16px; bottom:calc(16px + env(safe-area-inset-bottom)); left:16px; width:max-content; max-width:calc(100% - 32px); margin:auto; padding:11px 15px; transform:translateY(15px); border-radius:10px; background:#173d28; color:#fff; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s,transform .2s; }
+html.page-farm-app .app-toast.is-visible { transform:translateY(0); opacity:1; }
+@media(max-height:720px) { html.page-farm-app .app-screen { padding-right:20px; padding-left:20px; } html.page-farm-app .app-onboarding { gap:8px; } html.page-farm-app .onboarding-copy { padding:3px 0 7px; } html.page-farm-app .onboarding-image { min-height:165px; max-height:34vh; } html.page-farm-app .onboarding-benefits { gap:4px; padding-top:8px; } html.page-farm-app .benefit-icon { flex-basis:34px; width:34px; height:34px; } html.page-farm-app .onboarding-benefits > div { min-height:36px; font-size:13px; } html.page-farm-app .app-auth { gap:6px; } html.page-farm-app .app-input { min-height:43px; } html.page-farm-app .app-input input { height:40px; } html.page-farm-app .social-auth-button { min-height:40px; } }
+@media(min-width:700px) { html.page-farm-app .app-shell { min-height:min(900px,100vh); margin:24px auto; border:8px solid #17241d; border-radius:34px; } html.page-farm-app .app-screen { min-height:min(884px,calc(100vh - 48px)); border-radius:26px; } body.farm-app { display:flow-root; } }

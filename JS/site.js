@@ -21,6 +21,160 @@ if (document.documentElement.classList.contains('page-about')) {
   if (year) year.textContent = new Date().getFullYear();
 }
 
+// Intro, onboarding and buyer account flow for the phone-first app.
+if (document.documentElement.classList.contains('page-farm-app')) {
+  (() => {
+    const shell = document.getElementById('farm-app');
+    const splash = document.getElementById('screen-splash');
+    const onboarding = document.getElementById('screen-onboarding');
+    const auth = document.getElementById('screen-auth');
+    const toast = shell.querySelector('.app-toast');
+    const steps = [
+      {
+        title: 'Discover Premium Livestock & Farm Products',
+        copy: 'Buy quality cattle, goats, sheep, poultry, crops and more — all in one convenient app.',
+        image: 'Assets/Onboarding.png', alt: 'Cattle, goats, and poultry at a farm', imageName: 'animals',
+        benefits: ['Browse & request quotes with ease', 'Trusted quality & expert advice', 'Reliable delivery support'],
+      },
+      {
+        title: 'Learn & Grow with Expert Guides',
+        copy: 'Get practical farming tips, business guides, and advice from Mark’s Savannah Farm.',
+        image: 'Assets/Onboarding.jpg', alt: 'Hands using a smartphone', imageName: 'phone',
+        benefits: ['Step-by-step farm guides', 'Smart farming tips', 'Farm business planning'],
+      },
+      {
+        title: 'Manage Your Farm Smarter',
+        copy: 'Get personalized support, save your favourites, and connect with our team.',
+        image: 'Assets/Farmer%20Checking%20Phone%20at%20Savannah%20Farm%20onboarding.png', alt: 'A farmer checks his phone at the farm', imageName: 'farmer',
+        benefits: ['Save favourite products', 'Get help from the farm team', 'Receive farm updates'],
+      },
+    ];
+    let currentStep = 0;
+    let toastTimer;
+
+    const showToast = message => {
+      toast.textContent = message;
+      toast.classList.add('is-visible');
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 3200);
+    };
+    const showScreen = screen => {
+      [splash, onboarding, auth].forEach(item => {
+        item.hidden = item !== screen;
+        item.classList.toggle('is-active', item === screen);
+      });
+    };
+    const openAuth = mode => {
+      showScreen(auth);
+      setAuthMode(mode);
+      window.location.hash = mode === 'sign-up' ? 'sign-up' : 'sign-in';
+    };
+    const setAuthMode = mode => {
+      const signupMode = mode === 'sign-up';
+      document.getElementById('app-sign-in').hidden = signupMode;
+      document.getElementById('app-sign-up').hidden = !signupMode;
+      auth.querySelector('[data-auth-mode-label]').textContent = signupMode ? 'Create Your Account' : 'Welcome Back!';
+      auth.querySelector('[data-auth-subtitle]').textContent = signupMode ? 'Join our growing community' : 'Sign in to continue your farming journey';
+      auth.querySelector('[data-auth-back]').setAttribute('aria-label', signupMode ? 'Back to sign in' : 'Back to introduction');
+      auth.querySelector('[data-auth-back]').dataset.backToSignIn = String(signupMode);
+      auth.querySelectorAll('[data-google-auth]').forEach(button => { button.textContent = 'Continue with Google'; button.insertAdjacentHTML('afterbegin','<span class="google-mark" aria-hidden="true">G</span>'); });
+    };
+    const updateStep = index => {
+      currentStep = Math.max(0, Math.min(index, steps.length - 1));
+      const step = steps[currentStep];
+      onboarding.querySelector('[data-step-number]').textContent = currentStep + 1;
+      onboarding.querySelector('[data-onboarding-title]').textContent = step.title;
+      onboarding.querySelector('[data-onboarding-copy]').textContent = step.copy;
+      const image = onboarding.querySelector('[data-onboarding-image]');
+      image.dataset.onboardingImage = step.imageName;
+      image.querySelector('img').src = step.image;
+      image.querySelector('img').alt = step.alt;
+      onboarding.querySelectorAll('.onboarding-benefits > div').forEach((row, rowIndex) => { row.lastElementChild.textContent = step.benefits[rowIndex]; });
+      onboarding.querySelectorAll('[data-go-step]').forEach((dot, dotIndex) => {
+        if (dotIndex === currentStep) dot.setAttribute('aria-current','step');
+        else dot.removeAttribute('aria-current');
+      });
+      onboarding.querySelector('[data-onboarding-next]').innerHTML = currentStep === steps.length - 1 ? 'Get Started <span aria-hidden="true">→</span>' : 'Next <span aria-hidden="true">→</span>';
+    };
+    const startOnboarding = () => { showScreen(onboarding); updateStep(0); };
+
+    if (sessionStorage.getItem('marks-farm-app-splash-seen')) startOnboarding();
+    else window.setTimeout(() => {
+      if (!splash.hidden) { sessionStorage.setItem('marks-farm-app-splash-seen','true'); startOnboarding(); }
+    }, 2100);
+    splash.querySelector('[data-skip-splash]').addEventListener('click', () => { sessionStorage.setItem('marks-farm-app-splash-seen','true'); startOnboarding(); });
+    onboarding.querySelector('[data-onboarding-next]').addEventListener('click', () => {
+      if (currentStep < steps.length - 1) updateStep(currentStep + 1);
+      else openAuth('sign-in');
+    });
+    onboarding.querySelectorAll('[data-go-step]').forEach(dot => dot.addEventListener('click', () => updateStep(Number(dot.dataset.goStep))));
+    onboarding.querySelector('[data-open-auth]').addEventListener('click', event => { event.preventDefault(); openAuth('sign-in'); });
+    auth.querySelector('[data-auth-back]').addEventListener('click', event => {
+      if (event.currentTarget.dataset.backToSignIn === 'true') setAuthMode('sign-in');
+      else { window.location.hash = ''; startOnboarding(); }
+    });
+    auth.querySelectorAll('[data-switch-auth]').forEach(button => button.addEventListener('click', () => setAuthMode(button.dataset.switchAuth)));
+    auth.querySelectorAll('[data-toggle-password]').forEach(button => button.addEventListener('click', () => {
+      const input = button.closest('.app-input').querySelector('input');
+      input.type = input.type === 'password' ? 'text' : 'password';
+      button.setAttribute('aria-label', input.type === 'password' ? 'Show password' : 'Hide password');
+    }));
+    auth.querySelectorAll('[data-google-auth]').forEach(button => button.addEventListener('click', () => showToast('Google sign-in needs the farm’s OAuth setup before it can create or access an account.')));
+    auth.querySelector('[data-whatsapp-auth]').addEventListener('click', () => {
+      window.open(`https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent('Hello Mark’s Savannah Farm, I need help with my account.')}`, '_blank', 'noopener');
+    });
+    auth.querySelector('[data-forgot-password]').addEventListener('click', () => showToast('Password recovery will be available when accounts are connected to an online service.'));
+
+    const accountUsers = () => JSON.parse(localStorage.getItem('savanna-customer-accounts') || '[]');
+    const hashPassword = async (password, salt) => {
+      const saltBytes = Uint8Array.from(salt.match(/.{2}/g), byte => parseInt(byte,16));
+      const key = await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
+      const bits = await crypto.subtle.deriveBits({name:'PBKDF2',salt:saltBytes,iterations:210000,hash:'SHA-256'},key,256);
+      return Array.from(new Uint8Array(bits),byte => byte.toString(16).padStart(2,'0')).join('');
+    };
+    document.getElementById('app-sign-in').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const email = form.elements.email.value.trim().toLowerCase();
+      const error = auth.querySelector('[data-sign-in-error]');
+      const user = accountUsers().find(account => account.email === email);
+      error.classList.remove('is-visible');
+      if (!user || await hashPassword(form.elements.password.value,user.salt) !== user.passwordHash) {
+        error.textContent = 'We could not find an account with those details. Check them or create an account.';
+        error.classList.add('is-visible');
+        return;
+      }
+      if (form.elements.remember.checked) { localStorage.setItem('savanna-customer-session',email); sessionStorage.removeItem('savanna-customer-session'); }
+      else { localStorage.removeItem('savanna-customer-session'); sessionStorage.setItem('savanna-customer-session',email); }
+      window.location.href = 'customer-account.html';
+    });
+    document.getElementById('app-sign-up').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const error = auth.querySelector('[data-sign-up-error]');
+      const name = form.elements.name.value.trim();
+      const email = form.elements.email.value.trim().toLowerCase();
+      const password = form.elements.password.value;
+      error.classList.remove('is-visible');
+      if (password !== form.elements.confirm.value) { error.textContent = 'Those passwords do not match.'; error.classList.add('is-visible'); return; }
+      if (accountUsers().some(account => account.email === email)) { error.textContent = 'An account with this email already exists. Sign in instead.'; error.classList.add('is-visible'); return; }
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const saltText = Array.from(salt,byte => byte.toString(16).padStart(2,'0')).join('');
+      try {
+        const users = accountUsers();
+        users.push({name,email,phone:form.elements.phone.value.trim(),salt:saltText,passwordHash:await hashPassword(password,saltText),createdAt:new Date().toISOString()});
+        localStorage.setItem('savanna-customer-accounts',JSON.stringify(users));
+        localStorage.setItem('savanna-customer-session',email);
+      } catch {
+        error.textContent = 'This browser could not save the account. Please allow local storage and try again.';
+        error.classList.add('is-visible');
+        return;
+      }
+      window.location.href = 'customer-account.html';
+    });
+  })();
+}
+
 // Open a prefilled WhatsApp message from the contact form.
 if (document.documentElement.classList.contains('page-contact')) {
   const form = document.getElementById('contact-enquiry-form');
