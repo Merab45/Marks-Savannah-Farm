@@ -849,214 +849,206 @@ if (document.documentElement.classList.contains('page-herdbook')) {
   }
   )();
 }
-// Buyer dashboard: local profile, saved items, purchases, and farm enquiries.
+// Customer app: Home, Marketplace, Auctions, Saved, and Profile.
 if (document.documentElement.classList.contains('page-customer-account')) {
   (() => {
-    const readStore = (key, fallback) => {
-      try {
-        return JSON.parse(localStorage.getItem(key) ?? JSON.stringify(fallback));
-      } catch {
-        return fallback;
-      }
+    const catalog = [
+      ['market-cattle','Cattle','Cattle','Livestock','Assets/Cattle%20dropdown.jpg','Ask about breeds and current availability.'],
+      ['market-goats','Goats','Goats','Livestock','Assets/Goats.jpg','Ask about breeds and current availability.'],
+      ['market-sheep','Sheep','Sheep','Livestock','Assets/Sheep.jpg','Ask the farm about current stock and details.'],
+      ['market-poultry','Poultry','Poultry','Poultry','Assets/poultry%20Frming.jpg','Chicken, ducks, and turkey. Ask about availability.'],
+      ['market-pigs','Pigs','Pigs','Livestock','Assets/Pigs.jpg','Ask about breeds and current availability.'],
+      ['market-crops','Crops & produce','Crops','Crops','Assets/Crops.jpg','Ask about produce and seasonal supply.'],
+      ['market-dairy','Dairy products','Dairy','Dairy products','Assets/Dairy%20Products.jpg','Ask about milk, ghee, and other farm dairy products.'],
+      ['market-equipment','Farm equipment','Equipment','Farm equipment','Assets/Farm%20Equipments.jpg','Ask about specifications and availability.'],
+      ['market-consultancy','Agri-consultancy','Services','Agri-consultancy','Assets/Agri-Consultancy.jpg','Tell the farm what guidance your operation needs.'],
+    ].map(([id,name,group,category,image,description]) => ({id,name,group,category,type:group,image,description}));
+    const filters = ['All','Cattle','Goats','Sheep','Poultry','Pigs','Crops','Dairy','Equipment','Services'];
+    const readStore = (key,fallback) => {
+      try { return JSON.parse(localStorage.getItem(key) ?? JSON.stringify(fallback)); }
+      catch { return fallback; }
     };
-
     const email = (localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session') || '').trim().toLowerCase();
-    const users = readStore('savanna-customer-accounts', []);
-    const user = Array.isArray(users)
-      ? users.find(item => String(item.email || '').toLowerCase() === email)
-      : null;
+    const users = readStore('savanna-customer-accounts',[]);
+    const user = Array.isArray(users) ? users.find(item => String(item.email || '').toLowerCase() === email) : null;
+    if (!user) { location.replace('sign-in.html'); return; }
 
-    if (!user) {
-      location.replace('sign-in.html');
-      return;
-    }
-
+    let marketFilter = 'All';
+    let auctionTab = 'live';
+    let marketItems = [];
     let quoteTrigger = null;
 
     function initialize() {
-      renderUser();
-      renderOrders();
-      renderSavedItems();
+      renderUser(); renderMarket(); renderSaved(); renderOrders(); renderAuctionTab('live');
+      document.querySelectorAll('[data-app-view]').forEach(button => button.addEventListener('click',() => showView(button.dataset.appView)));
+      document.querySelectorAll('[data-market-open-filter]').forEach(button => button.addEventListener('click',() => {
+        marketFilter = button.dataset.marketOpenFilter; updateFilters(); showView('marketplace'); renderMarket();
+      }));
+      document.querySelectorAll('[data-market-filter]').forEach(button => button.addEventListener('click',() => { marketFilter=button.dataset.marketFilter; renderMarket(); }));
+      document.getElementById('marketSearch').addEventListener('input',renderMarket);
+      document.querySelector('[data-market-filter-help]').addEventListener('click',() => showToast('Use the category chips or search box to narrow the marketplace.'));
+      document.querySelector('[data-app-notifications]').addEventListener('click',() => showToast('Farm and auction notifications will appear here when alerts are connected.'));
+      document.querySelectorAll('[data-auction-tab]').forEach(button => button.addEventListener('click',() => renderAuctionTab(button.dataset.auctionTab)));
+      document.querySelector('[data-auction-filter]').addEventListener('click',() => showToast('Auction filters will be available when live auctions are connected.'));
+      document.getElementById('auctionContent').addEventListener('click',event => {
+        if(event.target.closest('[data-auction-preview-bid]')) showToast('Bidding is not active in this preview. Contact the farm to ask about livestock.');
+        if(event.target.closest('[data-auction-reminder]')) showToast('Auction reminders will be available when auction dates are connected.');
+      });
+      document.querySelector('[data-close-enquiry]').addEventListener('click',closeQuoteSheet);
+      document.getElementById('enquiryModal').addEventListener('click',event => { if(event.target.id==='enquiryModal') closeQuoteSheet(); });
+      document.getElementById('dashboardEnquiryForm').addEventListener('submit',sendEnquiry);
+      document.getElementById('editModal').addEventListener('click',event => { if(event.target.id==='editModal') closeEdit(); });
+      document.getElementById('editForm').addEventListener('submit',saveProfile);
+      document.addEventListener('keydown',event => { if(event.key==='Escape'){closeEdit();closeQuoteSheet();} });
+    }
 
-      document.querySelectorAll('[data-enquiry-open]').forEach(button => {
-        button.addEventListener('click', () => openQuoteSheet(button.dataset.category || ''));
+    function showView(view) {
+      document.querySelectorAll('[data-app-screen]').forEach(screen => {
+        const active=screen.dataset.appScreen===view; screen.hidden=!active; screen.classList.toggle('is-active',active);
       });
-      document.querySelector('[data-close-enquiry]').addEventListener('click', closeQuoteSheet);
-      document.getElementById('enquiryModal').addEventListener('click', event => {
-        if (event.target.id === 'enquiryModal') closeQuoteSheet();
+      document.querySelectorAll('.buyer-bottom-nav [data-app-view]').forEach(button => {
+        const active=button.dataset.appView===view; button.classList.toggle('is-active',active);
+        if(active) button.setAttribute('aria-current','page'); else button.removeAttribute('aria-current');
       });
-      document.getElementById('dashboardEnquiryForm').addEventListener('submit', sendDashboardEnquiry);
-      document.querySelectorAll('.buyer-bottom-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-          document.querySelectorAll('.buyer-bottom-nav a').forEach(item => {
-            item.classList.toggle('is-active', item === link);
-          });
-        });
-      });
-      document.getElementById('editModal').addEventListener('click', event => {
-        if (event.target.id === 'editModal') closeEdit();
-      });
-      document.addEventListener('keydown', event => {
-        if (event.key === 'Escape') {
-          closeEdit();
-          closeQuoteSheet();
-        }
-      });
-      document.getElementById('editForm').addEventListener('submit', saveProfile);
+      if(view==='marketplace') renderMarket();
+      if(view==='saved') renderSaved();
+      window.scrollTo({top:0,behavior:'smooth'});
     }
 
     function renderUser() {
-      const name = String(user.name || 'Buyer');
-      const initials = name.trim().split(/\s+/).map(part => part[0]).slice(0, 2).join('').toUpperCase() || 'M';
-      const joined = new Date(user.createdAt || Date.now());
+      const name=String(user.name||'Buyer');
+      document.getElementById('greeting').textContent=name.trim().split(/\s+/)[0]||'friend';
+      document.getElementById('avatar').textContent=name.trim().split(/\s+/).map(part=>part[0]).slice(0,2).join('').toUpperCase()||'M';
+      document.getElementById('customerName').textContent=name;
+      document.getElementById('customerEmail').textContent=user.email||'';
+      document.getElementById('customerPhone').textContent=user.phone||'Add a phone number';
+      document.getElementById('memberSince').textContent=new Date(user.createdAt||Date.now()).toLocaleDateString(undefined,{month:'long',year:'numeric'});
+    }
 
-      document.getElementById('greeting').textContent = name.trim().split(/\s+/)[0] || 'friend';
-      document.getElementById('avatar').textContent = initials;
-      document.getElementById('customerName').textContent = name;
-      document.getElementById('customerEmail').textContent = user.email || '';
-      document.getElementById('customerPhone').textContent = user.phone || 'Add a phone number';
-      document.getElementById('memberSince').textContent = joined.toLocaleDateString(undefined, {
-        month: 'long',
-        year: 'numeric',
+    function getMarketItems() {
+      const saved=readStore('herdbook-animals',[]);
+      const live=Array.isArray(saved)?saved.filter(item=>item&&item.status==='Listed'&&!item.referenceOnly&&!item.demo).map(animal=>{
+        const type=String(animal.type||'Cattle');
+        const base=catalog.find(item=>item.type.toLowerCase()===type.toLowerCase())||catalog[0];
+        return {id:`listed-${animal.id||animal.name}`,name:String(animal.name||type),group:base.group,category:type==='Chicken'?'Poultry':'Livestock',type,image:animal.image||base.image,description:[animal.breed,animal.age,animal.location].filter(Boolean).join(' · ')||'Ask the farm for listing details.',price:Number(animal.price)||0,isListed:true};
+      }):[];
+      return [...live,...catalog];
+    }
+
+    function renderMarket() {
+      marketItems=getMarketItems();
+      const search=(document.getElementById('marketSearch').value||'').trim().toLowerCase();
+      const filtered=marketItems.filter(item=>(marketFilter==='All'||item.group===marketFilter)&&[item.name,item.group,item.category,item.description].join(' ').toLowerCase().includes(search));
+      document.getElementById('market-result-note').textContent=`${filtered.length} listings and categories · Confirm availability and prices with the farm.`;
+      const grid=document.getElementById('marketGrid');
+      grid.innerHTML=filtered.length?filtered.map(marketCard).join(''):'<div class="buyer-market-empty"><strong>No matches found</strong><p>Try a different search or category.</p></div>';
+      bindMarketCardActions(grid); updateFilters();
+    }
+
+    function marketCard(item) {
+      const id=encodeURIComponent(String(item.id));
+      const saved=readFavorites().some(entry=>String(entry.id)===String(item.id));
+      const price=Number(item.price)>0?`KSh ${new Intl.NumberFormat('en-KE').format(Number(item.price))}`:'Ask for current price';
+      return `<article class="buyer-market-card"><div class="buyer-market-photo"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy"><span class="buyer-market-badge">${item.isListed?'Listed':'Ask the farm'}</span><button type="button" class="buyer-save-button${saved?' is-saved':''}" data-market-save="${id}" aria-label="${saved?'Remove':'Save'} ${escapeHtml(item.name)}">${saved?'♥':'♡'}</button></div><div class="buyer-market-card-copy"><small>${escapeHtml(item.category)}</small><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.description)}</p><strong>${price}</strong><button type="button" data-market-enquiry="${id}">View details</button></div></article>`;
+    }
+
+    function updateFilters() {
+      document.querySelectorAll('[data-market-filter]').forEach(button=>button.classList.toggle('is-active',button.dataset.marketFilter===marketFilter));
+    }
+
+    function bindMarketCardActions(grid) {
+      grid.onclick=event=>{
+        const save=event.target.closest('[data-market-save]');
+        if(save){const item=marketItems.find(entry=>String(entry.id)===decodeURIComponent(save.dataset.marketSave));if(item)toggleSave(item);return;}
+        const enquiry=event.target.closest('[data-market-enquiry]');
+        if(enquiry){const item=marketItems.find(entry=>String(entry.id)===decodeURIComponent(enquiry.dataset.marketEnquiry));if(item)openQuoteSheet(item.category,item.name);}
+      };
+    }
+
+    function readFavorites() {
+      const saved=readStore('savanna-customer-favorites',[]);
+      return Array.isArray(saved)?saved.filter(item=>item&&typeof item==='object'):[];
+    }
+
+    function toggleSave(item) {
+      const favorites=readFavorites();
+      const exists=favorites.some(entry=>String(entry.id)===String(item.id));
+      const updated=exists?favorites.filter(entry=>String(entry.id)!==String(item.id)):[...favorites,{id:item.id,name:item.name,type:item.type,category:item.category}];
+      try{localStorage.setItem('savanna-customer-favorites',JSON.stringify(updated));}
+      catch{showToast('Could not save this item on the device.');return;}
+      renderMarket(); renderSaved(); showToast(exists?'Removed from Saved.':'Added to Saved on this device.');
+    }
+
+    function renderSaved() {
+      const favorites=readFavorites();
+      const list=document.getElementById('savedList');
+      marketItems=getMarketItems();
+      if(!favorites.length){
+        list.innerHTML='<div class="buyer-market-empty"><strong>No saved items yet</strong><p>Save livestock and farm products from the Marketplace to keep them here.</p><button type="button" data-open-marketplace>Browse Marketplace</button></div>';
+        list.querySelector('[data-open-marketplace]').addEventListener('click',()=>showView('marketplace'));
+        return;
+      }
+      list.innerHTML=favorites.map(saved=>{
+        const item=marketItems.find(entry=>String(entry.id)===String(saved.id)||entry.name===saved.name);
+        return item?marketCard(item):`<article class="buyer-saved-fallback"><strong>${escapeHtml(saved.name||saved.type||'Saved farm item')}</strong><small>Saved on this device</small></article>`;
+      }).join('');
+      bindMarketCardActions(list);
+    }
+
+    function renderAuctionTab(tab) {
+      auctionTab=['live','upcoming','my-bids','results'].includes(tab)?tab:'live';
+      document.querySelectorAll('[data-auction-tab]').forEach(button=>{
+        const active=button.dataset.auctionTab===auctionTab;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));
       });
+      const content=document.getElementById('auctionContent');
+      if(auctionTab==='live') content.innerHTML=`<article class="buyer-auction-card"><div class="buyer-auction-photo"><img src="Assets/Cattle%20dropdown.jpg" alt="Boran bull in a green field"><span>Preview only</span></div><div class="buyer-auction-copy"><h2>Premium Boran Bull</h2><p>Male · 3 years · Sample listing details</p><div class="buyer-auction-prices"><div><small>Sample current bid</small><strong>KSh 85,000</strong></div><div><small>Sample starting bid</small><strong>KSh 60,000</strong></div></div><div class="buyer-auction-countdown">Sample countdown · 02d : 14h : 32m</div><div class="buyer-auction-progress"><span></span></div><button type="button" class="buyer-place-bid" data-auction-preview-bid>Place Your Bid</button><p class="buyer-demo-caption">Illustrative values only. This preview does not accept bids.</p></div></article>`;
+      else if(auctionTab==='upcoming') content.innerHTML=`<article class="buyer-upcoming-card"><img src="Assets/Goats.jpg" alt="Goats at a farm"><div><span class="buyer-market-badge">Preview</span><h2>Boer Goats — 10 Heads</h2><p>Sample upcoming auction · starts in 3 days</p><button type="button" data-auction-reminder>Set Reminder</button></div></article><p class="buyer-demo-caption">Example event only. Confirm auction dates with the farm.</p>`;
+      else if(auctionTab==='my-bids') content.innerHTML='<div class="buyer-market-empty"><strong>No bids yet</strong><p>Your bids will appear here when live bidding is connected to the app.</p></div>';
+      else content.innerHTML='<div class="buyer-market-empty"><strong>No auction results yet</strong><p>Completed auctions and confirmed winners will appear here when auction history is available.</p></div>';
     }
 
     function renderOrders() {
-      const orders = readStore('savanna-customer-orders', []);
-      const safeOrders = Array.isArray(orders)
-        ? orders.filter(order => order && (!order.email || String(order.email).toLowerCase() === email))
-        : [];
-      const list = document.getElementById('ordersList');
-
-      document.getElementById('orderCount').textContent = String(safeOrders.length);
-      if (!safeOrders.length) {
-        list.innerHTML = '<div class="buyer-empty-state"><strong>No purchases recorded yet</strong><p>When you confirm a purchase with the farm, it can be added here.</p><a href="products-and-services.html">Explore products and services</a></div>';
-        return;
-      }
-
-      list.innerHTML = safeOrders.slice(0, 5).map(order => {
-        const title = escapeHtml(order.animalName || order.listingName || 'Farm purchase');
-        const reference = escapeHtml(order.orderNumber || order.createdAt || 'Arranged directly with the farm');
-        const status = escapeHtml(order.status || 'Recorded');
-        const amount = Number(order.amount);
-        const amountLabel = amount > 0 ? ` · KSh ${new Intl.NumberFormat('en-KE').format(amount)}` : '';
-        return `<article class="buyer-order-entry"><div><strong>${title}</strong><small>${reference}${amountLabel}</small></div><span class="buyer-order-status">${status}</span></article>`;
-      }).join('');
+      const orders=readStore('savanna-customer-orders',[]);
+      const safe=Array.isArray(orders)?orders.filter(order=>order&&(!order.email||String(order.email).toLowerCase()===email)):[];
+      const list=document.getElementById('ordersList');
+      if(!safe.length){list.innerHTML='<div class="buyer-market-empty"><strong>No purchases recorded yet</strong><p>When you arrange a purchase directly with the farm, it can be noted here.</p></div>';return;}
+      list.innerHTML=safe.slice(0,5).map(order=>`<article class="buyer-order-entry"><div><strong>${escapeHtml(order.animalName||order.listingName||'Farm purchase')}</strong><small>${escapeHtml(order.orderNumber||order.createdAt||'Arranged with the farm')}</small></div><span class="buyer-order-status">${escapeHtml(order.status||'Recorded')}</span></article>`).join('');
     }
 
-    function renderSavedItems() {
-      const saved = readStore('savanna-customer-favorites', []);
-      const items = Array.isArray(saved) ? saved.filter(item => item && typeof item === 'object') : [];
-      const list = document.getElementById('savedList');
-
-      document.getElementById('savedCount').textContent = String(items.length);
-      if (!items.length) {
-        list.innerHTML = '<div class="buyer-empty-state"><strong>Your shortlist is empty</strong><p>Save livestock while browsing and it will appear here on this device.</p><a href="index.html#livestock">Browse livestock</a></div>';
-        return;
-      }
-
-      list.innerHTML = items.slice(0, 5).map(item => {
-        const name = escapeHtml(item.name || item.type || 'Saved farm item');
-        const type = String(item.type || 'Livestock');
-        const href = `index.html?animal=${encodeURIComponent(type)}#livestock`;
-        return `<a class="buyer-saved-entry" href="${href}"><span><strong>${name}</strong><small>${escapeHtml(type)} · saved on this device</small></span><span class="buyer-order-status">Saved</span></a>`;
-      }).join('');
-    }
-
-    function escapeHtml(value) {
-      return String(value ?? '').replace(/[&<>"']/g, character => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-      })[character]);
-    }
-
-    function openEdit() {
-      document.getElementById('editName').value = user.name || '';
-      document.getElementById('editEmail').value = user.email || '';
-      document.getElementById('editPhone').value = user.phone || '';
-      document.getElementById('editModal').classList.add('open');
-      document.getElementById('editName').focus();
-    }
-
-    function closeEdit() {
-      document.getElementById('editModal').classList.remove('open');
-    }
-
-    function saveProfile(event) {
-      event.preventDefault();
-      user.name = document.getElementById('editName').value.trim();
-      user.phone = document.getElementById('editPhone').value.trim();
-      const updated = users.map(item => String(item.email || '').toLowerCase() === email ? user : item);
-
-      try {
-        localStorage.setItem('savanna-customer-accounts', JSON.stringify(updated));
-      } catch {
-        showToast('Could not save: browser storage is unavailable.');
-        return;
-      }
-
-      renderUser();
-      closeEdit();
-      showToast('Your profile details have been saved in this browser.');
-    }
-
-    function openQuoteSheet(category = '') {
-      quoteTrigger = document.activeElement;
-      const modal = document.getElementById('enquiryModal');
-      const form = document.getElementById('dashboardEnquiryForm');
-      form.reset();
-      if (category) form.elements.category.value = category;
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
-      window.setTimeout(() => form.elements.item.focus(), 30);
+    function openQuoteSheet(category='',item='') {
+      quoteTrigger=document.activeElement;
+      const modal=document.getElementById('enquiryModal');
+      const form=document.getElementById('dashboardEnquiryForm');
+      form.reset(); if(category)form.elements.category.value=category; if(item)form.elements.item.value=item;
+      modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');window.setTimeout(()=>form.elements.item.focus(),30);
     }
 
     function closeQuoteSheet() {
-      const modal = document.getElementById('enquiryModal');
-      if (!modal.classList.contains('is-open')) return;
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden', 'true');
-      quoteTrigger?.focus();
+      const modal=document.getElementById('enquiryModal');if(!modal.classList.contains('is-open'))return;
+      modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');quoteTrigger?.focus();
     }
 
-    function sendDashboardEnquiry(event) {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      const message = [
-        'Hello Mark’s Savannah Farm, I’d like to make an enquiry.',
-        `Category: ${data.get('category')}`,
-        `Looking for: ${data.get('item')}`,
-        data.get('quantity') ? `Quantity: ${data.get('quantity')}` : '',
-        `County: ${data.get('county')}`,
-        data.get('details') ? `Details: ${data.get('details')}` : '',
-        `Name: ${user.name || 'Not provided'}`,
-        `Phone: ${user.phone || 'Not provided'}`,
-        `Email: ${user.email || 'Not provided'}`,
-      ].filter(Boolean).join('\n');
-      const url = `https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent(message)}`;
-
-      window.open(url, '_blank', 'noopener,noreferrer');
-      closeQuoteSheet();
+    function sendEnquiry(event) {
+      event.preventDefault();const data=new FormData(event.currentTarget);
+      const message=['Hello Mark’s Savannah Farm, I’d like to make an enquiry.',`Category: ${data.get('category')}`,`Looking for: ${data.get('item')}`,data.get('quantity')?`Quantity: ${data.get('quantity')}`:'',`County: ${data.get('county')}`,data.get('details')?`Details: ${data.get('details')}`:'',`Name: ${user.name||'Not provided'}`,`Phone: ${user.phone||'Not provided'}`,`Email: ${user.email||'Not provided'}`].filter(Boolean).join('\n');
+      window.open(`https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent(message)}`,'_blank','noopener,noreferrer');closeQuoteSheet();
     }
 
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
-      window.setTimeout(() => toast.classList.remove('show'), 2600);
+    function openEdit() {
+      document.getElementById('editName').value=user.name||'';document.getElementById('editEmail').value=user.email||'';document.getElementById('editPhone').value=user.phone||'';document.getElementById('editModal').classList.add('open');document.getElementById('editName').focus();
     }
-
-    function signOut(event) {
-      event.preventDefault();
-      localStorage.removeItem('savanna-customer-session');
-      sessionStorage.removeItem('savanna-customer-session');
-      location.href = 'index.html';
+    function closeEdit(){document.getElementById('editModal').classList.remove('open');}
+    function saveProfile(event){
+      event.preventDefault();user.name=document.getElementById('editName').value.trim();user.phone=document.getElementById('editPhone').value.trim();
+      const updated=users.map(item=>String(item.email||'').toLowerCase()===email?user:item);
+      try{localStorage.setItem('savanna-customer-accounts',JSON.stringify(updated));}catch{showToast('Could not save: browser storage is unavailable.');return;}
+      renderUser();closeEdit();showToast('Your profile details have been saved on this device.');
     }
+    function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));}
+    function showToast(message){const toast=document.getElementById('toast');toast.textContent=message;toast.classList.add('show');window.setTimeout(()=>toast.classList.remove('show'),2800);}
+    function signOut(event){event.preventDefault();localStorage.removeItem('savanna-customer-session');sessionStorage.removeItem('savanna-customer-session');location.href='index.html';}
 
-    Object.assign(window, { openEdit, closeEdit, signOut });
+    Object.assign(window,{openEdit,closeEdit,signOut});
     initialize();
   })();
 }

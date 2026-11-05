@@ -5,94 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#075c3b">
     <meta name="robots" content="noindex">
-    <meta name="description" content="Your Mark’s Savannah Farm buyer dashboard for farm product enquiries and account details.">
+    <meta name="description" content="Discover farm products, livestock, and auction previews from Mark’s Savannah Farm.">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
-    <title>My Farm Dashboard | Mark’s Savannah Farm</title>
-    <link rel="stylesheet" href="CSS/site.css?v=124">
+    <title>Mark’s Savannah Farm App</title>
+    <link rel="stylesheet" href="CSS/site.css?v=126">
   </head>
   <body class="page-customer-account">
     <div class="buyer-app">
       <header class="buyer-topbar">
         <a class="buyer-brand" href="index.html" aria-label="Mark’s Savannah Farm home">
           <img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt="">
-          <span><strong>MARK’S</strong><small>SAVANNAH FARM</small></span>
+          <span><strong>Mark’s</strong><small>Savannah Farm</small></span>
         </a>
-        <a class="buyer-profile-shortcut" href="#profile" aria-label="Go to your profile"><span id="avatar">M</span></a>
+        <div class="buyer-header-actions">
+          <button class="buyer-icon-button" type="button" data-app-notifications aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-8 12h4"/></svg>
+          </button>
+          <button class="buyer-icon-button" type="button" data-app-view="profile" aria-label="Open your profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          </button>
+        </div>
       </header>
 
-      <main class="buyer-main" id="overview">
-        <section class="buyer-welcome">
-          <p class="buyer-kicker">YOUR FARM DASHBOARD</p>
-          <h1>Welcome back, <span id="greeting">friend</span></h1>
-          <p class="buyer-welcome-copy">What are you looking for today? We’ll help you connect with the farm.</p>
-          <button class="buyer-primary-action" type="button" data-enquiry-open>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>
-            Start an enquiry
-          </button>
-          <div class="buyer-region"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>Serving Laikipia, Narok &amp; Nakuru</div>
-        </section>
-
-        <section class="buyer-section" aria-labelledby="category-heading">
-          <div class="buyer-section-heading"><div><p class="buyer-kicker">FROM THE FARM</p><h2 id="category-heading">What do you need?</h2></div><a href="products-and-services.html">Browse all</a></div>
-          <div class="buyer-category-grid">
-            <button class="buyer-category" type="button" data-enquiry-open data-category="Livestock"><span class="buyer-category-icon">🐄</span><strong>Livestock</strong><small>Cattle, goats, sheep, pigs</small></button>
-            <button class="buyer-category" type="button" data-enquiry-open data-category="Crops"><span class="buyer-category-icon">🌱</span><strong>Crops</strong><small>Farm produce &amp; seed</small></button>
-            <button class="buyer-category" type="button" data-enquiry-open data-category="Poultry"><span class="buyer-category-icon">🐓</span><strong>Poultry</strong><small>Chicken, ducks, turkey</small></button>
-            <button class="buyer-category" type="button" data-enquiry-open data-category="Dairy products"><span class="buyer-category-icon">🥛</span><strong>Dairy</strong><small>Fresh farm dairy</small></button>
-            <button class="buyer-category" type="button" data-enquiry-open data-category="Farm equipment"><span class="buyer-category-icon">🚜</span><strong>Equipment</strong><small>Tools &amp; machinery</small></button>
-            <button class="buyer-category" type="button" data-enquiry-open data-category="Agri-consultancy"><span class="buyer-category-icon">🌾</span><strong>Consultancy</strong><small>Advice for your farm</small></button>
+      <main class="buyer-main">
+        <section class="buyer-screen buyer-home-screen is-active" data-app-screen="home" aria-labelledby="home-title">
+          <div class="home-greeting">
+            <h1 id="home-title">Good day, <span id="greeting">friend</span> <span aria-hidden="true">👋</span></h1>
+            <p>Welcome to Mark’s Savannah Farm</p>
           </div>
+          <article class="buyer-home-hero">
+            <img src="Assets/Hero%20background.png" alt="Cattle grazing in a green farm field">
+            <div class="buyer-home-hero-copy">
+              <h2>Growing food today.<br>Building a better tomorrow.</h2>
+              <button class="buyer-gold-button" type="button" data-app-view="marketplace">Explore the farm</button>
+            </div>
+          </article>
+
+          <section class="buyer-home-auction" aria-labelledby="home-auction-title">
+            <div class="buyer-home-auction-top"><h2 id="home-auction-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5 5 5m-8-2 5 5m-7-9 8 8-2 2-8-8zm-3 9 5 5m-8 1 8-8 2 2-8 8z"/></svg>Live Auctions</h2><span class="buyer-preview-badge">Preview</span></div>
+            <div class="buyer-home-auction-body">
+              <img src="Assets/Cattle%20dropdown.jpg" alt="Boran cattle at a farm">
+              <div class="buyer-home-auction-info">
+                <strong>Premium Boran Bull</strong>
+                <small>Illustrative auction preview</small>
+                <b>KSh 85,000</b>
+                <div class="buyer-home-auction-meta">Sample countdown · 02d : 14h : 32m</div>
+                <button type="button" data-app-view="auctions">View auction</button>
+              </div>
+            </div>
+            <p class="buyer-demo-caption">Sample animal, price and timing only. Bidding is not active.</p>
+          </section>
+
+          <section class="buyer-home-categories" aria-labelledby="home-categories-title">
+            <div class="buyer-section-heading"><div><p class="buyer-kicker">FARM MARKETPLACE</p><h2 id="home-categories-title">What are you looking for today?</h2></div><button type="button" data-app-view="marketplace">See all</button></div>
+            <div class="buyer-home-category-grid">
+              <button type="button" data-market-open-filter="Cattle"><img src="Assets/Cattle%20dropdown.jpg" alt=""><strong>Livestock</strong><small>Cattle, goats, sheep, pigs</small></button>
+              <button type="button" data-market-open-filter="Crops"><img src="Assets/Crops.jpg" alt=""><strong>Crops</strong><small>Farm produce</small></button>
+              <button type="button" data-market-open-filter="Poultry"><img src="Assets/poultry%20Frming.jpg" alt=""><strong>Poultry</strong><small>Layers &amp; broilers</small></button>
+              <button type="button" data-market-open-filter="Dairy"><img src="Assets/Dairy%20Products.jpg" alt=""><strong>Dairy</strong><small>Milk &amp; more</small></button>
+            </div>
+          </section>
+
+          <a class="buyer-learning-card" href="blog.html#guide-enterprise">
+            <span class="buyer-learning-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5V21m4-13h8m-8 4h7"/></svg></span>
+            <span class="buyer-learning-copy"><strong>Learn something new</strong><small>Practical farming tips, livestock care, and agricultural insights.</small><b>Explore guides</b></span>
+            <img src="Assets/Crops.jpg" alt="Young crops growing in a field">
+          </a>
         </section>
 
-        <section class="buyer-section buyer-activity-section" aria-labelledby="activity-heading">
-          <div class="buyer-section-heading"><div><p class="buyer-kicker">YOUR ACTIVITY</p><h2 id="activity-heading">Your farm activity</h2></div></div>
-          <div class="buyer-activity-grid">
-            <a class="buyer-activity-card" href="#orders"><span class="buyer-activity-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 8-4 8 4v10l-8 4-8-4z"/><path d="m4 7 8 5 8-5m-8 5v9"/></svg></span><span class="buyer-activity-value" id="orderCount">0</span><span class="buyer-activity-label">Purchases recorded</span></a>
-            <a class="buyer-activity-card" href="#saved"><span class="buyer-activity-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.7c0 5.2-8.8 11-8.8 11S3.2 13.9 3.2 8.7A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.8 2.5Z"/></svg></span><span class="buyer-activity-value" id="savedCount">0</span><span class="buyer-activity-label">Saved items</span></a>
+        <section class="buyer-screen" data-app-screen="marketplace" aria-labelledby="market-title" hidden>
+          <div class="buyer-view-heading"><div><p class="buyer-kicker">FARM PRODUCTS</p><h1 id="market-title">Our Marketplace</h1><p>Quality livestock and farm products</p></div><button class="buyer-icon-button" type="button" data-market-filter-help aria-label="Marketplace filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button></div>
+          <label class="buyer-market-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="marketSearch" type="search" placeholder="Search livestock, products..." aria-label="Search marketplace"></label>
+          <div class="buyer-market-filters" role="group" aria-label="Filter marketplace categories">
+            <button class="is-active" type="button" data-market-filter="All">All</button><button type="button" data-market-filter="Cattle">Cattle</button><button type="button" data-market-filter="Goats">Goats</button><button type="button" data-market-filter="Sheep">Sheep</button><button type="button" data-market-filter="Poultry">Poultry</button><button type="button" data-market-filter="Pigs">Pigs</button><button type="button" data-market-filter="Crops">Crops</button><button type="button" data-market-filter="Dairy">Dairy</button><button type="button" data-market-filter="Equipment">Equipment</button><button type="button" data-market-filter="Services">Services</button>
           </div>
+          <div class="buyer-market-heading"><div><h2>Browse the farm</h2><p id="market-result-note">Availability and pricing are confirmed with the farm.</p></div></div>
+          <div class="buyer-market-grid" id="marketGrid"></div>
         </section>
 
-        <section class="buyer-section buyer-panel" id="orders" aria-labelledby="orders-heading">
-          <div class="buyer-section-heading"><div><p class="buyer-kicker">PAST PURCHASES</p><h2 id="orders-heading">Purchases with the farm</h2></div></div>
-          <p class="buyer-section-copy">Purchases you’ve arranged directly with Mark’s Savannah Farm.</p>
-          <div id="ordersList" class="buyer-orders-list"></div>
+        <section class="buyer-screen" data-app-screen="auctions" aria-labelledby="auction-title" hidden>
+          <div class="buyer-auction-title-row"><button class="buyer-back-button" type="button" data-app-view="home" aria-label="Back to home">‹</button><h1 id="auction-title">Auctions</h1><button class="buyer-icon-button" type="button" data-auction-filter aria-label="Auction filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6.5 7.5V19l-3 1v-7.5z"/></svg></button></div>
+          <div class="buyer-auction-tabs" role="tablist" aria-label="Auction views"><button class="is-active" type="button" role="tab" aria-selected="true" data-auction-tab="live">Live (1)</button><button type="button" role="tab" aria-selected="false" data-auction-tab="upcoming">Upcoming (1)</button><button type="button" role="tab" aria-selected="false" data-auction-tab="my-bids">My Bids</button><button type="button" role="tab" aria-selected="false" data-auction-tab="results">Results</button></div>
+          <div class="buyer-demo-note"><strong>Design preview:</strong> auction details and amounts below are examples; no real bids are accepted.</div>
+          <div class="buyer-auction-content" id="auctionContent"></div>
         </section>
 
-        <section class="buyer-section buyer-panel" id="saved" aria-labelledby="saved-heading">
-          <div class="buyer-section-heading"><div><p class="buyer-kicker">YOUR SHORTLIST</p><h2 id="saved-heading">Saved items</h2></div><a href="index.html#livestock">Browse livestock</a></div>
-          <div id="savedList" class="buyer-saved-list"></div>
+        <section class="buyer-screen" data-app-screen="saved" aria-labelledby="saved-title" hidden>
+          <div class="buyer-view-heading"><div><p class="buyer-kicker">YOUR SHORTLIST</p><h1 id="saved-title">Saved</h1><p>Products and livestock saved on this device</p></div></div>
+          <div class="buyer-market-grid" id="savedList"></div>
         </section>
 
-        <section class="buyer-section buyer-panel" id="profile" aria-labelledby="profile-heading">
-          <div class="buyer-section-heading"><div><p class="buyer-kicker">YOUR DETAILS</p><h2 id="profile-heading">Personal details</h2></div><button class="buyer-text-button" type="button" onclick="openEdit()">Edit</button></div>
-          <dl class="buyer-profile-grid">
-            <div><dt>Full name</dt><dd id="customerName"></dd></div>
-            <div><dt>Email address</dt><dd id="customerEmail"></dd></div>
-            <div><dt>Phone number</dt><dd id="customerPhone"></dd></div>
-            <div><dt>Account created</dt><dd id="memberSince"></dd></div>
-          </dl>
+        <section class="buyer-screen" data-app-screen="profile" aria-labelledby="profile-title" hidden>
+          <div class="buyer-view-heading"><div><p class="buyer-kicker">YOUR ACCOUNT</p><h1 id="profile-title">Profile</h1><p>Your farm contact details</p></div><button class="buyer-text-button" type="button" onclick="openEdit()">Edit</button></div>
+          <section class="buyer-profile-card"><div class="buyer-profile-avatar" id="avatar">M</div><div><strong id="customerName"></strong><small id="customerEmail"></small></div></section>
+          <section class="buyer-panel"><h2>Personal details</h2><dl class="buyer-profile-grid"><div><dt>Phone number</dt><dd id="customerPhone"></dd></div><div><dt>Account created</dt><dd id="memberSince"></dd></div></dl></section>
+          <section class="buyer-panel buyer-profile-orders"><div class="buyer-section-heading"><div><p class="buyer-kicker">PURCHASE HISTORY</p><h2>Purchases with the farm</h2></div></div><div id="ordersList" class="buyer-orders-list"></div></section>
+          <section class="buyer-panel"><div class="buyer-section-heading"><div><p class="buyer-kicker">WE’RE HERE TO HELP</p><h2>Talk to the farm</h2></div></div><div class="buyer-contact-actions"><a href="#" data-contact-whatsapp target="_blank" rel="noopener"><span>WhatsApp</span><small>Message the farm</small></a><a href="#" data-contact-phone><span>Call</span><small data-farm-phone></small></a><a href="#" data-contact-email><span>Email</span><small>Send us a message</small></a></div></section>
+          <p class="buyer-account-note">Account and saved items are stored on this device. Online bidding and order tracking are not connected.</p>
+          <a class="buyer-signout" href="index.html" onclick="signOut(event)">Sign out</a>
         </section>
-
-        <section class="buyer-section buyer-panel buyer-help-panel" id="help" aria-labelledby="help-heading">
-          <div class="buyer-section-heading"><div><p class="buyer-kicker">WE’RE HERE TO HELP</p><h2 id="help-heading">Talk to the farm</h2></div></div>
-          <div class="buyer-contact-actions">
-            <a href="#" data-contact-whatsapp target="_blank" rel="noopener"><span>WhatsApp</span><small>Message the farm</small></a>
-            <a href="#" data-contact-phone><span>Call</span><small data-farm-phone></small></a>
-            <a href="#" data-contact-email><span>Email</span><small>Send us a message</small></a>
-          </div>
-          <p class="buyer-safety-note">Confirm availability, final prices, payment details, and collection or delivery arrangements directly with the farm. Never share your M-Pesa PIN or one-time code.</p>
-        </section>
-
-        <div class="buyer-account-note">Your account and saved activity are stored on this device. Online order tracking is not connected yet.</div>
-        <a class="buyer-signout" href="index.html" onclick="signOut(event)">Sign out</a>
       </main>
 
-      <nav class="buyer-bottom-nav" aria-label="Dashboard navigation">
-        <a class="is-active" href="#overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
-        <a href="products-and-services.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v15H4z"/><path d="M8 9h8m-8 4h8m-8 4h5"/></svg><span>Browse</span></a>
-        <a href="#saved"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.7c0 5.2-8.8 11-8.8 11S3.2 13.9 3.2 8.7A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.8 2.5Z"/></svg><span>Saved</span></a>
-        <a href="#profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Account</span></a>
+      <nav class="buyer-bottom-nav" aria-label="App navigation">
+        <button class="is-active" type="button" data-app-view="home" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></button>
+        <button type="button" data-app-view="marketplace"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18l-1.5 12h-15z"/><path d="M8 8a4 4 0 0 1 8 0m-7 5v3m6-3v3"/></svg><span>Marketplace</span></button>
+        <button type="button" data-app-view="auctions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5 5 5m-8-2 5 5m-7-9 8 8-2 2-8-8zm-3 9 5 5m-8 1 8-8 2 2-8 8z"/></svg><span>Auctions</span></button>
+        <button type="button" data-app-view="saved"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Saved</span></button>
+        <button type="button" data-app-view="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Profile</span></button>
       </nav>
     </div>
 
@@ -119,6 +139,6 @@
       </form>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="JS/site.js?v=96"></script>
+    <script src="JS/site.js?v=98"></script>
   </body>
 </html>
