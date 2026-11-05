@@ -5801,5 +5801,108 @@ html.page-farm-app .app-splash.is-leaving { transition-duration:.4s; }
   html.page-farm-app .app-splash.is-leaving { transition:none!important; }
 }
 
+/* Phone-first buyer dashboard */
+html.page-customer-account { background:#f3f6f1; color:#18271d; font-family:'DM Sans',Arial,sans-serif; }
+html.page-customer-account body { min-height:100vh; margin:0; background:#f3f6f1; color:#18271d; font:15px/1.5 'DM Sans',Arial,sans-serif; }
+html.page-customer-account .buyer-app { width:min(100%,560px); min-height:100vh; margin:0 auto; padding:0 0 calc(82px + env(safe-area-inset-bottom)); background:#f3f6f1; }
+html.page-customer-account .buyer-topbar { position:sticky; z-index:20; top:0; display:flex; height:68px; align-items:center; justify-content:space-between; padding:0 20px; border-bottom:1px solid #e7ece5; background:#ffffffed; backdrop-filter:blur(14px); }
+html.page-customer-account .buyer-brand { display:flex; align-items:center; gap:10px; color:#084c2d; text-decoration:none; }
+html.page-customer-account a.buyer-brand { color:#084c2d; }
+html.page-customer-account .buyer-brand img { width:42px; height:42px; border-radius:50%; object-fit:contain; }
+html.page-customer-account .buyer-brand strong, html.page-customer-account .buyer-brand small { display:block; line-height:1.05; }
+html.page-customer-account .buyer-brand strong { font:800 17px/1 Manrope,'DM Sans',sans-serif; letter-spacing:.02em; }
+html.page-customer-account .buyer-brand small { margin-top:4px; font-size:10px; font-weight:800; letter-spacing:.13em; }
+html.page-customer-account .buyer-profile-shortcut { display:grid; width:40px; height:40px; place-items:center; border-radius:50%; background:#e4f0e3; color:#075c3b; text-decoration:none; }
+html.page-customer-account .buyer-profile-shortcut span { font-size:14px; font-weight:800; }
+html.page-farm-app .social-auth-options { display:flex; align-items:center; justify-content:center; gap:12px; }
+html.page-farm-app .social-auth-options .social-auth-button { display:grid; width:54px; height:50px; min-height:50px; flex:none; place-items:center; padding:0; border-radius:15px; }
+html.page-farm-app .social-auth-options .google-mark { width:21px; height:21px; }
+html.page-farm-app .social-auth-options .facebook-mark, html.page-farm-app .social-auth-options .apple-mark { display:block; width:21px; height:21px; flex:none; }
+html.page-farm-app .social-auth-options .apple-mark { color:#111; }
+html.page-customer-account .buyer-main { display:grid; gap:23px; padding:19px 16px 12px; }
+html.page-customer-account .buyer-welcome { padding:23px 21px 20px; overflow:hidden; border-radius:23px; background:radial-gradient(circle at 92% 12%,#3e9e50 0,transparent 36%),linear-gradient(145deg,#075c38,#053d29 78%); color:#fff; box-shadow:0 12px 30px #06472a25; }
+html.page-customer-account .buyer-kicker { margin:0 0 7px; color:#568b60; font-size:10px; font-weight:800; letter-spacing:.13em; }
+html.page-customer-account .buyer-welcome .buyer-kicker { color:#b2e6b4; }
+html.page-customer-account .buyer-welcome h1 { margin:0; font:800 clamp(25px,7vw,32px)/1.14 Manrope,'DM Sans',sans-serif; letter-spacing:-.8px; }
+html.page-customer-account .buyer-welcome-copy { max-width:340px; margin:9px 0 17px; color:#e2f0e4; font-size:14px; line-height:1.5; }
+html.page-customer-account .buyer-primary-action { display:flex; min-height:48px; align-items:center; justify-content:center; gap:9px; padding:0 18px; border:0; border-radius:15px; background:#a5ec45; color:#113b21; font:800 15px 'DM Sans',sans-serif; text-decoration:none; cursor:pointer; transition:transform .18s ease,background .18s ease; }
+html.page-customer-account .buyer-primary-action:hover { transform:translateY(-1px); background:#b8f36b; }
+html.page-customer-account .buyer-primary-action svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+html.page-customer-account .buyer-region { display:flex; align-items:center; gap:7px; margin-top:15px; color:#d5ead6; font-size:11px; font-weight:600; }
+html.page-customer-account .buyer-region svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.8; }
+html.page-customer-account .buyer-section { min-width:0; scroll-margin-top:82px; }
+html.page-customer-account .buyer-section-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin:0 1px 12px; }
+html.page-customer-account .buyer-section-heading .buyer-kicker { margin-bottom:3px; }
+html.page-customer-account .buyer-section-heading h2 { margin:0; color:#173a25; font:800 19px/1.2 Manrope,'DM Sans',sans-serif; letter-spacing:-.4px; }
+html.page-customer-account .buyer-section-heading > a, html.page-customer-account .buyer-text-button { padding:0; border:0; background:transparent; color:#08723e; font:700 12px 'DM Sans',sans-serif; text-decoration:none; cursor:pointer; }
+html.page-customer-account .buyer-category-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+html.page-customer-account .buyer-category { display:grid; min-height:130px; align-content:start; justify-items:start; gap:5px; padding:13px; border:1px solid #e5ebe3; border-radius:17px; background:#fff; color:#183a25; text-align:left; box-shadow:0 5px 16px #183d2508; cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+html.page-customer-account .buyer-category:hover, html.page-customer-account .buyer-category:focus-visible { transform:translateY(-2px); border-color:#acd1a9; box-shadow:0 10px 24px #183d2511; }
+html.page-customer-account .buyer-category-icon { display:grid; width:37px; height:37px; place-items:center; margin-bottom:3px; border-radius:12px; background:#edf6e9; font-size:21px; }
+html.page-customer-account .buyer-category strong { font-size:14px; line-height:1.2; }
+html.page-customer-account .buyer-category small { color:#718075; font-size:11px; line-height:1.3; }
+html.page-customer-account .buyer-activity-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+html.page-customer-account .buyer-activity-card { display:grid; grid-template-columns:42px 1fr; grid-template-rows:auto auto; align-items:center; column-gap:10px; min-height:75px; padding:12px; border:1px solid #e4ebe2; border-radius:16px; background:#fff; color:#183a25; text-decoration:none; }
+html.page-customer-account .buyer-activity-icon { display:grid; grid-row:1/3; width:40px; height:40px; place-items:center; border-radius:13px; background:#edf6e9; color:#08723e; }
+html.page-customer-account .buyer-activity-icon svg { width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+html.page-customer-account .buyer-activity-value { font:800 19px/1 Manrope,'DM Sans',sans-serif; }
+html.page-customer-account .buyer-activity-label { color:#66776a; font-size:10px; font-weight:600; }
+html.page-customer-account .buyer-panel { padding:16px; border:1px solid #e4ebe2; border-radius:18px; background:#fff; box-shadow:0 5px 18px #183d2507; }
+html.page-customer-account .buyer-panel .buyer-section-heading { margin:0 0 7px; }
+html.page-customer-account .buyer-section-copy { margin:0 0 12px; color:#718075; font-size:12px; }
+html.page-customer-account .buyer-orders-list, html.page-customer-account .buyer-saved-list { display:grid; gap:9px; }
+html.page-customer-account .buyer-empty-state { display:grid; justify-items:start; gap:5px; padding:14px; border-radius:13px; background:#f5f8f3; }
+html.page-customer-account .buyer-empty-state strong { color:#23442e; font-size:13px; }
+html.page-customer-account .buyer-empty-state p { margin:0; color:#718075; font-size:11px; line-height:1.45; }
+html.page-customer-account .buyer-empty-state a { margin-top:5px; color:#08723e; font-size:12px; font-weight:800; text-decoration:none; }
+html.page-customer-account .buyer-order-entry, html.page-customer-account .buyer-saved-entry { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 12px; border:1px solid #e9eee7; border-radius:12px; }
+html.page-customer-account .buyer-order-entry strong, html.page-customer-account .buyer-saved-entry strong { display:block; color:#23442e; font-size:12px; }
+html.page-customer-account .buyer-order-entry small, html.page-customer-account .buyer-saved-entry small { display:block; margin-top:3px; color:#718075; font-size:10px; }
+html.page-customer-account .buyer-order-status { flex:none; padding:5px 8px; border-radius:999px; background:#eff5e9; color:#446745; font-size:10px; font-weight:700; }
+html.page-customer-account .buyer-profile-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px 10px; margin:14px 0 0; }
+html.page-customer-account .buyer-profile-grid div { min-width:0; }
+html.page-customer-account .buyer-profile-grid dt { margin-bottom:3px; color:#7a887d; font-size:10px; font-weight:700; }
+html.page-customer-account .buyer-profile-grid dd { overflow-wrap:anywhere; margin:0; color:#24442f; font-size:12px; font-weight:700; }
+html.page-customer-account .buyer-contact-actions { display:grid; gap:8px; margin-top:13px; }
+html.page-customer-account .buyer-contact-actions a { display:flex; justify-content:space-between; gap:12px; padding:11px 12px; border-radius:12px; background:#f5f8f3; color:#21432d; text-decoration:none; }
+html.page-customer-account .buyer-contact-actions a span { font-size:12px; font-weight:800; }
+html.page-customer-account .buyer-contact-actions a small { color:#6c7b70; font-size:10px; }
+html.page-customer-account .buyer-safety-note, html.page-customer-account .buyer-account-note { color:#6c7b70; font-size:10px; line-height:1.5; }
+html.page-customer-account .buyer-safety-note { margin:12px 0 0; padding:11px; border-radius:11px; background:#f8f5e9; }
+html.page-customer-account .buyer-account-note { padding:0 8px; text-align:center; }
+html.page-customer-account .buyer-signout { justify-self:center; padding:3px 12px 12px; color:#7a564a; font-size:12px; font-weight:800; text-decoration:none; }
+html.page-customer-account .buyer-bottom-nav { position:fixed; z-index:30; right:0; bottom:0; left:0; display:grid; grid-template-columns:repeat(4,1fr); width:min(100%,560px); min-height:67px; margin:auto; padding:8px 10px calc(7px + env(safe-area-inset-bottom)); border-top:1px solid #e5ebe3; background:#fffffff5; backdrop-filter:blur(14px); }
+html.page-customer-account .buyer-bottom-nav a { display:grid; align-content:center; justify-items:center; gap:3px; color:#718075; font-size:10px; font-weight:700; text-decoration:none; }
+html.page-customer-account .buyer-bottom-nav a.is-active, html.page-customer-account .buyer-bottom-nav a:hover { color:#08723e; }
+html.page-customer-account .buyer-bottom-nav svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+html.page-customer-account .buyer-modal { position:fixed; z-index:1200; inset:0; display:none; align-items:flex-end; justify-content:center; padding-top:20px; background:#102c1dc9; }
+html.page-customer-account .buyer-modal.is-open { display:flex; }
+html.page-customer-account .buyer-modal-card { display:grid; gap:12px; width:min(100%,560px); max-height:92dvh; overflow:auto; padding:21px 20px calc(22px + env(safe-area-inset-bottom)); border-radius:23px 23px 0 0; background:#fff; box-shadow:0 -12px 48px #0b2a1a30; }
+html.page-customer-account .buyer-modal-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+html.page-customer-account .buyer-modal-heading h2 { margin:0; color:#173a25; font:800 22px/1.2 Manrope,'DM Sans',sans-serif; }
+html.page-customer-account .buyer-close { width:36px; height:36px; border:0; border-radius:50%; background:#f0f5ee; color:#23442e; font-size:25px; cursor:pointer; }
+html.page-customer-account .buyer-modal-copy { margin:-4px 0 2px; color:#718075; font-size:12px; }
+html.page-customer-account .buyer-modal-card label { display:grid; gap:5px; color:#35513d; font-size:11px; font-weight:800; }
+html.page-customer-account .buyer-modal-card .buyer-label-text { display:block; color:#35513d; }
+html.page-customer-account .buyer-modal-card .buyer-label-text b { color:#b14235; }
+html.page-customer-account .buyer-modal-card input, html.page-customer-account .buyer-modal-card select, html.page-customer-account .buyer-modal-card textarea { width:100%; min-height:44px; padding:10px 12px; border:1px solid #dce5da; border-radius:11px; background:#fcfdfb; color:#1d3425; font:500 13px 'DM Sans',sans-serif; outline:none; }
+html.page-customer-account .buyer-modal-card textarea { min-height:72px; resize:vertical; }
+html.page-customer-account .buyer-modal-card input:focus, html.page-customer-account .buyer-modal-card select:focus, html.page-customer-account .buyer-modal-card textarea:focus { border-color:#198247; box-shadow:0 0 0 3px #1982471c; }
+html.page-customer-account .buyer-form-row { display:grid; grid-template-columns:.8fr 1.2fr; gap:10px; }
+html.page-customer-account .buyer-submit { width:100%; margin-top:2px; background:#08713c; color:#fff; }
+html.page-customer-account .buyer-submit:hover { background:#075b31; }
+html.page-customer-account .buyer-form-footnote { margin:0; color:#718075; font-size:10px; text-align:center; }
+@media (min-width:700px) {
+  html.page-customer-account .buyer-app { margin-top:20px; margin-bottom:20px; overflow:hidden; min-height:calc(100vh - 40px); border:1px solid #e1e9df; border-radius:28px; box-shadow:0 18px 55px #173d2514; }
+  html.page-customer-account .buyer-topbar { border-radius:28px 28px 0 0; }
+  html.page-customer-account .buyer-bottom-nav { bottom:20px; border:1px solid #e5ebe3; border-radius:0 0 28px 28px; }
+}
+@media (max-width:360px) {
+  html.page-customer-account .buyer-main { padding-right:12px; padding-left:12px; }
+  html.page-customer-account .buyer-category { min-height:122px; padding:11px; }
+  html.page-customer-account .buyer-category small { font-size:10px; }
+  html.page-customer-account .buyer-profile-grid { grid-template-columns:1fr; gap:9px; }
+}
+
 /* ===== Splash waits for its assets (v121): animation starts only once .is-ready is set ===== */
 html.page-farm-app .app-splash:not(.is-ready), html.page-farm-app .app-splash:not(.is-ready) * { animation-play-state:paused!important; }

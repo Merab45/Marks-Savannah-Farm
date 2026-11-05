@@ -2,352 +2,123 @@
 <html lang="en" class="page-customer-account">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#183727">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#075c3b">
     <meta name="robots" content="noindex">
-
-    <meta name="description" content="Manage your Mark's Savannah Farm buyer profile and get help with livestock enquiries.">
+    <meta name="description" content="Your Mark’s Savannah Farm buyer dashboard for farm product enquiries and account details.">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
-    <title>
-      Buyer dashboard — Mark's Savannah Farm
-    </title>
-    <link rel="stylesheet" href="CSS/site.css?v=107">
-    <script>document.documentElement.classList.add('is-loading');window.addEventListener('load',()=>document.documentElement.classList.remove('is-loading'),{once:true});window.setTimeout(()=>document.documentElement.classList.remove('is-loading'),3000);</script>
+    <title>My Farm Dashboard | Mark’s Savannah Farm</title>
+    <link rel="stylesheet" href="CSS/site.css?v=124">
   </head>
   <body class="page-customer-account">
-    <div class="site-skeleton" aria-hidden="true"><div class="skeleton-top"><i></i><i></i><i></i></div><div class="skeleton-hero"><i></i><i></i><i></i><i></i></div><div class="skeleton-cards"><i></i><i></i><i></i></div></div>
-    <nav class="nav is-solid">
-      <a class="brand" href="index.html" aria-label="Mark's Savannah Farm home">
-        <img class="farm-logo" src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt="Mark’s Savannah Farm">
-      </a>
-      <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="links" id="primary-navigation">
-        <a href="index.html">Home</a>
-        <a href="about-us.html">About Us</a>
-        <div class="nav-dropdown">
-          <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="products-menu">Products &amp; Services</button>
-          <div class="nav-dropdown-menu" id="products-menu">
-            <div class="mega-col">
-              <div class="mega-title">Livestock</div>
-              <div class="mega-links">
-                <a href="index.html?animal=Cattle#livestock" data-nav-livestock-type="Cattle" data-preview="cattle">Cattle</a>
-                <a href="index.html?animal=Goat#livestock" data-nav-livestock-type="Goat" data-preview="goat">Goats</a>
-                <a href="index.html?animal=Sheep#livestock" data-nav-livestock-type="Sheep" data-preview="sheep">Sheep</a>
-                <a href="index.html?animal=Chicken#livestock" data-nav-livestock-type="Chicken" data-preview="chicken">Poultry</a>
-                <a href="index.html?animal=Pig#livestock" data-nav-livestock-type="Pig" data-preview="pig">Pigs</a>
-                <a class="mega-all" href="index.html#livestock" data-nav-livestock-type="all">View all livestock</a>
-              </div>
-            </div>
-            <div class="mega-col">
-              <div class="mega-title">From the farm</div>
-              <div class="mega-links">
-                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20crops." target="_blank" rel="noopener" data-preview="crops">Crops</a>
-                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20poultry%20farming." target="_blank" rel="noopener" data-preview="poultryFarming">Poultry Farming</a>
-                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20your%20dairy%20products." target="_blank" rel="noopener" data-preview="dairy">Dairy Products</a>
-              </div>
-            </div>
-            <div class="mega-col">
-              <div class="mega-title">Services</div>
-              <div class="mega-links">
-                <a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20ask%20about%20agri-consultancy." target="_blank" rel="noopener" data-preview="consultancy">Agri-Consultancy</a>
-                <a href="blog.html#guide-enterprise">Buying guide</a>
-              </div>
-            </div>
-            <a class="mega-feature" href="index.html#livestock" data-nav-livestock-type="all"><span class="mega-img is-on" aria-hidden="true" style="background-image:url('Assets/Hero%20background.png')"></span><span class="mega-img" aria-hidden="true"></span><span class="mega-caption">Browse all livestock </span></a>
-          </div>
-        </div>
-        <a href="contact.html">Contact</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="blog.html">Blog</a>
-      </div>
-      <a class="nav-quote" href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20a%20quote." target="_blank" rel="noopener">Get a Quote</a>
-    </nav>
-    <main class="page">
-      <div class="crumb">
-        <a href="index.html">Home</a><span aria-hidden="true">/</span><span>Buyer dashboard</span>
-      </div>
-      <div class="shell">
-        <aside class="sidebar" aria-label="Account navigation">
-          <div class="identity">
-            <div class="identity-top">
-              <div class="avatar" id="avatar">
-                M
-              </div>
-              <div>
-                <div class="identity-name" id="sideName">
-                  Buyer
-                </div>
-                <div class="identity-email" id="sideEmail"></div>
-              </div>
-            </div>
-            <div class="identity-location">
-              <span aria-hidden="true">⌖</span> Buyer account · Kenya
-            </div>
-          </div>
-          <div class="nav-title">
-            YOUR ACCOUNT
-          </div>
-          <nav class="side-nav">
-            <a class="active" href="#overview"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Overview</a>
-          <a href="#orders"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="m4.5 7.8 7.5 4.4 7.5-4.4M12 12.2V21"/></svg>My orders</a>
-          <a href="#profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Personal details</a>
-          <a href="#help"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.5 2.5 0 1 1 4.6 1.4c-1.2 1.1-2.2 1.4-2.2 3.1M12 17.5h.01"/></svg>Buyer help</a>
-          </nav>
-          <a class="side-signout" href="index.html" onclick="signOut(event)">Sign out</a>
-          <div class="sidebar-help">
-            <b>Need a hand?</b>
-            <p>
-              Talk to the farm about livestock, health details, or collection.
-            </p>
-            <a href="#" data-contact-whatsapp target="_blank" rel="noopener">Chat on WhatsApp </a>
-          </div>
-        </aside>
-        <section class="main" id="overview">
-          <div class="welcome">
-            <div class="welcome-copy">
-              <div class="eyebrow">
-                YOUR BUYER SPACE
-              </div>
-              <h1>
-                Welcome back, <span id="greeting">friend</span>.
-              </h1>
-              <p>
-                Keep your farm contact details close and find help with your next livestock enquiry.
-              </p>
-            </div>
-            <div class="welcome-actions">
-              <a class="btn primary" href="index.html#livestock">Explore livestock </a><button class="btn secondary" type="button" onclick="openEdit()">Edit profile</button>
-            </div>
-          </div>
-          <div class="stats" aria-label="Account summary">
-            <div class="stat">
-              <div class="stat-icon">
-                <svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="m4.5 7.8 7.5 4.4 7.5-4.4M12 12.2V21"/></svg>
-              </div>
-              <div>
-                <div class="stat-value" id="orderCount">
-                  0
-                </div>
-                <div class="stat-label">
-                  Orders with the farm
-                </div>
-                <div class="stat-note">
-                  Arranged directly with Mark
-                </div>
-              </div>
-            </div>
-            <div class="stat">
-              <div class="stat-icon gold">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-              </div>
-              <div>
-                <div class="stat-value">
-                  Buyer
-                </div>
-                <div class="stat-label">
-                  Account type
-                </div>
-                <div class="stat-note">
-                  Ready to make an enquiry
-                </div>
-              </div>
-            </div>
-            <div class="stat">
-              <div class="stat-icon">
-                <svg viewBox="0 0 24 24"><path d="M20.8 8.7c0 5.2-8.8 11-8.8 11S3.2 13.9 3.2 8.7A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.8 2.5Z"/></svg>
-              </div>
-              <div>
-                <div class="stat-value" id="savedCount">
-                  0
-                </div>
-                <div class="stat-label">
-                  Saved animals
-                </div>
-                <div class="stat-note">
-                  Shortlist on this device
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="stack">
-              <section class="panel" id="orders">
-                <div class="panel-head">
-                  <div>
-                    <h2>
-                      My orders
-                    </h2>
-                    <p>
-                      Keep track of livestock you have arranged with the farm.
-                    </p>
-                  </div>
-                  <a class="panel-link" href="index.html#livestock">Browse stock </a>
-                </div>
-                <div id="ordersList"></div>
-              </section>
-              <section class="panel" id="profile">
-                <div class="panel-head">
-                  <div>
-                    <h2>
-                      Personal details
-                    </h2>
-                    <p>
-                      These details help the farm get back to you.
-                    </p>
-                  </div>
-                  <button class="panel-link" type="button" onclick="openEdit()" style="border:0;background:none;cursor:pointer">Edit details</button>
-                </div>
-                <div class="profile-grid">
-                  <div class="profile-item">
-                    <div class="profile-label">
-                      Full name
-                    </div>
-                    <div class="profile-value" id="customerName"></div>
-                  </div>
-                  <div class="profile-item">
-                    <div class="profile-label">
-                      Email address
-                    </div>
-                    <div class="profile-value" id="customerEmail"></div>
-                  </div>
-                  <div class="profile-item">
-                    <div class="profile-label">
-                      Phone number
-                    </div>
-                    <div class="profile-value" id="customerPhone"></div>
-                  </div>
-                  <div class="profile-item">
-                    <div class="profile-label">
-                      Buying from
-                    </div>
-                    <div class="profile-value">
-                      Laikipia, Narok &amp; Nakuru
-                    </div>
-                  </div>
-                </div>
-                <div class="profile-foot">
-                  <span class="member" id="memberSince"></span><span class="verified"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Buyer profile</span>
-                </div>
-              </section>
-            </div>
-            <div class="stack right">
-              <section class="panel">
-                <div class="panel-head">
-                  <div>
-                    <h2>
-                      A simple way to buy
-                    </h2>
-                    <p>
-                      Start with a conversation and make a clear plan.
-                    </p>
-                  </div>
-                </div>
-                <div class="steps">
-                  <div class="step">
-                    <span class="step-no">01</span>
-                    <div>
-                      <b>Choose livestock</b><span>Browse animals and note the listing details you want to ask about.</span>
-                    </div>
-                  </div>
-                  <div class="step">
-                    <span class="step-no">02</span>
-                    <div>
-                      <b>Confirm the details</b><span>Ask about availability, age, health, vaccination, and arrange an inspection.</span>
-                    </div>
-                  </div>
-                  <div class="step">
-                    <span class="step-no">03</span>
-                    <div>
-                      <b>Agree payment and collection</b><span>Confirm the final KSh price, official payment details, and collection plan with Mark.</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="safety">
-                  <div class="safety-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4Z"/><path d="M12 8v5m0 3h.01"/></svg>
-                  </div>
-                  <div>
-                    <b>Pay safely</b>
-                    <p>
-                      Only pay to M-Pesa details confirmed directly by the farm. Never share your M-Pesa PIN or one-time code.
-                    </p>
-                  </div>
-                </div>
-              </section>
-              <section class="panel" id="help">
-                <div class="panel-head">
-                  <div>
-                    <h2>
-                      Buyer help
-                    </h2>
-                    <p>
-                      Quick answers before you enquire.
-                    </p>
-                  </div>
-                </div>
-                <div class="help-grid">
-                  <a class="help-tile" href="#" data-contact-whatsapp target="_blank" rel="noopener"><span class="help-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span><b>WhatsApp</b><span>Message the farm</span></span></a>
-                <a class="help-tile" href="#" data-contact-phone><span class="help-icon"><svg viewBox="0 0 24 24"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a15 15 0 0 1-8-8l3-2z"/></svg></span><span><b>Call the farm</b><span><span data-farm-phone></span></span></span></a>
-                <a class="help-tile" href="#" data-contact-email><span class="help-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span><b>Email</b><span>Send us a message</span></span></a>
-                <a class="help-tile" href="blog.html#guide-enterprise"><span class="help-icon"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5V21m4-13h8m-8 4h7"/></svg></span><span><b>Buying guide</b><span>Review buying steps</span></span></a>
-                </div>
-                <div class="notice">
-                  <strong>Account note:</strong> This version stores your profile in this browser. Orders and M-Pesa checkout are not connected to an online account system yet.
-                </div>
-              </section>
-            </div>
+    <div class="buyer-app">
+      <header class="buyer-topbar">
+        <a class="buyer-brand" href="index.html" aria-label="Mark’s Savannah Farm home">
+          <img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt="">
+          <span><strong>MARK’S</strong><small>SAVANNAH FARM</small></span>
+        </a>
+        <a class="buyer-profile-shortcut" href="#profile" aria-label="Go to your profile"><span id="avatar">M</span></a>
+      </header>
+
+      <main class="buyer-main" id="overview">
+        <section class="buyer-welcome">
+          <p class="buyer-kicker">YOUR FARM DASHBOARD</p>
+          <h1>Welcome back, <span id="greeting">friend</span></h1>
+          <p class="buyer-welcome-copy">What are you looking for today? We’ll help you connect with the farm.</p>
+          <button class="buyer-primary-action" type="button" data-enquiry-open>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>
+            Start an enquiry
+          </button>
+          <div class="buyer-region"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>Serving Laikipia, Narok &amp; Nakuru</div>
+        </section>
+
+        <section class="buyer-section" aria-labelledby="category-heading">
+          <div class="buyer-section-heading"><div><p class="buyer-kicker">FROM THE FARM</p><h2 id="category-heading">What do you need?</h2></div><a href="products-and-services.html">Browse all</a></div>
+          <div class="buyer-category-grid">
+            <button class="buyer-category" type="button" data-enquiry-open data-category="Livestock"><span class="buyer-category-icon">🐄</span><strong>Livestock</strong><small>Cattle, goats, sheep, pigs</small></button>
+            <button class="buyer-category" type="button" data-enquiry-open data-category="Crops"><span class="buyer-category-icon">🌱</span><strong>Crops</strong><small>Farm produce &amp; seed</small></button>
+            <button class="buyer-category" type="button" data-enquiry-open data-category="Poultry"><span class="buyer-category-icon">🐓</span><strong>Poultry</strong><small>Chicken, ducks, turkey</small></button>
+            <button class="buyer-category" type="button" data-enquiry-open data-category="Dairy products"><span class="buyer-category-icon">🥛</span><strong>Dairy</strong><small>Fresh farm dairy</small></button>
+            <button class="buyer-category" type="button" data-enquiry-open data-category="Farm equipment"><span class="buyer-category-icon">🚜</span><strong>Equipment</strong><small>Tools &amp; machinery</small></button>
+            <button class="buyer-category" type="button" data-enquiry-open data-category="Agri-consultancy"><span class="buyer-category-icon">🌾</span><strong>Consultancy</strong><small>Advice for your farm</small></button>
           </div>
         </section>
-      </div>
-    </main>
-    <footer class="footer">
-      <div class="footer-inner">
-        <div>
-          <div class="footer-brand">
-            Mark's Savannah Farm
+
+        <section class="buyer-section buyer-activity-section" aria-labelledby="activity-heading">
+          <div class="buyer-section-heading"><div><p class="buyer-kicker">YOUR ACTIVITY</p><h2 id="activity-heading">Your farm activity</h2></div></div>
+          <div class="buyer-activity-grid">
+            <a class="buyer-activity-card" href="#orders"><span class="buyer-activity-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 8-4 8 4v10l-8 4-8-4z"/><path d="m4 7 8 5 8-5m-8 5v9"/></svg></span><span class="buyer-activity-value" id="orderCount">0</span><span class="buyer-activity-label">Purchases recorded</span></a>
+            <a class="buyer-activity-card" href="#saved"><span class="buyer-activity-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.7c0 5.2-8.8 11-8.8 11S3.2 13.9 3.2 8.7A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.8 2.5Z"/></svg></span><span class="buyer-activity-value" id="savedCount">0</span><span class="buyer-activity-label">Saved items</span></a>
           </div>
-          <div class="footer-copy">
-            Good stock, raised with care across Laikipia, Narok and Nakuru.
+        </section>
+
+        <section class="buyer-section buyer-panel" id="orders" aria-labelledby="orders-heading">
+          <div class="buyer-section-heading"><div><p class="buyer-kicker">PAST PURCHASES</p><h2 id="orders-heading">Purchases with the farm</h2></div></div>
+          <p class="buyer-section-copy">Purchases you’ve arranged directly with Mark’s Savannah Farm.</p>
+          <div id="ordersList" class="buyer-orders-list"></div>
+        </section>
+
+        <section class="buyer-section buyer-panel" id="saved" aria-labelledby="saved-heading">
+          <div class="buyer-section-heading"><div><p class="buyer-kicker">YOUR SHORTLIST</p><h2 id="saved-heading">Saved items</h2></div><a href="index.html#livestock">Browse livestock</a></div>
+          <div id="savedList" class="buyer-saved-list"></div>
+        </section>
+
+        <section class="buyer-section buyer-panel" id="profile" aria-labelledby="profile-heading">
+          <div class="buyer-section-heading"><div><p class="buyer-kicker">YOUR DETAILS</p><h2 id="profile-heading">Personal details</h2></div><button class="buyer-text-button" type="button" onclick="openEdit()">Edit</button></div>
+          <dl class="buyer-profile-grid">
+            <div><dt>Full name</dt><dd id="customerName"></dd></div>
+            <div><dt>Email address</dt><dd id="customerEmail"></dd></div>
+            <div><dt>Phone number</dt><dd id="customerPhone"></dd></div>
+            <div><dt>Account created</dt><dd id="memberSince"></dd></div>
+          </dl>
+        </section>
+
+        <section class="buyer-section buyer-panel buyer-help-panel" id="help" aria-labelledby="help-heading">
+          <div class="buyer-section-heading"><div><p class="buyer-kicker">WE’RE HERE TO HELP</p><h2 id="help-heading">Talk to the farm</h2></div></div>
+          <div class="buyer-contact-actions">
+            <a href="#" data-contact-whatsapp target="_blank" rel="noopener"><span>WhatsApp</span><small>Message the farm</small></a>
+            <a href="#" data-contact-phone><span>Call</span><small data-farm-phone></small></a>
+            <a href="#" data-contact-email><span>Email</span><small>Send us a message</small></a>
           </div>
-        </div>
-        <div class="footer-links">
-          <a href="#" data-contact-phone>Call <span data-farm-phone></span></a><a href="#" data-contact-whatsapp target="_blank" rel="noopener">WhatsApp</a><a href="#" data-contact-email>Email</a><a href="index.html">Back to the farm</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>© <span id="year"></span> Mark's Savannah Farm</span><span>Buyer support · Kenya</span>
-      </div>
-    </footer>
+          <p class="buyer-safety-note">Confirm availability, final prices, payment details, and collection or delivery arrangements directly with the farm. Never share your M-Pesa PIN or one-time code.</p>
+        </section>
+
+        <div class="buyer-account-note">Your account and saved activity are stored on this device. Online order tracking is not connected yet.</div>
+        <a class="buyer-signout" href="index.html" onclick="signOut(event)">Sign out</a>
+      </main>
+
+      <nav class="buyer-bottom-nav" aria-label="Dashboard navigation">
+        <a class="is-active" href="#overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+        <a href="products-and-services.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v15H4z"/><path d="M8 9h8m-8 4h8m-8 4h5"/></svg><span>Browse</span></a>
+        <a href="#saved"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.7c0 5.2-8.8 11-8.8 11S3.2 13.9 3.2 8.7A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.8 2.5Z"/></svg><span>Saved</span></a>
+        <a href="#profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Account</span></a>
+      </nav>
+    </div>
+
+    <div class="buyer-modal" id="enquiryModal" role="dialog" aria-modal="true" aria-labelledby="enquiryTitle" aria-hidden="true">
+      <form class="buyer-modal-card" id="dashboardEnquiryForm">
+        <div class="buyer-modal-heading"><div><p class="buyer-kicker">LET’S TALK</p><h2 id="enquiryTitle">Start an enquiry</h2></div><button class="buyer-close" type="button" data-close-enquiry aria-label="Close">×</button></div>
+        <p class="buyer-modal-copy">Tell us what you’re looking for. We’ll open WhatsApp with your enquiry ready to send.</p>
+        <label><span class="buyer-label-text">Category <b>*</b></span><select name="category" required><option value="">Choose a category</option><option>Livestock</option><option>Crops</option><option>Poultry</option><option>Dairy products</option><option>Farm equipment</option><option>Agri-consultancy</option></select></label>
+        <label><span class="buyer-label-text">What do you need? <b>*</b></span><input name="item" placeholder="e.g. 5 dairy goats or maize seed" required maxlength="140"></label>
+        <div class="buyer-form-row"><label><span class="buyer-label-text">Quantity</span><input name="quantity" placeholder="e.g. 5" maxlength="60"></label><label><span class="buyer-label-text">County <b>*</b></span><select name="county" required><option value="">Choose county</option><option>Laikipia</option><option>Narok</option><option>Nakuru</option><option>Other</option></select></label></div>
+        <label><span class="buyer-label-text">Additional details</span><textarea name="details" rows="3" placeholder="Tell us about your timing, delivery needs, or questions"></textarea></label>
+        <button class="buyer-primary-action buyer-submit" type="submit">Continue to WhatsApp</button>
+        <p class="buyer-form-footnote">No order is placed until you and the farm confirm the details.</p>
+      </form>
+    </div>
+
     <div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
       <form class="dialog" id="editForm">
-        <div class="dialog-head">
-          <h2 id="editTitle">
-            Edit personal details
-          </h2>
-          <button class="close" type="button" onclick="closeEdit()" aria-label="Close">×</button>
-        </div>
-        <div class="field">
-          <label for="editName">Full name</label><input id="editName" autocomplete="name" required maxlength="120">
-        </div>
-        <div class="field">
-          <label for="editEmail">Email address</label><input id="editEmail" type="email" disabled>
-        </div>
-        <div class="field">
-          <label for="editPhone">Phone number</label><input id="editPhone" type="tel" autocomplete="tel" required maxlength="20">
-        </div>
-        <div class="dialog-foot">
-          <button class="btn secondary" type="button" onclick="closeEdit()">Cancel</button><button class="btn primary" type="submit">Save changes</button>
-        </div>
+        <div class="dialog-head"><h2 id="editTitle">Edit personal details</h2><button class="close" type="button" onclick="closeEdit()" aria-label="Close">×</button></div>
+        <div class="field"><label for="editName">Full name</label><input id="editName" autocomplete="name" required maxlength="120"></div>
+        <div class="field"><label for="editEmail">Email address</label><input id="editEmail" type="email" disabled></div>
+        <div class="field"><label for="editPhone">Phone number</label><input id="editPhone" type="tel" autocomplete="tel" required maxlength="20"></div>
+        <div class="dialog-foot"><button class="btn secondary" type="button" onclick="closeEdit()">Cancel</button><button class="btn primary" type="submit">Save changes</button></div>
       </form>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <a class="wa-float" href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20make%20an%20enquiry." target="_blank" rel="noopener" aria-label="Chat with Mark's Savannah Farm on WhatsApp">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.8 11.8 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.18-1.24-6.17-3.48-8.41Z"/></svg>
-      <span class="wa-float-label">WhatsApp us</span>
-    </a>
-    <script src="JS/site.js?v=86"></script>
+    <script src="JS/site.js?v=96"></script>
   </body>
 </html>

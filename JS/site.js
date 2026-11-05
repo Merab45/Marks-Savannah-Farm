@@ -85,7 +85,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       auth.querySelector('[data-auth-subtitle]').textContent = signupMode ? 'Join our growing community' : 'Sign in to continue your farming journey';
       auth.querySelector('[data-auth-back]').setAttribute('aria-label', signupMode ? 'Back to sign in' : 'Back to introduction');
       auth.querySelector('[data-auth-back]').dataset.backToSignIn = String(signupMode);
-      auth.querySelectorAll('[data-google-auth]').forEach(button => { button.innerHTML = `${googleMark}Continue with Google`; });
+      auth.querySelectorAll('[data-google-auth]').forEach(button => { button.innerHTML = googleMark; });
     };
     const updateStep = index => {
       currentStep = Math.max(0, Math.min(index, steps.length - 1));
@@ -164,6 +164,7 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
     updatePasswordRules();
     auth.querySelectorAll('[data-google-auth]').forEach(button => button.addEventListener('click', () => showToast('Google sign-in needs the farm’s OAuth setup before it can create or access an account.')));
     auth.querySelectorAll('[data-facebook-auth]').forEach(button => button.addEventListener('click', () => showToast('Facebook sign-in needs the farm’s OAuth setup before it can create or access an account.')));
+    auth.querySelectorAll('[data-apple-auth]').forEach(button => button.addEventListener('click', () => showToast('Apple sign-in needs the farm’s OAuth setup before it can create or access an account.')));
     auth.querySelector('[data-forgot-password]').addEventListener('click', () => showToast('Password recovery will be available when accounts are connected to an online service.'));
 
     const accountUsers = () => JSON.parse(localStorage.getItem('savanna-customer-accounts') || '[]');
@@ -848,110 +849,216 @@ if (document.documentElement.classList.contains('page-herdbook')) {
   }
   )();
 }
-// Initialize behavior only on the matching page.
+// Buyer dashboard: local profile, saved items, purchases, and farm enquiries.
 if (document.documentElement.classList.contains('page-customer-account')) {
   (() => {
-    // Load the signed-in buyer profile and its locally stored account data.
-    const readStore=(key,fallback)=>{
-      try{
-        return JSON.parse(localStorage.getItem(key)??JSON.stringify(fallback))
+    const readStore = (key, fallback) => {
+      try {
+        return JSON.parse(localStorage.getItem(key) ?? JSON.stringify(fallback));
+      } catch {
+        return fallback;
       }
-      catch{
-        return fallback
-      }
+    };
+
+    const email = (localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session') || '').trim().toLowerCase();
+    const users = readStore('savanna-customer-accounts', []);
+    const user = Array.isArray(users)
+      ? users.find(item => String(item.email || '').toLowerCase() === email)
+      : null;
+
+    if (!user) {
+      location.replace('sign-in.html');
+      return;
     }
-    ;
-    const email=(localStorage.getItem('savanna-customer-session')||sessionStorage.getItem('savanna-customer-session')||'').trim().toLowerCase();
-    const users=readStore('savanna-customer-accounts',[]);
-    let user=Array.isArray(users)?users.find(item=>String(item.email||'').toLowerCase()===email):null;
-    if(!user){
-      location.replace('sign-in.html')
-    }
-    else initialize();
-    function initialize(){
-      document.getElementById('year').textContent=new Date().getFullYear();
+
+    let quoteTrigger = null;
+
+    function initialize() {
       renderUser();
       renderOrders();
-      renderSavedCount();
-      document.getElementById('editModal').addEventListener('click',event=>{
-        if(event.target.id==='editModal')closeEdit()
-      }
-      );
-      document.addEventListener('keydown',event=>{
-        if(event.key==='Escape')closeEdit()
-      }
-      );
-      document.getElementById('editForm').addEventListener('submit',saveProfile);
+      renderSavedItems();
+
+      document.querySelectorAll('[data-enquiry-open]').forEach(button => {
+        button.addEventListener('click', () => openQuoteSheet(button.dataset.category || ''));
+      });
+      document.querySelector('[data-close-enquiry]').addEventListener('click', closeQuoteSheet);
+      document.getElementById('enquiryModal').addEventListener('click', event => {
+        if (event.target.id === 'enquiryModal') closeQuoteSheet();
+      });
+      document.getElementById('dashboardEnquiryForm').addEventListener('submit', sendDashboardEnquiry);
+      document.querySelectorAll('.buyer-bottom-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.querySelectorAll('.buyer-bottom-nav a').forEach(item => {
+            item.classList.toggle('is-active', item === link);
+          });
+        });
+      });
+      document.getElementById('editModal').addEventListener('click', event => {
+        if (event.target.id === 'editModal') closeEdit();
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+          closeEdit();
+          closeQuoteSheet();
+        }
+      });
+      document.getElementById('editForm').addEventListener('submit', saveProfile);
     }
-    function renderUser(){
-      const name=String(user.name||'Buyer');
-      document.getElementById('greeting').textContent=name.trim().split(/\s+/)[0]||'friend';
-      document.getElementById('sideName').textContent=name;
-      document.getElementById('sideEmail').textContent=user.email||'';
-      document.getElementById('avatar').textContent=name.trim().split(/\s+/).map(part=>part[0]).slice(0,2).join('').toUpperCase()||'M';
-      document.getElementById('customerName').textContent=name;
-      document.getElementById('customerEmail').textContent=user.email||'';
-      document.getElementById('customerPhone').textContent=user.phone||'Add a phone number';
-      const joined=new Date(user.createdAt||Date.now());
-      document.getElementById('memberSince').textContent='Buyer account created '+joined.toLocaleDateString(undefined,{
-        month:'long',year:'numeric'
-      }
-      );
+
+    function renderUser() {
+      const name = String(user.name || 'Buyer');
+      const initials = name.trim().split(/\s+/).map(part => part[0]).slice(0, 2).join('').toUpperCase() || 'M';
+      const joined = new Date(user.createdAt || Date.now());
+
+      document.getElementById('greeting').textContent = name.trim().split(/\s+/)[0] || 'friend';
+      document.getElementById('avatar').textContent = initials;
+      document.getElementById('customerName').textContent = name;
+      document.getElementById('customerEmail').textContent = user.email || '';
+      document.getElementById('customerPhone').textContent = user.phone || 'Add a phone number';
+      document.getElementById('memberSince').textContent = joined.toLocaleDateString(undefined, {
+        month: 'long',
+        year: 'numeric',
+      });
     }
-    function renderOrders(){
-      const orders=readStore('savanna-customer-orders',[]);
-      const list=document.getElementById('ordersList');
-      const safeOrders=Array.isArray(orders)?orders.filter(order=>!order.email||String(order.email).toLowerCase()===email):[];
-      document.getElementById('orderCount').textContent=String(safeOrders.length);
-      if(!safeOrders.length){
-        list.innerHTML='<div class="orders-empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="m4.5 7.8 7.5 4.4 7.5-4.4M12 12.2V21"/></svg></div><div class="empty-copy"><h3>No orders recorded yet</h3><p>When you agree a livestock purchase with the farm, order updates can appear here.</p><a class="btn primary" href="index.html#livestock">Browse livestock </a></div></div>';
+
+    function renderOrders() {
+      const orders = readStore('savanna-customer-orders', []);
+      const safeOrders = Array.isArray(orders)
+        ? orders.filter(order => order && (!order.email || String(order.email).toLowerCase() === email))
+        : [];
+      const list = document.getElementById('ordersList');
+
+      document.getElementById('orderCount').textContent = String(safeOrders.length);
+      if (!safeOrders.length) {
+        list.innerHTML = '<div class="buyer-empty-state"><strong>No purchases recorded yet</strong><p>When you confirm a purchase with the farm, it can be added here.</p><a href="products-and-services.html">Explore products and services</a></div>';
         return;
       }
-      list.innerHTML=safeOrders.slice(0,5).map(order=>`<div class="order-row"><div><div class="order-name">${escapeHtml(order.animalName||order.listingName||'Livestock order')}</div><div class="order-meta">${escapeHtml(order.orderNumber||order.createdAt||'Farm order')}</div></div><span class="status ${String(order.status).toLowerCase()==='paid'?'paid':''}">${escapeHtml(order.status||'Pending')}</span><div class="order-price">${order.amount?`KSh ${
-        new Intl.NumberFormat('en-KE').format(Number(order.amount))
+
+      list.innerHTML = safeOrders.slice(0, 5).map(order => {
+        const title = escapeHtml(order.animalName || order.listingName || 'Farm purchase');
+        const reference = escapeHtml(order.orderNumber || order.createdAt || 'Arranged directly with the farm');
+        const status = escapeHtml(order.status || 'Recorded');
+        const amount = Number(order.amount);
+        const amountLabel = amount > 0 ? ` · KSh ${new Intl.NumberFormat('en-KE').format(amount)}` : '';
+        return `<article class="buyer-order-entry"><div><strong>${title}</strong><small>${reference}${amountLabel}</small></div><span class="buyer-order-status">${status}</span></article>`;
+      }).join('');
+    }
+
+    function renderSavedItems() {
+      const saved = readStore('savanna-customer-favorites', []);
+      const items = Array.isArray(saved) ? saved.filter(item => item && typeof item === 'object') : [];
+      const list = document.getElementById('savedList');
+
+      document.getElementById('savedCount').textContent = String(items.length);
+      if (!items.length) {
+        list.innerHTML = '<div class="buyer-empty-state"><strong>Your shortlist is empty</strong><p>Save livestock while browsing and it will appear here on this device.</p><a href="index.html#livestock">Browse livestock</a></div>';
+        return;
       }
-      `:'Contact farm'}</div></div>`).join('');
+
+      list.innerHTML = items.slice(0, 5).map(item => {
+        const name = escapeHtml(item.name || item.type || 'Saved farm item');
+        const type = String(item.type || 'Livestock');
+        const href = `index.html?animal=${encodeURIComponent(type)}#livestock`;
+        return `<a class="buyer-saved-entry" href="${href}"><span><strong>${name}</strong><small>${escapeHtml(type)} · saved on this device</small></span><span class="buyer-order-status">Saved</span></a>`;
+      }).join('');
     }
-    function renderSavedCount(){
-      const saved=readStore('savanna-customer-favorites',[]);
-      document.getElementById('savedCount').textContent=String(Array.isArray(saved)?saved.length:0);
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[character]);
     }
-    function escapeHtml(value){
-      return String(value??'').replace(/[&<>"']/g,char=>({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      }
-      [char]))
+
+    function openEdit() {
+      document.getElementById('editName').value = user.name || '';
+      document.getElementById('editEmail').value = user.email || '';
+      document.getElementById('editPhone').value = user.phone || '';
+      document.getElementById('editModal').classList.add('open');
+      document.getElementById('editName').focus();
     }
-    function openEdit(){
-      document.getElementById('editName').value=user.name||'';document.getElementById('editEmail').value=user.email||'';document.getElementById('editPhone').value=user.phone||'';document.getElementById('editModal').classList.add('open');document.getElementById('editName').focus()
+
+    function closeEdit() {
+      document.getElementById('editModal').classList.remove('open');
     }
-    function closeEdit(){
-      document.getElementById('editModal').classList.remove('open')
-    }
-    function saveProfile(event){
+
+    function saveProfile(event) {
       event.preventDefault();
-      user.name=document.getElementById('editName').value.trim();user.phone=document.getElementById('editPhone').value.trim();
-      const updated=users.map(item=>String(item.email||'').toLowerCase()===email?user:item);
-      try{
-        localStorage.setItem('savanna-customer-accounts',JSON.stringify(updated))
+      user.name = document.getElementById('editName').value.trim();
+      user.phone = document.getElementById('editPhone').value.trim();
+      const updated = users.map(item => String(item.email || '').toLowerCase() === email ? user : item);
+
+      try {
+        localStorage.setItem('savanna-customer-accounts', JSON.stringify(updated));
+      } catch {
+        showToast('Could not save: browser storage is unavailable.');
+        return;
       }
-      catch{
-        showToast('Could not save: browser storage is unavailable.');return
-      }
-      renderUser();closeEdit();showToast('Your profile details have been saved in this browser.');
+
+      renderUser();
+      closeEdit();
+      showToast('Your profile details have been saved in this browser.');
     }
-    function showToast(message){
-      const toast=document.getElementById('toast');toast.textContent=message;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600)
+
+    function openQuoteSheet(category = '') {
+      quoteTrigger = document.activeElement;
+      const modal = document.getElementById('enquiryModal');
+      const form = document.getElementById('dashboardEnquiryForm');
+      form.reset();
+      if (category) form.elements.category.value = category;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      window.setTimeout(() => form.elements.item.focus(), 30);
     }
-    function signOut(event){
-      event.preventDefault();localStorage.removeItem('savanna-customer-session');sessionStorage.removeItem('savanna-customer-session');location.href='index.html'
+
+    function closeQuoteSheet() {
+      const modal = document.getElementById('enquiryModal');
+      if (!modal.classList.contains('is-open')) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      quoteTrigger?.focus();
     }
-    Object.assign(window, {
-      openEdit, closeEdit, signOut
+
+    function sendDashboardEnquiry(event) {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const message = [
+        'Hello Mark’s Savannah Farm, I’d like to make an enquiry.',
+        `Category: ${data.get('category')}`,
+        `Looking for: ${data.get('item')}`,
+        data.get('quantity') ? `Quantity: ${data.get('quantity')}` : '',
+        `County: ${data.get('county')}`,
+        data.get('details') ? `Details: ${data.get('details')}` : '',
+        `Name: ${user.name || 'Not provided'}`,
+        `Phone: ${user.phone || 'Not provided'}`,
+        `Email: ${user.email || 'Not provided'}`,
+      ].filter(Boolean).join('\n');
+      const url = `https://wa.me/${FARM_CONTACT.whatsapp}?text=${encodeURIComponent(message)}`;
+
+      window.open(url, '_blank', 'noopener,noreferrer');
+      closeQuoteSheet();
     }
-    );
-  }
-  )();
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      window.setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    function signOut(event) {
+      event.preventDefault();
+      localStorage.removeItem('savanna-customer-session');
+      sessionStorage.removeItem('savanna-customer-session');
+      location.href = 'index.html';
+    }
+
+    Object.assign(window, { openEdit, closeEdit, signOut });
+    initialize();
+  })();
 }
 // Initialize behavior only on the matching page.
 if (document.documentElement.classList.contains('page-sign-in')) {
