@@ -126,6 +126,21 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       else openAuth('sign-in');
     });
     onboarding.querySelectorAll('[data-go-step]').forEach(dot => dot.addEventListener('click', () => updateStep(Number(dot.dataset.goStep))));
+    // Let mobile visitors move through onboarding with horizontal finger swipes.
+    let swipeStart = null;
+    onboarding.addEventListener('pointerdown', event => {
+      if (!['touch', 'pen'].includes(event.pointerType) || event.target.closest('button, a, input, select, textarea')) return;
+      swipeStart = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
+    });
+    onboarding.addEventListener('pointerup', event => {
+      if (!swipeStart || event.pointerId !== swipeStart.pointerId) return;
+      const deltaX = event.clientX - swipeStart.x;
+      const deltaY = event.clientY - swipeStart.y;
+      swipeStart = null;
+      if (Math.abs(deltaX) < 48 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
+      updateStep(currentStep + (deltaX < 0 ? 1 : -1));
+    });
+    onboarding.addEventListener('pointercancel', () => { swipeStart = null; });
     onboarding.querySelector('[data-open-auth]').addEventListener('click', event => { event.preventDefault(); openAuth('sign-in'); });
     auth.querySelector('[data-auth-back]').addEventListener('click', event => {
       if (event.currentTarget.dataset.backToSignIn === 'true') setAuthMode('sign-in');

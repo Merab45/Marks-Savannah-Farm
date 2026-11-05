@@ -5568,6 +5568,7 @@ html.page-farm-app .app-onboarding { display:flex; flex-direction:column; gap:14
 html.page-farm-app .app-topbar { display:flex; min-height:35px; align-items:center; justify-content:space-between; }
 html.page-farm-app .app-back-site { display:grid; width:34px; height:34px; place-items:center; border:0; border-radius:50%; background:transparent; color:#101a14; font:400 34px/1 Arial,sans-serif; text-decoration:none; cursor:pointer; }
 html.page-farm-app .app-step { color:#101a14; font-size:14px; font-weight:800; }
+html.page-farm-app .app-onboarding { touch-action:pan-y; }
 html.page-farm-app .onboarding-content { display:flex; flex:1; flex-direction:column; min-height:0; }
 html.page-farm-app .onboarding-copy { padding:10px 0 14px; }
 html.page-farm-app .onboarding-copy h1 { max-width:350px; margin:0 0 8px; color:#101613; font:800 clamp(27px,7.5vw,34px)/1.12 Manrope,'DM Sans',sans-serif; letter-spacing:-1.1px; }
