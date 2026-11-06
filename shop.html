@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" class="page-shop">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#075c3b">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
+    <title>Shop Farm Products | Mark’s Savannah Farm</title>
+    <meta name="description" content="Browse farm products and livestock from Mark’s Savannah Farm. Add items to an order request for availability and delivery confirmation.">
+    <link rel="stylesheet" href="CSS/site.css?v=132">
+  </head>
+  <body class="page-shop">
+    <header class="shop-header">
+      <a class="shop-brand" href="index.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span><strong>Mark’s Savannah Farm</strong><small>Shop farm products</small></span></a>
+      <nav aria-label="Shop navigation"><a href="products-and-services.html">Products &amp; Services</a><a href="app.html">Open app</a><button type="button" data-cart-focus>Cart <b data-cart-count>0</b></button></nav>
+    </header>
+    <main class="shop-layout">
+      <section class="shop-catalog" aria-labelledby="shop-title">
+        <p class="shop-kicker">FARM MARKETPLACE</p><h1 id="shop-title">Shop farm products</h1>
+        <p class="shop-intro">Browse livestock, produce, dairy, equipment, and farm inputs. Add what you need to an order request; the farm will confirm current availability, final prices, and delivery before payment.</p>
+        <label class="shop-search"><span class="visually-hidden">Search products</span><input id="shop-search" type="search" placeholder="Search products and categories"></label>
+        <div class="shop-categories" role="group" aria-label="Filter products" id="shop-categories"></div>
+        <div class="shop-product-grid" id="shop-products" aria-live="polite"></div>
+        <section class="shop-consultancy"><div><p class="shop-kicker">NEED ADVICE?</p><h2>Plan your next farm project</h2><p>Tell us about your goals and location to discuss a suitable consultancy service.</p></div><a href="https://wa.me/254706894568?text=Hello%20Mark%27s%20Savannah%20Farm%2C%20I%27d%20like%20to%20discuss%20farm%20consultancy." target="_blank" rel="noopener">Talk to a consultant on WhatsApp</a></section>
+      </section>
+      <aside class="shop-cart" id="shop-cart" aria-labelledby="cart-title">
+        <div class="shop-cart-heading"><div><p class="shop-kicker">YOUR ORDER</p><h2 id="cart-title">Cart <span data-cart-count>0</span></h2></div><button type="button" data-cart-clear>Clear</button></div>
+        <div class="shop-cart-items" id="shop-cart-items"></div>
+        <p class="shop-cart-note">This is an order request, not a paid order. We’ll confirm stock, price, delivery, and payment with you before fulfilment.</p>
+        <button class="shop-checkout-button" type="button" data-checkout-open disabled>Continue to checkout</button>
+      </aside>
+    </main>
+    <dialog class="shop-checkout" id="shop-checkout" aria-labelledby="checkout-title">
+      <form id="shop-checkout-form" method="dialog">
+        <div class="shop-checkout-heading"><div><p class="shop-kicker">ORDER REQUEST</p><h2 id="checkout-title">Your details</h2></div><button type="button" data-checkout-close aria-label="Close checkout">×</button></div>
+        <p class="shop-cart-note">No payment is taken here. The farm will confirm the final order and payment method.</p>
+        <label>Full name <span>*</span><input name="name" autocomplete="name" required maxlength="100"></label>
+        <label>Phone number <span>*</span><input name="phone" type="tel" autocomplete="tel" required maxlength="30" placeholder="e.g. 0712 345 678"></label>
+        <label>Email address <input name="email" type="email" autocomplete="email" maxlength="120"></label>
+        <label>County <span>*</span><select name="county" required><option value="">Choose county</option><option>Laikipia</option><option>Narok</option><option>Nakuru</option><option>Other</option></select></label>
+        <label>Fulfilment <span>*</span><select name="fulfilment" required><option value="">Choose an option</option><option>Farm collection</option><option>Request delivery quote</option></select></label>
+        <label>Order notes<textarea name="notes" rows="3" placeholder="Preferred quantity, timing, or delivery location"></textarea></label>
+        <button class="shop-checkout-button" type="submit">Prepare order request</button>
+        <p class="shop-form-feedback" id="shop-form-feedback" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <div class="shop-toast" id="shop-toast" role="status" aria-live="polite"></div>
+    <script src="JS/commerce.js?v=1"></script>
+  </body>
+</html>

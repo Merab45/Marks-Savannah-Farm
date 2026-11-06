@@ -7,6 +7,8 @@
   const P = {
     home:'<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
     market:'<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9"/><path d="M5 12v8h14v-8"/>',
+    cart:'<path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/>',
+    cart:'<path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/>',
     auctions:'<path d="m14 13-8.4 8.4a2 2 0 0 1-2.8-2.8L11 10"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/>',
     saved:'<path d="M6 3h12v18l-6-4-6 4z"/>',
     profile:'<circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/>',
@@ -34,14 +36,14 @@
 
   const NK = 'Nakuru, Kenya';
   const LISTINGS = [
-    { id:'ayrshire-cow', name:'Purebred Ayrshire Cow', cat:'Cattle', meta:'Female · 3 years', price:85000, imgs:['Cattle%20dropdown.jpg'], tag:'For Sale', stock:'In Stock',
-      specs:[['Breed','Ayrshire'],['Age','3 years'],['Sex','Female'],['Location',NK],['Weight','420 kg'],['Vaccination','Up to date'],['Health','Excellent']],
-      desc:'A healthy and productive dairy cow, well cared for and ready for breeding.' },
-    { id:'boran-cow', name:'Boran Cow', cat:'Cattle', meta:'Female · 4 years', price:120000, imgs:['Cattle%20dropdown.jpg'], tag:'For Sale', stock:'In Stock', specs:[['Breed','Boran'],['Age','4 years'],['Sex','Female']], desc:'Ask the farm for weight, vaccination and health details.' },
-    { id:'boer-goat', name:'Boer Goat', cat:'Goats', meta:'Male · 8 months', price:18000, imgs:['Goats.jpg'], tag:'For Sale', stock:'In Stock', specs:[['Breed','Boer'],['Age','8 months'],['Sex','Male']], desc:'Ask the farm for weight, vaccination and health details.' },
-    { id:'layers', name:'Layers (Brown)', cat:'Poultry', meta:'20 hens', price:3500, imgs:['poultry%20Frming.jpg'], tag:'For Sale', stock:'In Stock', specs:[['Type','Layers (brown)'],['Quantity','20 hens']], desc:'Ask the farm about age and laying history.' },
-    { id:'fresh-milk', name:'Fresh Milk', cat:'Dairy', meta:'1 litre', price:120, imgs:['Dairy%20Products.jpg'], tag:'For Sale', stock:'In Stock', specs:[['Product','Fresh milk'],['Volume','1 litre']], desc:'Ask the farm about daily availability and delivery.' },
-    { id:'sheep', name:'Sheep', cat:'Sheep', meta:'Ask for details', price:null, imgs:['Sheep.jpg'], tag:'Available', stock:'Available', specs:[], desc:'Contact the farm for breed, age, price and availability.' },
+    { id:'ayrshire-cow', name:'Dairy cows & heifers', cat:'Cattle', meta:'Ask for breed, age and records', price:null, imgs:['Cattle%20dropdown.jpg'], tag:'Ask the farm', stock:'Confirm availability',
+      specs:[['Breed','Confirm for each animal'],['Age','Confirm for each animal'],['Sex','Confirm for each animal'],['Health records','Ask the farm'],['Inspection','Arrange with the farm']],
+      desc:'Dairy cattle for milk production and herd development. Ask the farm for the individual animal’s breed, age, lactation details, health and vaccination records, inspection arrangements, and transport options.' },
+    { id:'boran-cow', name:'Boran cattle', cat:'Cattle', meta:'Ask for breed, age and records', price:null, imgs:['Cattle%20dropdown.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Breed','Confirm with farm'],['Age','Confirm with farm'],['Sex','Confirm with farm']], desc:'Ask the farm for the individual animal’s weight, vaccination, health, inspection, and transport details.' },
+    { id:'boer-goat', name:'Meat goats', cat:'Goats', meta:'Ask for breed, age and records', price:null, imgs:['Goats.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Breed','Confirm with farm'],['Age','Confirm with farm'],['Purpose','Meat, breeding, or herd growth']], desc:'Goats for meat production, breeding, or herd growth. Confirm breed, sex, age, size, health information, quantity, and delivery arrangements.' },
+    { id:'layers', name:'Point-of-lay hens & layers', cat:'Poultry', meta:'Ask about age and quantity', price:null, imgs:['poultry%20Frming.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Type','Layers or point-of-lay hens'],['Quantity','Confirm with farm']], desc:'Chickens for egg production. Ask about bird age, breed or strain, vaccination records, laying status, minimum order quantity, and collection arrangements.' },
+    { id:'fresh-milk', name:'Fresh milk', cat:'Dairy', meta:'Ask about packaging and supply', price:null, imgs:['Dairy%20Products.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product','Fresh milk'],['Packaging','Confirm with farm']], desc:'Fresh farm milk for household or regular supply. Confirm daily availability, packaging, cold handling, quantity, collection time, and delivery options.' },
+    { id:'sheep', name:'Sheep: ewes, rams & lambs', cat:'Sheep', meta:'Ask for breed, age and records', price:null, imgs:['Sheep.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[], desc:'Contact the farm for breed, age, sex, size, health information, price, and availability for individual animals.' },
     { id:'pigs', name:'Pigs', cat:'Pigs', meta:'Ask for details', price:null, imgs:['Pigs.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[], desc:'Contact the farm for breed, age, price and availability.' },
     { id:'maize', name:'Maize', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Category','Grain'],['Supply','Seasonal']], desc:'Ask about available quantities, harvest timing, and bulk supply.' },
     { id:'wheat', name:'Wheat', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Category','Grain'],['Supply','Seasonal']], desc:'Enquire about seasonal availability and suitable order volumes.' },
@@ -53,8 +55,26 @@
     { id:'ghee', name:'Farm Ghee', cat:'Dairy', meta:'Dairy product', price:null, imgs:['Dairy%20Products.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product','Ghee'],['Price','On request']], desc:'Ask about pack sizes, current availability, and collection or delivery.' },
     { id:'equipment', name:'Farm Equipment', cat:'Equipment', meta:'Equipment enquiries', price:null, imgs:['Farm%20Equipments.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Category','Farm equipment'],['Price','On request']], desc:'Tell us what equipment you need so the farm can confirm specifications and availability.' },
     { id:'consultancy', name:'Agri-consultancy', cat:'Services', meta:'Farm advice and planning', price:null, imgs:['Agri-Consultancy.jpg'], tag:'Enquire', stock:'By consultation', specs:[['Service','Farm planning and advice'],['Fee','On request']], desc:'Share your farm goals and location to discuss suitable support and consultation fees.' }
+    ,{ id:'broilers', name:'Broiler chickens', cat:'Poultry', meta:'Ask about age and quantities', price:null, imgs:['poultry%20Frming.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Type','Broiler'],['Age','Confirm with farm'],['Vaccination','Ask the farm']], desc:'Ask whether day-old chicks, growers, or mature birds are available. Confirm age, health information, minimum quantities, and readiness dates.' }
+    ,{ id:'kienyeji-chicken', name:'Kienyeji chicken', cat:'Poultry', meta:'Ask about type and quantities', price:null, imgs:['poultry%20Frming.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Type','Kienyeji chicken'],['Age','Confirm with farm'],['Quantity','Confirm with farm']], desc:'Confirm the type, age, sex, health records, quantity, and transport arrangements for available birds.' }
+    ,{ id:'fermented-milk', name:'Fermented milk', cat:'Dairy', meta:'Ask about packaging and supply', price:null, imgs:['Dairy%20Products.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product','Fermented milk'],['Packaging','Confirm with farm']], desc:'Ask about current batch, pack sizes, ingredients, storage needs, dates, collection, and delivery.' }
+    ,{ id:'yoghurt', name:'Yoghurt', cat:'Dairy', meta:'Ask about pack sizes', price:null, imgs:['Dairy%20Products.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product','Yoghurt'],['Flavours','Confirm with farm']], desc:'Confirm available flavours, ingredients, pack sizes, storage, and batch date before ordering.' }
+    ,{ id:'butter', name:'Butter & cream', cat:'Dairy', meta:'Ask about current products', price:null, imgs:['Dairy%20Products.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product','Butter or cream'],['Packaging','Confirm with farm']], desc:'Ask which products and pack sizes are currently available and how chilled handling and delivery are arranged.' }
+    ,{ id:'peas', name:'Peas', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Category','Legume'],['Supply','Seasonal']], desc:'Ask about the current crop, quality, quantity, packaging, and collection or delivery.' }
+    ,{ id:'potatoes', name:'Potatoes', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Grade','Confirm with farm'],['Supply','Seasonal']], desc:'Confirm variety, size or grade, bag weight, quantity, and harvest timing.' }
+    ,{ id:'vegetables', name:'Seasonal vegetables', cat:'Crops', meta:'Seasonal produce', price:null, imgs:['Crops.jpg'], tag:'Seasonal', stock:'Confirm availability', specs:[['Varieties','Confirm with farm'],['Supply','Seasonal']], desc:'Ask for currently available varieties, grade, quantities, and collection dates.' }
+    ,{ id:'fodder', name:'Fodder crops & hay', cat:'Crops', meta:'Livestock feed', price:null, imgs:['Crops.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Unit','Bale or load'],['Supply','Confirm with farm']], desc:'Confirm forage type, bale or load size, storage condition, quantity, and delivery access.' }
+    ,{ id:'tractor', name:'Tractors & field machinery', cat:'Equipment', meta:'Ask about models and condition', price:null, imgs:['Farm%20Equipments.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Make & model','Confirm with farm'],['Condition','Confirm with farm']], desc:'Request model, condition, capacity, inspection, service history, accessories, warranty if offered, and transport details.' }
+    ,{ id:'ploughs', name:'Ploughs, harrows & planters', cat:'Equipment', meta:'Match to tractor and field', price:null, imgs:['Farm%20Equipments.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Compatibility','Confirm with farm'],['Condition','Confirm with farm']], desc:'Share tractor compatibility, crop, acreage, working width, and preferred condition so the farm can confirm options.' }
+    ,{ id:'irrigation', name:'Pumps, tanks & irrigation', cat:'Equipment', meta:'Ask for specifications', price:null, imgs:['Farm%20Equipments.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Capacity','Confirm with farm'],['Power','Confirm with farm']], desc:'Confirm your water source, flow or storage needs, power availability, pipe sizes, and installation requirements.' }
+    ,{ id:'sprayers', name:'Sprayers & crop-care equipment', cat:'Equipment', meta:'Ask for type and capacity', price:null, imgs:['Farm%20Equipments.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Type','Confirm with farm'],['Capacity','Confirm with farm']], desc:'Ask about sprayer type, capacity, condition, included components, and intended use.' }
+    ,{ id:'seeds', name:'Seeds & planting materials', cat:'Farm inputs', meta:'Ask for variety and pack size', price:null, imgs:['Crops.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Crop','Confirm with farm'],['Variety','Confirm with farm']], desc:'Confirm the exact crop, variety, pack size, season, and suitability for your location before ordering.' }
+    ,{ id:'organic-fertilizer', name:'Compost & manure', cat:'Farm inputs', meta:'Ask about source and quantity', price:null, imgs:['Crops.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Source','Confirm with farm'],['Packaging','Bag or load']], desc:'Confirm source, maturity, quantity, packaging, delivery access, and suitability for your intended use.' }
+    ,{ id:'soil-amendments', name:'Agricultural lime & soil amendments', cat:'Farm inputs', meta:'Exact product confirmed on request', price:null, imgs:['Crops.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product analysis','Confirm with farm'],['Packaging','Confirm with farm']], desc:'Ask for the exact product, analysis, pack size, and intended application. Soil test results can help guide selection.' }
+    ,{ id:'mineral-fertilizer', name:'Mineral fertilizers', cat:'Farm inputs', meta:'Ask for product and analysis', price:null, imgs:['Crops.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product & analysis','Confirm with farm'],['Pack size','Confirm with farm']], desc:'Request the product name, nutrient analysis, pack size, and label information. Follow label instructions and qualified local advice.' }
+    ,{ id:'crop-protection', name:'Registered crop-protection products', cat:'Farm inputs', meta:'Exact product confirmed on request', price:null, imgs:['Crops.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product registration','Confirm with farm'],['Label & use','Confirm before sale']], desc:'Share the crop and concern so the farm can confirm the exact approved product, label directions, protective equipment, and restrictions before any sale.' }
   ];
-  const CATS = ['All', 'Cattle', 'Goats', 'Sheep', 'Poultry', 'Pigs', 'Crops', 'Dairy', 'Equipment', 'Services'];
+  const CATS = ['All', 'Cattle', 'Goats', 'Sheep', 'Poultry', 'Pigs', 'Crops', 'Dairy', 'Equipment', 'Farm inputs', 'Services'];
   const DAY = 864e5, HR = 36e5, MIN = 6e4;
   const auctionEnd = () => { let t = store.get('farm-app-demo-auction', null); if (!t) { t = { start: Date.now(), end: Date.now() + 2 * DAY + 14 * HR + 32 * MIN }; store.set('farm-app-demo-auction', t); } return t; };
   // SAMPLE auction data and rules: replace with the farm's real details. Bids are sent to the farm on WhatsApp for confirmation.
@@ -83,11 +103,13 @@
 
   function product(id) {
     const p = LISTINGS.find(x => x.id === id) || LISTINGS[0], rel = LISTINGS.filter(x => x.id !== p.id && x.cat === p.cat).concat(LISTINGS.filter(x => x.id !== p.id && x.cat !== p.cat)).slice(0, 2);
-    const call = '<a class="fh-ghost" href="tel:+254706894568">' + ic('phone') + ' Call</a>';
+    const actions = p.cat === 'Services'
+      ? `<a class="fh-dark fh-full" href="${wa(`Hello Mark's Savannah Farm, I'd like to discuss consultancy: ${p.name}.`)}" target="_blank" rel="noopener">${ic('chat')} Discuss consultancy on WhatsApp</a>`
+      : `<button class="fh-dark fh-full" data-add-cart="${esc(p.id)}">Add to order ${ic('cart')}</button><a class="fh-ghost fh-full" href="shop.html#shop-cart">Review cart &amp; checkout</a>`;
     return `<header class="fh-top fh-top-title fh-top-brand"><button class="fh-icon" data-back aria-label="Back to marketplace">${ic('back')}</button><a class="fh-brand" href="index.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span>Mark’s<br>Savannah Farm</span></a>${heart(p.id, p.name).replace('fh-heart', 'fh-icon fh-heart-top')}</header>
     ${gallery(p.imgs, '', p.name)}<h1 class="fh-ptitle">${esc(p.name)}</h1><div class="fh-meta"><span class="fh-cat">${esc(p.cat)}</span><span class="fh-ok">${ic('check')} ${esc(p.stock)}</span></div><p class="fh-price">${p.price ? ksh(p.price) : 'Price on request'}</p>
     ${specs(p.specs)}<section class="fh-desc"><h3>${ic('info')} About this item</h3><p>${esc(p.desc)}</p></section>${seller}
-    <div class="fh-two"><a class="fh-dark fh-wide" href="${wa(`Hello Mark's Savannah Farm, I'm interested in: ${p.name}${p.price ? ' (' + ksh(p.price) + ')' : ''}. Please confirm current availability and details.`)}" target="_blank" rel="noopener">${ic('chat')} Ask on WhatsApp</a>${call}</div>
+    ${actions}
     ${rel.length ? `<h3 class="fh-h3">Related products</h3><div class="fh-grid">${rel.map(card).join('')}</div>` : ''}`;
   }
   function auctionDetail(id) {
@@ -131,7 +153,7 @@
   function home() {
     const n = user().name.split(' ')[0], h = new Date().getHours(), g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
     const t = auctionEnd();
-    return brand(`<a class="fh-icon" href="${wa("Hello Mark's Savannah Farm, I'd like to make an enquiry.")}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">${ic('chat')}</a>`) + `
+    return brand(`<button class="fh-icon" data-shop-cart aria-label="Open cart">${ic('cart')}</button>`) + `
     <div class="fh-greet"><h2>${g}${n ? ', ' + esc(n) : ''}</h2><p>Welcome to Mark’s Savannah Farm</p></div>
     <section class="fh-hero"><h2>Growing food today.<br>Building a better tomorrow.</h2><button class="fh-gold" data-tab="market">Explore the farm ${ic('arrow')}</button></section>
     <section class="fh-live"><div class="fh-row"><h3>${ic('auctions')} Live Auctions</h3><span class="fh-pill">Live</span></div>
@@ -139,13 +161,13 @@
     <h3 class="fh-h3">What are you looking for today?</h3>
     <div class="fh-tiles">
       <button data-tab="market" data-cat="All"><i style="background-image:url('${img('Cattle%20dropdown.jpg')}')"></i><b>Livestock</b><small>Cattle, goats, sheep, pigs</small></button>
-      <a href="${wa("Hello Mark's Savannah Farm, I'd like to ask about your crops.")}" target="_blank" rel="noopener"><i style="background-image:url('${img('Crops.jpg')}')"></i><b>Crops</b><small>Farm produce</small></a>
+      <button data-tab="market" data-cat="Crops"><i style="background-image:url('${img('Crops.jpg')}')"></i><b>Crops</b><small>Farm produce</small></button>
       <button data-tab="market" data-cat="Poultry"><i style="background-image:url('${img('poultry%20Frming.jpg')}')"></i><b>Poultry</b><small>Layers &amp; broilers</small></button>
-      <a href="${wa("Hello Mark's Savannah Farm, I'd like to ask about your dairy products.")}" target="_blank" rel="noopener"><i style="background-image:url('${img('Dairy%20Products.jpg')}')"></i><b>Dairy</b><small>Milk &amp; more</small></a></div>
+      <button data-tab="market" data-cat="Dairy"><i style="background-image:url('${img('Dairy%20Products.jpg')}')"></i><b>Dairy</b><small>Milk &amp; more</small></button></div>
     <a class="fh-learn" href="blog.html#guide-enterprise" style="background-image:linear-gradient(90deg,#eaf2dcf2 45%,#eaf2dc55),url('${img('Agri-Consultancy.jpg')}')"><h3>${ic('book')} Learn something new</h3><p>Practical farming tips, livestock care and agricultural insights.</p><b>Explore guides ${ic('arrow')}</b></a>`;
   }
   function market() {
-    return brand(`<button class="fh-icon" data-tab="saved" aria-label="Saved items">${ic('heart')}${saved().length ? `<em>${saved().length}</em>` : ''}</button>`) + `
+    return brand(`<button class="fh-icon" data-shop-cart aria-label="Open cart">${ic('cart')}<em data-app-cart-count>${store.get('savanna-farm-shop-cart', []).reduce((n, item) => n + (Number(item.quantity) || 1), 0)}</em></button>`) + `
     <div class="fh-search"><label>${ic('search')}<input id="fh-q" type="search" placeholder="Search livestock, products…" value="${esc(S.q)}" aria-label="Search"></label><button class="fh-icon" data-sort aria-label="Change sort order">${ic('sort')}</button></div>
     <div class="fh-chips" role="group" aria-label="Category">${CATS.map(c => `<button data-cat="${c}" aria-pressed="${c === S.cat}" class="${c === S.cat ? 'is-on' : ''}">${c}</button>`).join('')}</div>
     <h2 class="fh-h2">Our Marketplace</h2><p class="fh-sub">Quality livestock and farm products</p><div class="fh-grid" id="fh-list"></div>`;
@@ -194,9 +216,17 @@
   root.addEventListener('click', e => {
     const g = e.target.closest('[data-gal],[data-gal-to]');
     if (g) { const r = $('.fh-gal'), n = r.children.length, w = r.clientWidth, i = g.dataset.galTo !== undefined ? +g.dataset.galTo : Math.min(n - 1, Math.max(0, Math.round(r.scrollLeft / w) + +g.dataset.gal)); r.scrollTo({ left: i * w, behavior: 'smooth' }); return; }
-    const b = e.target.closest('[data-open],[data-back],[data-bid],[data-tab],[data-cat],[data-atab],[data-save],[data-sort],[data-remind],[data-signout]');
+    const b = e.target.closest('[data-open],[data-back],[data-bid],[data-tab],[data-cat],[data-atab],[data-save],[data-sort],[data-remind],[data-signout],[data-add-cart],[data-shop-cart]');
     if (!b) return;
     const d = b.dataset;
+    if (d.shopCart !== undefined) { location.href = 'shop.html#shop-cart'; return; }
+    if (d.addCart) {
+      const product = LISTINGS.find(item => item.id === d.addCart); if (!product) return;
+      const cart = store.get('savanna-farm-shop-cart', []), current = Array.isArray(cart) ? cart : [], item = current.find(entry => entry.id === product.id);
+      if (item) item.quantity = (Number(item.quantity) || 1) + 1;
+      else current.push({id:product.id,name:product.name,category:product.cat,unit:({Cattle:'head',Goats:'head',Sheep:'head',Pigs:'head',Poultry:'bird',Crops:'bag or kg',Dairy:'pack',Equipment:'item',Services:'service'})[product.cat] || 'item',quantity:1});
+      store.set('savanna-farm-shop-cart', current); toast(`${product.name} added to your order.`); return;
+    }
     if (d.open) { const [type, id] = d.open.split(':'); S.detail = { type, id }; render(); return; }
     if (d.back !== undefined) { S.detail = null; render(); return; }
     if (d.bid) { if (auctionEnd().end <= Date.now()) { S.detail = { type:'auction', id:d.bid }; render(); toast('This preview auction has ended.'); return; } sheet(d.bid); return; }
