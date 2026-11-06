@@ -6176,7 +6176,11 @@ html.page-shop .shop-form-feedback { margin:0; color:#315f3d; font-size:12px; li
 html.page-shop .shop-email-link { display:inline-block; margin:4px 0; color:#075c3b; font-weight:800; }
 html.page-shop .shop-toast { position:fixed; z-index:100; right:16px; bottom:16px; left:16px; width:max-content; max-width:calc(100% - 32px); margin:auto; padding:11px 15px; border-radius:999px; background:#173e27; color:#fff; font-size:12px; opacity:0; pointer-events:none; transform:translateY(8px); transition:.2s ease; }
 html.page-shop .shop-toast.is-visible { opacity:1; transform:none; }
-@media(max-width:860px) { html.page-shop .shop-layout { grid-template-columns:minmax(0,1fr); } html.page-shop .shop-catalog, html.page-shop .shop-cart { min-width:0; } html.page-shop .shop-cart { position:static; grid-row:auto; margin-top:8px; } }
+@media(max-width:860px) {
+  html.page-shop .shop-layout { grid-template-columns:minmax(0,1fr); grid-template-areas:"catalog" "cart"; }
+  html.page-shop .shop-layout > .shop-catalog { grid-area:catalog; min-width:0; }
+  html.page-shop .shop-layout > .shop-cart { grid-area:cart; position:static; min-width:0; width:100%; margin-top:8px; }
+}
 @media(max-width:600px) { html.page-shop .shop-header { min-height:60px; padding:8px 12px; } html.page-shop .shop-header nav { gap:10px; } html.page-shop .shop-header nav a { font-size:11px; } html.page-shop .shop-header nav a[href="products-and-services.html"] { display:none; } html.page-shop .shop-brand img { width:36px; height:36px; } html.page-shop .shop-brand strong { font-size:13px; } html.page-shop .shop-brand small { font-size:10px; } html.page-shop .shop-layout { gap:18px; padding:22px 13px 50px; } html.page-shop .shop-product-grid { grid-template-columns:1fr; } html.page-shop .shop-product { display:grid; grid-template-columns:105px 1fr; } html.page-shop .shop-product > img { height:100%; min-height:190px; } html.page-shop .shop-product-copy { padding:11px; } html.page-shop .shop-product h2 { font-size:15px; } html.page-shop .shop-product-copy > p { font-size:11px; } html.page-shop .shop-consultancy { align-items:flex-start; flex-direction:column; gap:12px; } }
 html.page-index .offerings-shop-link { margin:25px 0 0; text-align:center; }
 /* Cart badge remains visible in the app header on home, marketplace, and details. */
