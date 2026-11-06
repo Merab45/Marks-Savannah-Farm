@@ -125,6 +125,11 @@ html.page-index .about-footer small { grid-column:1/-1; border-top:1px solid #ff
 @media(max-width:430px) {
   html.page-about .livestock-products { grid-template-columns:1fr; }
 }
+@media(max-width:600px) {
+  html.page-services .livestock-products { grid-template-columns:1fr; }
+  html.page-services .livestock-product { min-width:0; overflow-wrap:anywhere; }
+  html.page-services .livestock-product a { line-height:1.45; }
+}
 
 /* Contact page */
 html.page-contact .contact-main { display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(28px,5vw,70px); align-items:start; padding-top:64px; padding-bottom:76px; }
@@ -6062,7 +6067,8 @@ html.page-farm-app .app-home:not([hidden]) { display:flex; }
 .fh-top { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:4px 0 10px; }
 .fh-brand { display:flex; align-items:center; gap:8px; color:#1f4d2c; text-decoration:none; font:800 18px/1.1 Georgia,'Times New Roman',serif; }
 .fh-brand img { width:44px; height:42px; object-fit:contain; }
-.fh-top-title { display:grid; grid-template-columns:44px 1fr 44px; } .fh-top-title h1 { margin:0; text-align:center; font:800 22px Georgia,serif; color:#143a21; }
+.fh-top-title { display:grid; grid-template-columns:44px minmax(0,1fr) auto; } .fh-top-title h1 { margin:0; text-align:center; font:800 22px Georgia,serif; color:#143a21; }
+.fh-top-actions { display:flex; justify-content:flex-end; align-items:center; gap:5px; }
 .fh-icon { position:relative; display:grid; place-items:center; width:42px; height:42px; border:0; border-radius:50%; background:#fffdf6; color:#1f4d2c; box-shadow:0 1px 4px #2a3a2220; text-decoration:none; }
 .fh-icon em { position:absolute; top:-3px; right:-3px; min-width:18px; height:18px; padding:0 4px; border-radius:9px; background:#d32f2f; color:#fff; font:700 11px/18px 'DM Sans',sans-serif; font-style:normal; text-align:center; }
 .fh-greet h2 { margin:6px 0 0; font:800 25px Georgia,serif; } .fh-greet p { margin:2px 0 12px; color:#3a4a3f; }
@@ -6170,7 +6176,7 @@ html.page-shop .shop-form-feedback { margin:0; color:#315f3d; font-size:12px; li
 html.page-shop .shop-email-link { display:inline-block; margin:4px 0; color:#075c3b; font-weight:800; }
 html.page-shop .shop-toast { position:fixed; z-index:100; right:16px; bottom:16px; left:16px; width:max-content; max-width:calc(100% - 32px); margin:auto; padding:11px 15px; border-radius:999px; background:#173e27; color:#fff; font-size:12px; opacity:0; pointer-events:none; transform:translateY(8px); transition:.2s ease; }
 html.page-shop .shop-toast.is-visible { opacity:1; transform:none; }
-@media(max-width:860px) { html.page-shop .shop-layout { grid-template-columns:1fr; } html.page-shop .shop-cart { position:static; grid-row:1; } }
+@media(max-width:860px) { html.page-shop .shop-layout { grid-template-columns:minmax(0,1fr); } html.page-shop .shop-catalog, html.page-shop .shop-cart { min-width:0; } html.page-shop .shop-cart { position:static; grid-row:auto; margin-top:8px; } }
 @media(max-width:600px) { html.page-shop .shop-header { min-height:60px; padding:8px 12px; } html.page-shop .shop-header nav { gap:10px; } html.page-shop .shop-header nav a { font-size:11px; } html.page-shop .shop-header nav a[href="products-and-services.html"] { display:none; } html.page-shop .shop-brand img { width:36px; height:36px; } html.page-shop .shop-brand strong { font-size:13px; } html.page-shop .shop-brand small { font-size:10px; } html.page-shop .shop-layout { gap:18px; padding:22px 13px 50px; } html.page-shop .shop-product-grid { grid-template-columns:1fr; } html.page-shop .shop-product { display:grid; grid-template-columns:105px 1fr; } html.page-shop .shop-product > img { height:100%; min-height:190px; } html.page-shop .shop-product-copy { padding:11px; } html.page-shop .shop-product h2 { font-size:15px; } html.page-shop .shop-product-copy > p { font-size:11px; } html.page-shop .shop-consultancy { align-items:flex-start; flex-direction:column; gap:12px; } }
 html.page-index .offerings-shop-link { margin:25px 0 0; text-align:center; }
 /* Cart badge remains visible in the app header on home, marketplace, and details. */

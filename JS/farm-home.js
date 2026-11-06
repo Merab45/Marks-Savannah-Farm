@@ -95,16 +95,17 @@
   };
   const cartCount = () => cartItems().reduce((total, item) => total + Math.max(1, Number(item.quantity) || 1), 0);
   const cartButton = () => `<button class="fh-icon fh-cart-button" data-shop-cart aria-label="Open cart, ${cartCount()} items">${ic('cart')}<em data-app-cart-count>${cartCount()}</em></button>`;
+  const topActions = extra => `<div class="fh-top-actions">${extra || ''}${cartButton()}</div>`;
   const toast = m => { const t = document.querySelector('.app-toast'); if (!t) return; t.textContent = m; t.classList.add('is-visible'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('is-visible'), 2600); };
 
   const brand = right => `<header class="fh-top"><a class="fh-brand" href="index.html" aria-label="Mark’s Savannah Farm"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span>Mark’s<br>Savannah Farm</span></a>${right}</header>`;
-  const title = (t, back) => `<header class="fh-top fh-top-title">${back ? `<button class="fh-icon" data-tab="home" aria-label="Back">${ic('back')}</button>` : '<span></span>'}<h1>${t}</h1><span></span></header>`;
+  const title = (t, back) => `<header class="fh-top fh-top-title">${back ? `<button class="fh-icon" data-tab="home" aria-label="Back">${ic('back')}</button>` : '<span></span>'}<h1>${t}</h1>${topActions()}</header>`;
   const heart = (id, n) => `<button class="fh-heart ${saved().includes(id) ? 'is-on' : ''}" data-save="${id}" aria-label="Save ${esc(n)}" aria-pressed="${saved().includes(id)}">${ic('heart')}</button>`;
   const card = p => `<article class="fh-card"><div class="fh-card-img" style="background-image:url('${img(p.imgs[0])}')"><span class="fh-tag">${p.tag}</span>${heart(p.id, p.name)}</div><div class="fh-card-body"><h3>${p.name}</h3><p>${p.meta}</p><strong>${p.price ? ksh(p.price) : 'Ask for price'}</strong><button class="fh-soft" data-open="product:${p.id}">View Details ${ic('arrow')}</button></div></article>`;
   const gallery = (imgs, badge, label = 'Farm listing') => `<div class="fh-galwrap"><div class="fh-gal" tabindex="0" aria-label="Photos, swipe to see more">${imgs.map((f, i) => `<img src="${img(f)}" alt="${esc(label)} photo ${i + 1} of ${imgs.length}" ${i ? 'loading="lazy"' : ''}>`).join('')}</div>${badge || ''}${imgs.length > 1 ? `<span class="fh-count"><b data-gcur>1</b> / ${imgs.length}</span><button class="fh-arr fh-prev" data-gal="-1" aria-label="Previous photo">${ic('back')}</button><button class="fh-arr fh-next" data-gal="1" aria-label="Next photo">${ic('arrow')}</button><div class="fh-dots">${imgs.map(() => '<i></i>').join('')}</div>` : ''}</div>${imgs.length > 1 ? `<div class="fh-thumbs">${imgs.map((f, i) => `<button data-gal-to="${i}" aria-label="Show photo ${i + 1}" style="background-image:url('${img(f)}')"></button>`).join('')}</div>` : ''}`;
   const seller = `<a class="fh-seller" href="about-us.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span><small>Sold by:</small><b>Mark’s Savannah Farm</b></span>${ic('arrow')}</a>`;
   const specs = L => L.length ? `<section class="fh-spec"><h3>${ic('file')} Specifications</h3><dl>${L.map(([k, v]) => `<div><dt>${k}:</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : '';
-  const dtop = t => `<header class="fh-top fh-top-title"><button class="fh-icon" data-back aria-label="Back">${ic('back')}</button><h1>${t}</h1><span></span></header>`;
+  const dtop = (t, extra) => `<header class="fh-top fh-top-title"><button class="fh-icon" data-back aria-label="Back">${ic('back')}</button><h1>${t}</h1>${topActions(extra)}</header>`;
   const auState = (a, id) => id === 'goats' ? 'upcoming' : (auctionEnd().end - Date.now() > 0 ? 'live' : 'ended');
 
   function product(id) {
@@ -112,7 +113,7 @@
     const actions = p.cat === 'Services'
       ? `<a class="fh-dark fh-full" href="${wa(`Hello Mark's Savannah Farm, I'd like to discuss consultancy: ${p.name}.`)}" target="_blank" rel="noopener">${ic('chat')} Discuss consultancy on WhatsApp</a>`
       : `<button class="fh-dark fh-full" data-add-cart="${esc(p.id)}">Add to order ${ic('cart')}</button><a class="fh-ghost fh-full" href="shop.html#shop-cart">Review cart &amp; checkout</a>`;
-    return `<header class="fh-top fh-top-title fh-top-brand"><button class="fh-icon" data-back aria-label="Back to marketplace">${ic('back')}</button><a class="fh-brand" href="index.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span>Mark’s<br>Savannah Farm</span></a>${heart(p.id, p.name).replace('fh-heart', 'fh-icon fh-heart-top')}</header>
+    return `<header class="fh-top fh-top-title fh-top-brand"><button class="fh-icon" data-back aria-label="Back to marketplace">${ic('back')}</button><a class="fh-brand" href="index.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span>Mark’s<br>Savannah Farm</span></a>${topActions(heart(p.id, p.name).replace('fh-heart', 'fh-icon fh-heart-top'))}</header>
     ${gallery(p.imgs, '', p.name)}<h1 class="fh-ptitle">${esc(p.name)}</h1><div class="fh-meta"><span class="fh-cat">${esc(p.cat)}</span><span class="fh-ok">${ic('check')} ${esc(p.stock)}</span></div><p class="fh-price">${p.price ? ksh(p.price) : 'Price on request'}</p>
     ${specs(p.specs)}<section class="fh-desc"><h3>${ic('info')} About this item</h3><p>${esc(p.desc)}</p></section>${seller}
     ${actions}
@@ -129,7 +130,7 @@
       ? `<div class="fh-stats"><div><small>Opening Bid</small><b>${ksh(a.start)}</b></div><div><small>Minimum Increment</small><b>${ksh(a.inc)}</b></div></div>`
       : `<div class="fh-stats"><div><small>Current Highest Bid</small><b>${ksh(a.bid)}</b></div><div><small>Starting Bid</small><b>${ksh(a.start)}</b></div></div>`;
     const userBids = mine.length ? `<h3 class="fh-h3">Your bid activity</h3><table class="fh-hist"><tbody>${mine.map(b => `<tr><td>${ksh(b.amount)}</td><td>${new Date(b.time).toLocaleString('en-KE', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</td><td>Sent to farm</td></tr>`).join('')}</tbody></table>` : '<p class="fh-fine">Your bids will appear here after you send one to the farm.</p>';
-    return dtop('Auction details').replace('<span></span></header>', heart('auction-' + id, a.name).replace('fh-heart', 'fh-icon fh-heart-top') + '</header>') + gallery(a.imgs, badge, a.name) + `<h1 class="fh-ptitle">${esc(a.name)}</h1><p class="fh-sub">${esc(a.meta || 'Livestock auction')}</p>
+    return dtop('Auction details', heart('auction-' + id, a.name).replace('fh-heart', 'fh-icon fh-heart-top')) + gallery(a.imgs, badge, a.name) + `<h1 class="fh-ptitle">${esc(a.name)}</h1><p class="fh-sub">${esc(a.meta || 'Livestock auction')}</p>
     ${stats}
     ${st === 'upcoming' ? `<p class="fh-ends">${ic('clock')} Starts in <b>${a.days} days</b></p>` : `<p class="fh-ends">${ic('clock')} ${st === 'live' ? 'Ends in' : 'Ended'} <b data-left>${st === 'live' ? fmtLeft(left) : '00d : 00h : 00m'}</b></p><div class="fh-bar"><span style="width:${st === 'live' ? pct.toFixed(0) : 100}%"></span></div>`}
     <div class="fh-two fh-info"><div>${ic('market')}<span><small>Minimum Increment</small><b>${ksh(a.inc)}</b></span></div>${a.bidders ? `<div>${ic('user')}<b>${a.bidders} Bidders</b></div>` : ''}</div>
