@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" class="page-auctions page-about">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#075c3b">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
+    <title>Farm Auctions | Mark’s Savannah Farm</title>
+    <meta name="description" content="Browse livestock and farm equipment auctions from Mark’s Savannah Farm. See bid amounts while bidder identities remain private.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/site.css?v=137">
+  </head>
+  <body class="page-about page-auctions">
+    <nav class="nav">
+      <a class="brand" href="index.html" aria-label="Mark’s Savannah Farm home"><img class="farm-logo" src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt="Mark’s Savannah Farm"></a>
+      <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation"><span></span><span></span><span></span></button>
+      <div class="links" id="primary-navigation">
+        <a href="index.html">Home</a><a href="about-us.html">About Us</a><a class="is-current" href="auctions.html" aria-current="page">Auctions</a>
+        <div class="nav-dropdown"><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="products-menu">Products &amp; Services</button><div class="nav-dropdown-menu" id="products-menu"><div class="mega-col"><div class="mega-title">Shop</div><div class="mega-links"><a href="shop.html?category=Livestock">Livestock</a><a href="shop.html?category=Crops">Crops</a><a href="shop.html?category=Poultry">Poultry</a><a href="shop.html?category=Dairy">Dairy products</a></div></div><div class="mega-col"><div class="mega-title">More from the farm</div><div class="mega-links"><a href="shop.html?category=Equipment">Farm equipment</a><a href="shop.html?category=Farm%20inputs">Farm inputs</a><a href="products-and-services.html#details-consultancy">Agri-consultancy</a><a class="mega-all" href="products-and-services.html">View all products &amp; services</a></div></div></div></div>
+        <a href="contact.html">Contact</a><a href="gallery.html">Gallery</a><a href="blog.html">Blog</a>
+      </div>
+      <a class="nav-quote" href="app.html">Open app</a>
+    </nav>
+    <main>
+      <section class="about-banner auction-banner"><div class="about-banner-inner"><h1>Farm Auctions</h1><p>Place bids on livestock and equipment lots. Watch the countdown and see bid amounts while bidder identities stay private.</p><p class="about-crumbs"><a href="index.html">Home</a><span aria-hidden="true">›</span><span>Auctions</span></p></div></section>
+      <section class="auction-page-content">
+        <div class="auction-page-heading"><div><span class="about-eyebrow about-eyebrow-dark">BID ONLINE</span><h2>Find your next farm lot</h2><p>Lots close automatically at the displayed time. The farm can be contacted after a lot closes.</p></div><a class="about-primary-button" href="app.html">Open the Android app</a></div>
+        <div class="auction-page-tabs" role="tablist" aria-label="Auction lots"><button type="button" class="is-active" data-auction-filter="live" role="tab" aria-selected="true">Live</button><button type="button" data-auction-filter="upcoming" role="tab" aria-selected="false">Upcoming</button><button type="button" data-auction-filter="results" role="tab" aria-selected="false">Closed results</button></div>
+        <p class="auction-preview-note"><strong>Preview bidding:</strong> bids are saved on this device and shared with the Android app on this device. Other buyers’ bids will not appear until an online auction service is connected. Public listings show bid amounts only; bidder names and contact details stay private.</p>
+        <div class="auction-page-grid" id="public-auctions" aria-live="polite"></div>
+      </section>
+    </main>
+    <footer class="about-footer"><div class="about-footer-inner"><a class="about-brand" href="index.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt="">Mark’s Savannah Farm</a><p>Growing food today. Building a better tomorrow.</p><div><a href="products-and-services.html">Products &amp; Services</a><a href="app.html">Open the app</a><a href="contact.html">Contact</a></div><small>© Mark’s Savannah Farm. Auction lots and schedules are sample data for this preview.</small></div></footer>
+    <dialog class="buyer-auction-bid-dialog" id="public-bid-dialog"></dialog>
+    <script src="JS/auction-core.js?v=1"></script>
+    <script src="JS/auction-page.js?v=1"></script>
+    <script src="JS/site.js?v=102"></script>
+  </body>
+</html>

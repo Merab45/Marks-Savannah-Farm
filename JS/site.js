@@ -884,7 +884,7 @@ if (document.documentElement.classList.contains('page-customer-account')) {
     let quoteTrigger = null;
 
     function initialize() {
-      renderUser(); renderMarket(); renderSaved(); renderOrders(); renderAuctionTab('live');
+      renderUser(); renderMarket(); renderSaved(); renderOrders(); renderHomeAuction(); renderAuctionTab('live');
       document.querySelectorAll('[data-app-view]').forEach(button => button.addEventListener('click',() => showView(button.dataset.appView)));
       document.querySelectorAll('[data-market-open-filter]').forEach(button => button.addEventListener('click',() => {
         marketFilter = button.dataset.marketOpenFilter; updateFilters(); showView('marketplace'); renderMarket();
@@ -906,9 +906,12 @@ if (document.documentElement.classList.contains('page-customer-account')) {
         tabs.classList.toggle('is-collapsed',expanded);button.setAttribute('aria-expanded',String(!expanded));button.setAttribute('aria-label',expanded?'Show auction views':'Hide auction views');
       });
       document.getElementById('auctionContent').addEventListener('click',event => {
-        if(event.target.closest('[data-auction-preview-bid]')) openQuoteSheet('Livestock','Premium Boran Bull auction enquiry');
-        if(event.target.closest('[data-auction-reminder]')) openQuoteSheet('Livestock','Upcoming Boer Goat auction enquiry');
+        const bid=event.target.closest('[data-auction-place]'); if(bid) openAuctionBidDialog(bid.dataset.auctionPlace);
+        const reminder=event.target.closest('[data-auction-reminder]'); if(reminder){const key=`marks-auction-reminder-${reminder.dataset.auctionReminder}`,next=localStorage.getItem(key)!=='true';localStorage.setItem(key,String(next));reminder.textContent=next?'Reminder set':'Set reminder';showToast(next?'Auction reminder saved on this device.':'Reminder removed.');}
       });
+      window.addEventListener('farm-auctions-updated',()=>{renderAuctionTab(auctionTab);renderHomeAuction();});
+      window.addEventListener('storage',event=>{if(event.key==='marks-savannah-auction-bids-v1'||event.key==='marks-savannah-auction-schedule-v1'){renderAuctionTab(auctionTab);renderHomeAuction();}});
+      window.setInterval(updateAuctionTimers,1000);
       document.querySelector('[data-close-enquiry]').addEventListener('click',closeQuoteSheet);
       document.getElementById('enquiryModal').addEventListener('click',event => { if(event.target.id==='enquiryModal') closeQuoteSheet(); });
       document.getElementById('dashboardEnquiryForm').addEventListener('submit',sendEnquiry);
@@ -1014,14 +1017,48 @@ if (document.documentElement.classList.contains('page-customer-account')) {
 
     function renderAuctionTab(tab) {
       auctionTab=['live','upcoming','my-bids','results'].includes(tab)?tab:'live';
+      const auctions=window.FarmAuctions.list();
       document.querySelectorAll('[data-auction-tab]').forEach(button=>{
         const active=button.dataset.auctionTab===auctionTab;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));
+        const count=button.dataset.auctionTab==='live'?auctions.filter(item=>item.status==='live').length:button.dataset.auctionTab==='upcoming'?auctions.filter(item=>item.status==='upcoming').length:null;
+        if(count!==null)button.textContent=`${button.dataset.auctionTab==='live'?'Live':'Upcoming'} (${count})`;
       });
       const content=document.getElementById('auctionContent');
-      if(auctionTab==='live') content.innerHTML=`<article class="buyer-auction-card"><div class="buyer-auction-photo"><img src="Assets/Cattle%20dropdown.jpg" alt="Boran bull in a green field"><span>Preview only</span></div><div class="buyer-auction-copy"><h2>Premium Boran Bull</h2><p>Male · 3 years · Sample listing details</p><div class="buyer-auction-prices"><div><small>Sample current bid</small><strong>KSh 85,000</strong></div><div><small>Sample starting bid</small><strong>KSh 60,000</strong></div></div><div class="buyer-auction-countdown">Sample countdown · 02d : 14h : 32m</div><div class="buyer-auction-progress"><span></span></div><button type="button" class="buyer-place-bid" data-auction-preview-bid>Ask about this animal</button><p class="buyer-demo-caption">Illustrative values only. This preview does not accept bids.</p></div></article>`;
-      else if(auctionTab==='upcoming') content.innerHTML=`<article class="buyer-upcoming-card"><img src="Assets/Goats.jpg" alt="Goats at a farm"><div><span class="buyer-market-badge">Preview</span><h2>Boer Goats — 10 Heads</h2><p>Sample upcoming auction · starts in 3 days</p><button type="button" data-auction-reminder>Ask about this sale</button></div></article><p class="buyer-demo-caption">Example event only. Confirm auction dates with the farm.</p>`;
-      else if(auctionTab==='my-bids') content.innerHTML='<div class="buyer-market-empty"><strong>No bids yet</strong><p>Your bids will appear here when live bidding is connected to the app.</p></div>';
-      else content.innerHTML='<div class="buyer-market-empty"><strong>No auction results yet</strong><p>Completed auctions and confirmed winners will appear here when auction history is available.</p></div>';
+      const money=window.FarmAuctions.money;
+      const publicBids=item=>item.bids.length?`<section class="buyer-bid-board"><h3>Bid amounts <small>Bidder identities are private</small></h3><ol>${item.bids.map(bid=>`<li><span>Anonymous bidder</span><strong>${money(bid.amount)}</strong></li>`).join('')}</ol></section>`:'<p class="buyer-demo-caption">No bids have been placed yet.</p>';
+      const specs=item=>`<details class="buyer-auction-specs"><summary>Lot specifications</summary><dl>${item.specs.map(([key,value])=>`<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></details>`;
+      const card=item=>`<article class="buyer-auction-card" data-auction-card="${item.id}"><div class="buyer-auction-photo"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}"><span>${item.status==='live'?'Live':item.status==='upcoming'?'Upcoming':'Closed'}</span></div><div class="buyer-auction-copy"><h2>${escapeHtml(item.name)}</h2><p>${escapeHtml(item.summary)}</p><div class="buyer-auction-prices"><div><small>${item.status==='upcoming'?'Opening bid':'Current highest bid'}</small><strong>${money(item.highestBid)}</strong></div><div><small>Starting bid</small><strong>${money(item.startBid)}</strong></div></div><p class="buyer-auction-countdown" data-auction-timer data-auction-id="${item.id}" data-auction-state="${item.status}" data-auction-start="${item.startsAt}" data-auction-end="${item.endsAt}">${item.status==='upcoming'?'Starts in':'Ends in'} ${window.FarmAuctions.remaining((item.status==='upcoming'?item.startsAt:item.endsAt)-Date.now())}</p><p class="buyer-auction-meta">Minimum increment: ${money(item.increment)} · Lot: ${escapeHtml(item.quantity)}</p>${specs(item)}${publicBids(item)}${item.status==='live'?`<button type="button" class="buyer-place-bid" data-auction-place="${item.id}">Place a bid</button>`:item.status==='upcoming'?`<button type="button" data-auction-reminder="${item.id}">${localStorage.getItem(`marks-auction-reminder-${item.id}`)==='true'?'Reminder set':'Set reminder'}</button>`:`<div class="buyer-auction-closed"><strong>${item.bids.length?`Winning amount: ${money(item.highestBid)}`:'No bids were placed'}</strong><a href="mailto:${FARM_CONTACT.email}?subject=${encodeURIComponent(`Closed auction: ${item.name}`)}">Contact the farm about this closed auction</a></div>`}</div></article>`;
+      if(auctionTab==='live'){const items=auctions.filter(item=>item.status==='live');content.innerHTML=items.length?items.map(card).join(''):'<div class="buyer-market-empty"><strong>No live auctions right now</strong><p>Check the Upcoming tab for scheduled lots.</p></div>';}
+      else if(auctionTab==='upcoming'){const items=auctions.filter(item=>item.status==='upcoming');content.innerHTML=items.length?items.map(card).join(''):'<div class="buyer-market-empty"><strong>No upcoming lots</strong><p>New auction schedules will appear here.</p></div>';}
+      else if(auctionTab==='my-bids'){const bids=window.FarmAuctions.myBids();content.innerHTML=bids.length?`<div class="buyer-my-bids">${bids.map(bid=>{const item=window.FarmAuctions.get(bid.auctionId);return `<article><strong>${escapeHtml(item.name)}</strong><span>${money(bid.amount)}</span><small>${new Date(bid.placedAt).toLocaleString('en-KE')} · ${item.status==='ended'?'Closed':item.status==='live'?'Live':'Upcoming'}</small></article>`;}).join('')}</div>`:'<div class="buyer-market-empty"><strong>No bids yet</strong><p>Your bids will appear here. Your name and contact details are never shown in the public bid list.</p></div>';}
+      else {const items=auctions.filter(item=>item.status==='ended');content.innerHTML=items.length?items.map(item=>`<article class="buyer-auction-result"><h2>${escapeHtml(item.name)}</h2><p>Auction closed</p><strong>${item.bids.length?`Winning amount: ${money(item.highestBid)}`:'No bids were placed'}</strong><a href="mailto:${FARM_CONTACT.email}?subject=${encodeURIComponent(`Closed auction: ${item.name}`)}">Contact the farm about the closed auction</a></article>`).join(''):'<div class="buyer-market-empty"><strong>No results yet</strong><p>Completed lots will appear here after the countdown ends.</p></div>';}
+    }
+
+    function renderHomeAuction(){
+      const host=document.querySelector('.buyer-home-auction');if(!host)return;
+      const items=window.FarmAuctions.list(),featured=items.find(item=>item.status==='live')||items[0];
+      const body=host.querySelector('.buyer-home-auction-body');if(!featured||!body)return;
+      host.querySelector('.buyer-preview-badge').textContent=`${items.filter(item=>item.status==='live').length} live`;
+      body.innerHTML=`<img src="${escapeHtml(featured.image)}" alt="${escapeHtml(featured.name)}"><div class="buyer-home-auction-info"><strong>${escapeHtml(featured.name)}</strong><small>${escapeHtml(featured.summary)}</small><b>${window.FarmAuctions.money(featured.highestBid)}</b><div class="buyer-home-auction-meta" data-auction-timer data-auction-id="${featured.id}" data-auction-state="${featured.status}" data-auction-start="${featured.startsAt}" data-auction-end="${featured.endsAt}">${featured.status==='upcoming'?'Starts in':'Ends in'} ${window.FarmAuctions.remaining((featured.status==='upcoming'?featured.startsAt:featured.endsAt)-Date.now())}</div><button type="button" data-app-view="auctions">View auctions</button></div>`;
+      host.querySelector('.buyer-demo-caption').textContent='Sample auction schedule. Bids are stored on this device in this preview.';
+      host.querySelector('.buyer-home-auction-info button')?.addEventListener('click',()=>showView('auctions'));
+    }
+
+    function openAuctionBidDialog(id){
+      const item=window.FarmAuctions.get(id);if(item.status!=='live'){showToast('This lot is not currently open for bids.');return;}
+      const minimum=window.FarmAuctions.minBid(item),dialog=document.createElement('dialog');dialog.className='buyer-auction-bid-dialog';
+      dialog.innerHTML=`<form><button type="button" class="buyer-auction-dialog-close" aria-label="Close">×</button><p class="buyer-kicker">LIVE AUCTION</p><h2>Place a bid</h2><p>${escapeHtml(item.name)}</p><label>Current highest bid <strong>${window.FarmAuctions.money(item.highestBid)}</strong></label><label for="auction-bid-amount">Your bid (KSh)</label><input id="auction-bid-amount" type="number" min="${minimum}" step="${item.increment}" value="${minimum}" required><small>Minimum ${window.FarmAuctions.money(minimum)} · increments of ${window.FarmAuctions.money(item.increment)}</small><p class="buyer-auction-dialog-note">Bidder identity stays private. Only the amount is visible to others. This preview stores bids on this device.</p><p class="buyer-auction-error" role="alert"></p><button type="submit" class="buyer-place-bid">Submit bid</button></form>`;
+      document.body.append(dialog);const form=dialog.querySelector('form');
+      dialog.querySelector('.buyer-auction-dialog-close').addEventListener('click',()=>dialog.close());
+      dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
+      form.addEventListener('submit',event=>{event.preventDefault();const result=window.FarmAuctions.placeBid(id,Number(dialog.querySelector('#auction-bid-amount').value));if(!result.ok){dialog.querySelector('.buyer-auction-error').textContent=result.message;return;}form.innerHTML=`<p class="buyer-kicker">BID RECORDED</p><h2>Bid submitted</h2><p>Your bid of <strong>${window.FarmAuctions.money(result.bid.amount)}</strong> has been recorded for ${escapeHtml(item.name)}. Your identity remains private.</p><button type="button" class="buyer-place-bid" data-close-success>Done</button>`;form.querySelector('[data-close-success]').addEventListener('click',()=>dialog.close());});
+      dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();dialog.querySelector('#auction-bid-amount').focus();
+    }
+
+    function updateAuctionTimers(){
+      let changed=false;const now=Date.now();
+      document.querySelectorAll('[data-auction-timer]').forEach(node=>{const start=Number(node.dataset.auctionStart),end=Number(node.dataset.auctionEnd),status=now<start?'upcoming':now<end?'live':'ended',target=status==='upcoming'?start:end;node.textContent=`${status==='upcoming'?'Starts in':status==='live'?'Ends in':'Closed'} ${window.FarmAuctions.remaining(target-now)}`;if(status!==node.dataset.auctionState){node.dataset.auctionState=status;changed=true;}});
+      if(changed){renderAuctionTab(auctionTab);renderHomeAuction();}
     }
 
     function renderOrders() {

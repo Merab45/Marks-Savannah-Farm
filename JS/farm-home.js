@@ -1,5 +1,5 @@
 // Signed-in app screens: Home, Marketplace, Auctions, Saved, Profile.
-// Listings and the sample auctions below are PLACEHOLDERS: edit LISTINGS / AUCTIONS to match the farm's real stock.
+// Marketplace listings are sample records; auction schedules and bids use the shared auction core.
 (() => {
   const root = document.getElementById('screen-home');
   if (!root) return;
@@ -75,15 +75,11 @@
     ,{ id:'crop-protection', name:'Registered crop-protection products', cat:'Farm inputs', meta:'Exact product confirmed on request', price:null, imgs:['Crops.jpg'], tag:'Ask the farm', stock:'Confirm availability', specs:[['Product registration','Confirm with farm'],['Label & use','Confirm before sale']], desc:'Share the crop and concern so the farm can confirm the exact approved product, label directions, protective equipment, and restrictions before any sale.' }
   ];
   const CATS = ['All', 'Cattle', 'Goats', 'Sheep', 'Poultry', 'Pigs', 'Crops', 'Dairy', 'Equipment', 'Farm inputs', 'Services'];
-  const DAY = 864e5, HR = 36e5, MIN = 6e4;
-  const auctionEnd = () => { let t = store.get('farm-app-demo-auction', null); if (!t) { t = { start: Date.now(), end: Date.now() + 2 * DAY + 14 * HR + 32 * MIN }; store.set('farm-app-demo-auction', t); } return t; };
-  // SAMPLE auction data and rules: replace with the farm's real details. Bids are sent to the farm on WhatsApp for confirmation.
-  const RULES = ['Each bid must be at least the current highest bid plus the minimum increment.','Bids are confirmed by the farm on WhatsApp before they count.','The winning bidder arranges payment and collection with the farm.','The farm confirms availability and final details before any payment.'];
-  const AUCTIONS = { live: { name:'Premium Boran Bull', meta:'Male · 3 years · Excellent genetics', bid:85000, start:60000, inc:2000, bidders:12, imgs:['Cattle%20dropdown.jpg'], img:'Cattle%20dropdown.jpg', specs:[['Breed','Boran'],['Age','3 years'],['Sex','Male']] },
-                     upcoming: { name:'Boer Goats – 10 Heads', meta:'10 heads · Boer goats', img:'Goats.jpg', imgs:['Goats.jpg'], days:3, start:60000, inc:1000, specs:[['Breed','Boer'],['Quantity','10 heads']] } };
-  const AU = id => id === 'goats' ? AUCTIONS.upcoming : AUCTIONS.live;
-  const bidsList = () => store.get('farm-app-bids', []);
-  const fmtLeft = ms => { ms = Math.max(0, ms); const p = n => String(n).padStart(2, '0'); return `${p(Math.floor(ms / DAY))}d : ${p(Math.floor(ms % DAY / HR))}h : ${p(Math.floor(ms % HR / MIN))}m`; };
+  const auctionMarket = window.FarmAuctions;
+  const AU = id => auctionMarket.get(({bull:'boran-bull',goats:'boer-goats'})[id] || id);
+  const bidsList = () => auctionMarket.myBids();
+  const fmtLeft = ms => auctionMarket.remaining(ms);
+  const RULES = ['Bids must meet the displayed minimum and increment.','Bidder names and contact details are private; only bid amounts are shown publicly.','Bids close automatically at the displayed time.','The farm can be contacted to arrange the outcome after the auction closes.'];
 
   const S = { detail:null, tab:'home', cat:'All', q:'', sort:'recent', atab:'live' };
   const TABS = [['home','Home'], ['market','Marketplace'], ['auctions','Auctions'], ['saved','Saved'], ['profile','Profile']];
@@ -106,7 +102,7 @@
   const seller = `<a class="fh-seller" href="about-us.html"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span><small>Sold by:</small><b>Mark’s Savannah Farm</b></span>${ic('arrow')}</a>`;
   const specs = L => L.length ? `<section class="fh-spec"><h3>${ic('file')} Specifications</h3><dl>${L.map(([k, v]) => `<div><dt>${k}:</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : '';
   const dtop = (t, extra) => `<header class="fh-top fh-top-title"><button class="fh-icon" data-back aria-label="Back">${ic('back')}</button><h1>${t}</h1>${topActions(extra)}</header>`;
-  const auState = (a, id) => id === 'goats' ? 'upcoming' : (auctionEnd().end - Date.now() > 0 ? 'live' : 'ended');
+  const auState = a => a.status;
 
   function product(id) {
     const p = LISTINGS.find(x => x.id === id) || LISTINGS[0], rel = LISTINGS.filter(x => x.id !== p.id && x.cat === p.cat).concat(LISTINGS.filter(x => x.id !== p.id && x.cat !== p.cat)).slice(0, 2);
@@ -120,38 +116,35 @@
     ${rel.length ? `<h3 class="fh-h3">Related products</h3><div class="fh-grid">${rel.map(card).join('')}</div>` : ''}`;
   }
   function auctionDetail(id) {
-    const a = AU(id), st = auState(a, id), t = auctionEnd(), left = t.end - Date.now(), pct = Math.min(100, Math.max(4, (Date.now() - t.start) / (t.end - t.start) * 100));
+    const a = AU(id), st = auState(a), left = a.endsAt - Date.now(), pct = Math.min(100, Math.max(0, ((Date.now() - a.startsAt) / (a.endsAt - a.startsAt)) * 100));
     const badge = `<span class="fh-pill fh-status fh-${st}">${st === 'live' ? '<i></i>' : ''}${st.toUpperCase()}</span>`;
-    const mine = bidsList().filter(b => b.id === id);
-    const action = st === 'live' ? `<button class="fh-dark fh-full" data-bid="${id}">${ic('auctions')} Place Your Bid</button><p class="fh-note-box">${ic('info')} Preview auction. Bids are sent to the farm on WhatsApp and confirmed by the farm.</p>`
+    const mine = bidsList().filter(b => b.auctionId === a.id);
+    const action = st === 'live' ? `<button class="fh-dark fh-full" data-bid="${a.id}">${ic('auctions')} Place Your Bid</button>`
       : st === 'upcoming' ? `<button class="fh-soft fh-full" data-remind aria-pressed="${!!store.get('farm-app-remind', false)}">${ic('bell')} ${store.get('farm-app-remind', false) ? 'Reminder set' : 'Set Reminder'}</button>`
-      : `<div class="fh-result">${ic('check')}<div><b>Auction ended</b><p>Contact the farm to confirm the outcome and current availability.</p></div></div><a class="fh-ghost fh-full" href="${wa(`Hello Mark's Savannah Farm, I'm asking about the result of the ${a.name} auction.`)}" target="_blank" rel="noopener">${ic('chat')} Ask about the result</a>`;
-    const stats = st === 'upcoming'
-      ? `<div class="fh-stats"><div><small>Opening Bid</small><b>${ksh(a.start)}</b></div><div><small>Minimum Increment</small><b>${ksh(a.inc)}</b></div></div>`
-      : `<div class="fh-stats"><div><small>Current Highest Bid</small><b>${ksh(a.bid)}</b></div><div><small>Starting Bid</small><b>${ksh(a.start)}</b></div></div>`;
-    const userBids = mine.length ? `<h3 class="fh-h3">Your bid activity</h3><table class="fh-hist"><tbody>${mine.map(b => `<tr><td>${ksh(b.amount)}</td><td>${new Date(b.time).toLocaleString('en-KE', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</td><td>Sent to farm</td></tr>`).join('')}</tbody></table>` : '<p class="fh-fine">Your bids will appear here after you send one to the farm.</p>';
+      : `<div class="fh-result">${ic('check')}<div><b>Auction closed</b><p>The farm can now be contacted to confirm the result and arrange the next steps.</p></div></div><a class="fh-ghost fh-full" href="mailto:meraprenish@gmail.com?subject=${encodeURIComponent(`Closed auction: ${a.name}`)}">${ic('chat')} Contact farm about closed auction</a>`;
+    const stats = `<div class="fh-stats"><div><small>${st === 'upcoming' ? 'Opening Bid' : 'Current Highest Bid'}</small><b data-auction-highest="${a.id}">${ksh(a.highestBid)}</b></div><div><small>Starting Bid</small><b>${ksh(a.startBid)}</b></div></div><div class="fh-stats"><div><small>Minimum Increment</small><b>${ksh(a.increment)}</b></div><div><small>Lot size</small><b>${esc(a.quantity)}</b></div></div>`;
+    const publicBids = a.bids.length ? `<section class="fh-spec fh-auction-bids"><h3>${ic('user')} Bid amounts · identities private</h3><ul>${a.bids.map(bid => `<li><span>Anonymous bidder</span><b>${ksh(bid.amount)}</b></li>`).join('')}</ul></section>` : '<p class="fh-fine">No bids have been placed yet.</p>';
+    const userBids = mine.length ? `<h3 class="fh-h3">Your bids</h3><table class="fh-hist"><tbody>${mine.map(b => `<tr><td>${ksh(b.amount)}</td><td>${new Date(b.placedAt).toLocaleString('en-KE', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</td><td>Recorded</td></tr>`).join('')}</tbody></table>` : '';
+    const countdown = st === 'upcoming' ? `Starts in <b data-auction-countdown data-auction-state="${st}" data-auction-start="${a.startsAt}" data-auction-end="${a.endsAt}">${fmtLeft(a.startsAt - Date.now())}</b>` : `${st === 'live' ? 'Ends in' : 'Ended'} <b data-auction-countdown data-auction-state="${st}" data-auction-start="${a.startsAt}" data-auction-end="${a.endsAt}">${st === 'live' ? fmtLeft(left) : '00d : 00h : 00m : 00s'}</b>`;
     return dtop('Auction details', heart('auction-' + id, a.name).replace('fh-heart', 'fh-icon fh-heart-top')) + gallery(a.imgs, badge, a.name) + `<h1 class="fh-ptitle">${esc(a.name)}</h1><p class="fh-sub">${esc(a.meta || 'Livestock auction')}</p>
-    ${stats}
-    ${st === 'upcoming' ? `<p class="fh-ends">${ic('clock')} Starts in <b>${a.days} days</b></p>` : `<p class="fh-ends">${ic('clock')} ${st === 'live' ? 'Ends in' : 'Ended'} <b data-left>${st === 'live' ? fmtLeft(left) : '00d : 00h : 00m'}</b></p><div class="fh-bar"><span style="width:${st === 'live' ? pct.toFixed(0) : 100}%"></span></div>`}
-    <div class="fh-two fh-info"><div>${ic('market')}<span><small>Minimum Increment</small><b>${ksh(a.inc)}</b></span></div>${a.bidders ? `<div>${ic('user')}<b>${a.bidders} Bidders</b></div>` : ''}</div>
-    ${specs(a.specs)}
-    ${userBids}
+    <p class="fh-ends">${ic('clock')} ${countdown}</p><div class="fh-bar"><span style="width:${st === 'upcoming' ? 0 : pct.toFixed(0)}%"></span></div>
+    ${stats}<div class="fh-auction-disclosure">${esc(a.summary)}</div>${specs(a.specs)}${publicBids}${userBids}
     <details class="fh-rules"><summary>${ic('file')} Auction Rules ${ic('chev')}</summary><ul>${RULES.map(r => `<li>${r}</li>`).join('')}</ul></details>${seller}${action}`;
   }
   function sheet(id) {
-    const a = AU(id), min = a.bid + a.inc; let amt = min;
+    const a = AU(id), min = auctionMarket.minBid(a); let amt = min;
     const el = document.createElement('div'); el.className = 'fh-sheet';
     const close = () => { el.remove(); };
-    const step1 = (err = '') => { el.innerHTML = `<div class="fh-sheet-card" role="dialog" aria-modal="true" aria-label="Place your bid"><h2>Place your bid</h2><p>${a.name}. Current highest bid ${ksh(a.bid)}.</p><label for="fh-amt">Your bid (KSh)</label><input id="fh-amt" type="number" inputmode="numeric" min="${min}" step="${a.inc}" value="${amt}"><div class="fh-chips"><button data-q="${min}">Minimum ${ksh(min)}</button><button data-q="${min + a.inc}">${ksh(min + a.inc)}</button><button data-q="${min + a.inc * 3}">${ksh(min + a.inc * 3)}</button></div><p class="fh-err" role="alert">${err}</p><button class="fh-dark fh-full" data-go="2">Review bid</button><button class="fh-ghost fh-full" data-x>Cancel</button></div>`; $('#fh-amt', el).focus(); };
-    const step2 = () => { el.innerHTML = `<div class="fh-sheet-card" role="dialog" aria-modal="true" aria-label="Review your bid"><h2>Review your bid</h2><dl class="fh-rev"><div><dt>Animal</dt><dd>${a.name}</dd></div><div><dt>Your bid</dt><dd>${ksh(amt)}</dd></div><div><dt>Current highest</dt><dd>${ksh(a.bid)}</dd></div></dl><p class="fh-fine">Confirming opens WhatsApp with your bid ready to send. The farm confirms it before it counts.</p><button class="fh-dark fh-full" data-go="3">Confirm bid</button><button class="fh-ghost fh-full" data-go="1">Change amount</button></div>`; };
-    const step3 = () => { const L = bidsList(); L.unshift({ id, amount: amt, time: Date.now() }); store.set('farm-app-bids', L); window.open(wa(`Hello Mark's Savannah Farm, I'd like to place a bid of ${ksh(amt)} on the ${a.name}.`), '_blank', 'noopener'); el.innerHTML = `<div class="fh-sheet-card"><h2>Bid ready to send</h2><p>Send the WhatsApp message to finish. Your bid of ${ksh(amt)} is saved under My Bids as awaiting confirmation.</p><button class="fh-dark fh-full" data-done>Done</button></div>`; };
+    const step1 = (err = '') => { const current = AU(id), next = auctionMarket.minBid(current); el.innerHTML = `<div class="fh-sheet-card" role="dialog" aria-modal="true" aria-label="Place your bid"><h2>Place your bid</h2><p>${esc(a.name)} · Current highest ${ksh(current.highestBid)} · Minimum ${ksh(next)}</p><label for="fh-amt">Your bid (KSh)</label><input id="fh-amt" type="number" inputmode="numeric" min="${next}" step="${a.increment}" value="${Math.max(amt,next)}"><div class="fh-chips"><button data-q="${next}">Minimum ${ksh(next)}</button><button data-q="${next + a.increment}">${ksh(next + a.increment)}</button><button data-q="${next + a.increment * 3}">${ksh(next + a.increment * 3)}</button></div><p class="fh-err" role="alert">${err}</p><button class="fh-dark fh-full" data-go="2" ${current.status !== 'live' ? 'disabled' : ''}>Review bid</button><button class="fh-ghost fh-full" data-x>Cancel</button></div>`; $('#fh-amt', el).focus(); };
+    const step2 = () => { const current = AU(id); el.innerHTML = `<div class="fh-sheet-card" role="dialog" aria-modal="true" aria-label="Review your bid"><h2>Review your bid</h2><dl class="fh-rev"><div><dt>Auction lot</dt><dd>${esc(a.name)}</dd></div><div><dt>Your bid</dt><dd>${ksh(amt)}</dd></div><div><dt>Current highest</dt><dd>${ksh(current.highestBid)}</dd></div></dl><p class="fh-fine">Your bid is recorded in this demo on this device. Bidder identity stays private; the bid amount is visible to other viewers. The farm is contacted only after the auction closes.</p><button class="fh-dark fh-full" data-go="3">Submit bid</button><button class="fh-ghost fh-full" data-go="1">Change amount</button></div>`; };
+    const step3 = () => { const result = auctionMarket.placeBid(id, amt); if (!result.ok) return step1(result.message); el.innerHTML = `<div class="fh-sheet-card"><h2>Bid submitted</h2><p>Your bid of ${ksh(amt)} is recorded for ${esc(a.name)}. Your identity remains private.</p><button class="fh-dark fh-full" data-done>Done</button></div>`; };
     el.addEventListener('click', e => {
       const b = e.target.closest('button'); if (e.target === el) return close(); if (!b) return;
       if (b.dataset.x !== undefined) return close();
       if (b.dataset.done !== undefined) { close(); render(); return; }
       if (b.dataset.q) { $('#fh-amt', el).value = b.dataset.q; return; }
       if (b.dataset.go === '1') return step1();
-      if (b.dataset.go === '2') { const v = Math.round(Number($('#fh-amt', el).value)); if (!v || v < min || (v - min) % a.inc !== 0) return step1(`Enter at least ${ksh(min)} in increments of ${ksh(a.inc)}.`); amt = v; return step2(); }
+      if (b.dataset.go === '2') { const v = Math.round(Number($('#fh-amt', el).value)); const current=AU(id), next=auctionMarket.minBid(current); if (current.status!=='live') return step1('This auction has closed or has not opened yet.'); if (!v || v < next || (v - next) % a.increment !== 0) return step1(`Enter at least ${ksh(next)} in increments of ${ksh(a.increment)}.`); amt = v; return step2(); }
       if (b.dataset.go === '3') step3();
     });
     el.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
@@ -159,12 +152,12 @@
   }
   function home() {
     const n = user().name.split(' ')[0], h = new Date().getHours(), g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-    const t = auctionEnd();
+    const featured = auctionMarket.list().find(item => item.status === 'live') || auctionMarket.list()[0];
     return brand(cartButton()) + `
     <div class="fh-greet"><h2>${g}${n ? ', ' + esc(n) : ''}</h2><p>Welcome to Mark’s Savannah Farm</p></div>
     <section class="fh-hero"><h2>Growing food today.<br>Building a better tomorrow.</h2><button class="fh-gold" data-tab="market">Explore the farm ${ic('arrow')}</button></section>
-    <section class="fh-live"><div class="fh-row"><h3>${ic('auctions')} Live Auctions</h3><span class="fh-pill">Live</span></div>
-      <div class="fh-live-body"><div class="fh-thumb" style="background-image:url('${img(AUCTIONS.live.img)}')"></div><div><h4>${AUCTIONS.live.name}</h4><small>Current bid</small><strong>${ksh(AUCTIONS.live.bid)}</strong><span class="fh-time">${ic('clock')}<b data-left>${fmtLeft(t.end - Date.now())}</b></span><button class="fh-dark" data-open="auction:bull">View &amp; Bid ${ic('arrow')}</button></div></div></section>
+    <section class="fh-live"><div class="fh-row"><h3>${ic('auctions')} Live Auctions</h3><span class="fh-pill">${auctionMarket.list().filter(item => item.status === 'live').length} Live</span></div>
+      <div class="fh-live-body"><div class="fh-thumb" style="background-image:url('${img(featured.image.replace('Assets/',''))}')"></div><div><h4>${esc(featured.name)}</h4><small>${featured.status === 'upcoming' ? 'Opening bid' : 'Current highest bid'}</small><strong>${ksh(featured.highestBid)}</strong><span class="fh-time">${ic('clock')}<b data-auction-countdown data-auction-state="${featured.status}" data-auction-start="${featured.startsAt}" data-auction-end="${featured.endsAt}">${fmtLeft((featured.status === 'upcoming' ? featured.startsAt : featured.endsAt) - Date.now())}</b></span><button class="fh-dark" data-open="auction:${featured.id}">${featured.status === 'live' ? 'View &amp; Bid' : 'View auction'} ${ic('arrow')}</button></div></div></section>
     <h3 class="fh-h3">What are you looking for today?</h3>
     <div class="fh-tiles">
       <button data-tab="market" data-cat="All"><i style="background-image:url('${img('Cattle%20dropdown.jpg')}')"></i><b>Livestock</b><small>Cattle, goats, sheep, pigs</small></button>
@@ -186,20 +179,20 @@
     $('#fh-list').innerHTML = L.length ? L.map(card).join('') : '<p class="fh-empty">Nothing matches that search. Try another category.</p>';
   }
   function auctions() {
-    const t = auctionEnd(), a = AUCTIONS.live, u = AUCTIONS.upcoming, pct = Math.min(100, Math.max(4, (Date.now() - t.start) / (t.end - t.start) * 100));
-    const tabs = [['live', 'Live (1)'], ['upcoming', 'Upcoming (1)'], ['bids', 'My Bids'], ['results', 'Results']];
-    const live = `<article class="fh-auction"><div class="fh-big" style="background-image:url('${img(a.img)}')"><span class="fh-pill">Live</span></div><h2>${a.name}</h2><p>${a.meta}</p>
-      <div class="fh-stats"><div><small>Current Highest Bid</small><b>${ksh(a.bid)}</b></div><div><small>Starting Bid</small><b>${ksh(a.start)}</b></div></div>
-      <p class="fh-ends">${ic('clock')} Ends in: <b data-left>${fmtLeft(t.end - Date.now())}</b></p><div class="fh-bar"><span style="width:${pct.toFixed(0)}%"></span></div>
-      <div class="fh-bidrow"><button class="fh-dark fh-wide" data-open="auction:bull">${ic('auctions')} Place Your Bid</button><button class="fh-heart-lg ${saved().includes('auction-bull') ? 'is-on' : ''}" data-save="auction-bull" aria-label="Save auction">${ic('heart')}</button></div></article>`;
-    const up = `<article class="fh-up"><div class="fh-thumb" style="background-image:url('${img(u.img)}')"></div><div><h3><button class="fh-link" data-open="auction:goats">${u.name}</button></h3><small>Auction starts in</small><span class="fh-time">${ic('cal')}<b>${u.days} days</b></span><button class="fh-soft" data-remind aria-pressed="${!!store.get('farm-app-remind', false)}">${ic('bell')} ${store.get('farm-app-remind', false) ? 'Reminder set' : 'Set Reminder'}</button></div></article>`;
-    const body = S.atab === 'live' ? live : S.atab === 'upcoming' ? up : S.atab === 'bids' ? (bidsList().length ? `<div class="fh-list">${bidsList().map(b => `<button data-open="auction:bull"><span>${ksh(b.amount)} on ${AU('bull').name}<br><small>Sent to the farm, awaiting confirmation</small></span></button>`).join('')}</div>` : '<p class="fh-empty">You have not placed any bids yet. Bids are confirmed with the farm on WhatsApp.</p>') : '<p class="fh-empty">No auction results yet.</p>';
-    return title('Auctions', true) + `<div class="fh-chips fh-atabs" role="group" aria-label="Auction views">${tabs.map(([k, l]) => `<button data-atab="${k}" class="${k === S.atab ? 'is-on' : ''}" aria-pressed="${k === S.atab}">${l}</button>`).join('')}</div>${body}${S.atab === 'live' ? `<h3 class="fh-h3">Upcoming Auction</h3>${up}` : ''}`;
+    const all = auctionMarket.list(), live = all.filter(item => item.status === 'live'), upcoming = all.filter(item => item.status === 'upcoming'), closed = all.filter(item => item.status === 'ended');
+    const tabs = [['live', `Live (${live.length})`], ['upcoming', `Upcoming (${upcoming.length})`], ['bids', 'My Bids'], ['results', 'Results']];
+    const cards = items => items.map(item => `<article class="fh-auction"><div class="fh-big" style="background-image:url('${img(item.image.replace('Assets/',''))}')"><span class="fh-pill ${item.status === 'live' ? 'fh-live-badge' : ''}">${item.status === 'live' ? 'Live' : item.status === 'ended' ? 'Closed' : 'Upcoming'}</span></div><h2>${esc(item.name)}</h2><p>${esc(item.summary)}</p><div class="fh-stats"><div><small>${item.status === 'upcoming' ? 'Opening Bid' : 'Current Highest Bid'}</small><b>${ksh(item.highestBid)}</b></div><div><small>Starting Bid</small><b>${ksh(item.startBid)}</b></div></div><p class="fh-ends">${ic('clock')} ${item.status === 'upcoming' ? 'Starts in' : item.status === 'live' ? 'Ends in' : 'Closed'} <b data-auction-countdown data-auction-state="${item.status}" data-auction-start="${item.startsAt}" data-auction-end="${item.endsAt}">${fmtLeft((item.status === 'upcoming' ? item.startsAt : item.endsAt) - Date.now())}</b></p><div class="fh-auction-disclosure">${item.specs.slice(0,3).map(([key,value])=>`<span><b>${esc(key)}:</b> ${esc(value)}</span>`).join('')}</div><div class="fh-bidrow"><button class="fh-dark fh-wide" data-open="auction:${item.id}">${item.status === 'live' ? 'View &amp; Bid' : 'View auction'} ${ic('arrow')}</button><button class="fh-heart-lg ${saved().includes('auction-'+item.id) ? 'is-on' : ''}" data-save="auction-${item.id}" aria-label="Save auction">${ic('heart')}</button></div></article>`).join('');
+    let body = '';
+    if (S.atab === 'live') body = live.length ? `<div class="fh-auction-grid">${cards(live)}</div>` : '<p class="fh-empty">No auctions are live right now. Upcoming lots are listed in the next tab.</p>';
+    else if (S.atab === 'upcoming') body = upcoming.length ? `<div class="fh-auction-grid">${cards(upcoming)}</div>` : '<p class="fh-empty">No upcoming lots are scheduled.</p>';
+    else if (S.atab === 'bids') { const mine = bidsList(); body = mine.length ? `<div class="fh-list">${mine.map(bid => { const item=auctionMarket.get(bid.auctionId); return `<button data-open="auction:${item.id}"><span>${esc(item.name)}<br><small>Your bid · ${ksh(bid.amount)} · ${new Date(bid.placedAt).toLocaleString('en-KE')}</small></span></button>`; }).join('')}</div>` : '<p class="fh-empty">You have not placed any bids on this device yet.</p>'; }
+    else body = closed.length ? `<div class="fh-auction-grid">${closed.map(item => `<article class="fh-auction"><h2>${esc(item.name)}</h2><p>Auction closed</p><strong>${item.bids.length ? `Winning amount: ${ksh(item.highestBid)}` : 'No bids were placed'}</strong><a class="fh-ghost fh-full" href="mailto:meraprenish@gmail.com?subject=${encodeURIComponent(`Closed auction: ${item.name}`)}">Contact farm about closed auction</a></article>`).join('')}</div>` : '<p class="fh-empty">Completed lots will appear here after their countdown ends.</p>';
+    return title('Auctions', true) + `<div class="fh-chips fh-atabs" role="group" aria-label="Auction views">${tabs.map(([k, l]) => `<button data-atab="${k}" class="${k === S.atab ? 'is-on' : ''}" aria-pressed="${k === S.atab}">${l}</button>`).join('')}</div><p class="fh-fine">Sample auction schedule. Bidder identities are private; only amounts are shown. Bids are stored on this device in this preview.</p>${body}`;
   }
   function savedView() {
     const L = LISTINGS.filter(p => saved().includes(p.id));
-    const A = saved().filter(id => id === 'auction-bull' || id === 'auction-goats');
-    const auctionCards = A.map(id => { const key = id === 'auction-goats' ? 'goats' : 'bull', a = AU(key); return `<button class="fh-list-saved" data-open="auction:${key}">${ic('auctions')}<span>${esc(a.name)}<small>Open auction details</small></span>${ic('arrow')}</button>`; }).join('');
+    const A = saved().filter(id => id.startsWith('auction-')).map(id => id.slice('auction-'.length)).filter(id => auctionMarket.get(id));
+    const auctionCards = A.map(id => { const a = AU(id); return `<button class="fh-list-saved" data-open="auction:${id}">${ic('auctions')}<span>${esc(a.name)}<small>Open auction details</small></span>${ic('arrow')}</button>`; }).join('');
     return title('Saved') + (L.length || A.length ? `${L.length ? `<div class="fh-grid">${L.map(card).join('')}</div>` : ''}${auctionCards ? `<div class="fh-list">${auctionCards}</div>` : ''}` : `<div class="fh-empty fh-blank">${ic('saved', 'fh-big-i')}<p>Nothing saved yet. Tap the heart on any listing or auction to keep it here.</p><button class="fh-dark" data-tab="market">Browse the marketplace</button></div>`);
   }
   function profile() {
@@ -209,11 +202,12 @@
   }
   const VIEWS = { home, market, auctions, saved: savedView, profile };
 
-  function render() {
+  function render(keepScroll = false) {
     const d = S.detail;
+    const scrollTop = $('.fh-scroll').scrollTop;
     $('.fh-scroll').innerHTML = d ? (d.type === 'product' ? product(d.id) : auctionDetail(d.id)) : VIEWS[S.tab]();
     if (S.tab === 'market' && !d) fillList();
-    $('.fh-scroll').scrollTop = 0;
+    $('.fh-scroll').scrollTop = keepScroll ? scrollTop : 0;
     $$('.fh-nav button').forEach(b => { const on = b.dataset.tab === (d ? (d.type === 'product' ? 'market' : 'auctions') : S.tab); b.classList.toggle('is-on', on); on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); });
   }
   function open() {
@@ -239,7 +233,7 @@
     }
     if (d.open) { const [type, id] = d.open.split(':'); S.detail = { type, id }; render(); return; }
     if (d.back !== undefined) { S.detail = null; render(); return; }
-    if (d.bid) { if (auctionEnd().end <= Date.now()) { S.detail = { type:'auction', id:d.bid }; render(); toast('This preview auction has ended.'); return; } sheet(d.bid); return; }
+    if (d.bid) { const item = AU(d.bid); if (item.status !== 'live') { S.detail = { type:'auction', id:d.bid }; render(); toast('Bids are accepted only while the lot is live.'); return; } sheet(d.bid); return; }
     if (d.tab) S.detail = null;
     if (d.signout !== undefined) { ['savanna-customer-session'].forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); }); location.reload(); return; }
     if (d.save) { const s = saved(), i = s.indexOf(d.save); i < 0 ? s.push(d.save) : s.splice(i, 1); store.set('farm-app-saved', s); render(); toast(i < 0 ? 'Saved' : 'Removed from saved'); return; }
@@ -252,7 +246,20 @@
   });
   root.addEventListener('scroll', e => { const r = e.target; if (!r.classList || !r.classList.contains('fh-gal')) return; const i = Math.round(r.scrollLeft / r.clientWidth), w = r.parentElement; const c = $('[data-gcur]', w); if (c) c.textContent = i + 1; $$('.fh-dots i', w).forEach((x, k) => x.classList.toggle('is-on', k === i)); $$('.fh-thumbs button').forEach((x, k) => x.classList.toggle('is-on', k === i)); }, true);
   root.addEventListener('input', e => { if (e.target.id === 'fh-q') { S.q = e.target.value; fillList(); } });
-  setInterval(() => { const t = auctionEnd(); $$('[data-left]').forEach(n => { n.textContent = fmtLeft(t.end - Date.now()); }); }, 30000);
+  function updateAuctionTimers() {
+    let stateChanged = false;
+    $$('[data-auction-countdown]').forEach(node => {
+      const startsAt = Number(node.dataset.auctionStart), endsAt = Number(node.dataset.auctionEnd), now = Date.now();
+      const status = now < startsAt ? 'upcoming' : now < endsAt ? 'live' : 'ended';
+      const target = status === 'upcoming' ? startsAt : endsAt;
+      node.textContent = fmtLeft(target - now);
+      if (node.dataset.auctionState !== status) { node.dataset.auctionState = status; stateChanged = true; }
+    });
+    if (stateChanged) render(true);
+  }
+  window.addEventListener('farm-auctions-updated', () => { if (S.tab === 'auctions' || S.detail?.type === 'auction') render(true); });
+  window.addEventListener('storage', event => { if (event.key === 'marks-savannah-auction-bids-v1' || event.key === 'marks-savannah-auction-schedule-v1') { if (S.tab === 'auctions' || S.detail?.type === 'auction') render(true); } });
+  setInterval(updateAuctionTimers, 1000);
   window.addEventListener('farm-home-open', open);
   window.farmHomeReady = true;
 })();

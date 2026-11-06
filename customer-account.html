@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" type="image/png">
     <title>Mark’s Savannah Farm App</title>
-    <link rel="stylesheet" href="CSS/site.css?v=130">
+    <link rel="stylesheet" href="CSS/site.css?v=137">
   </head>
   <body class="page-customer-account">
     <div class="buyer-app">
@@ -87,7 +87,7 @@
         <section class="buyer-screen" data-app-screen="auctions" aria-labelledby="auction-title" hidden>
           <div class="buyer-auction-title-row"><button class="buyer-back-button" type="button" data-app-view="home" aria-label="Back to home">‹</button><h1 id="auction-title">Auctions</h1><button class="buyer-icon-button" type="button" data-auction-filter aria-label="Hide auction views" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6.5 7.5V19l-3 1v-7.5z"/></svg></button></div>
           <div class="buyer-auction-tabs" role="tablist" aria-label="Auction views"><button class="is-active" type="button" role="tab" aria-selected="true" data-auction-tab="live">Live (1)</button><button type="button" role="tab" aria-selected="false" data-auction-tab="upcoming">Upcoming (1)</button><button type="button" role="tab" aria-selected="false" data-auction-tab="my-bids">My Bids</button><button type="button" role="tab" aria-selected="false" data-auction-tab="results">Results</button></div>
-          <div class="buyer-demo-note"><strong>Design preview:</strong> auction details and amounts below are examples; no real bids are accepted.</div>
+          <div class="buyer-demo-note"><strong>Auction preview:</strong> sample lots accept test bids on this device. Bidder identities stay private; only bid amounts are displayed. Live bidding across buyers requires the farm’s online auction service.</div>
           <div class="buyer-auction-content" id="auctionContent"></div>
         </section>
 
@@ -108,7 +108,7 @@
           <section class="buyer-panel"><h2>Personal details</h2><dl class="buyer-profile-grid"><div><dt>Phone number</dt><dd id="customerPhone"></dd></div><div><dt>Account created</dt><dd id="memberSince"></dd></div></dl></section>
           <section class="buyer-panel buyer-profile-orders"><div class="buyer-section-heading"><div><p class="buyer-kicker">PURCHASE HISTORY</p><h2>Purchases with the farm</h2></div></div><div id="ordersList" class="buyer-orders-list"></div></section>
           <section class="buyer-panel"><div class="buyer-section-heading"><div><p class="buyer-kicker">WE’RE HERE TO HELP</p><h2>Talk to the farm</h2></div></div><div class="buyer-contact-actions"><a href="#" data-contact-whatsapp target="_blank" rel="noopener"><span>WhatsApp</span><small>Message the farm</small></a><a href="#" data-contact-phone><span>Call</span><small data-farm-phone></small></a><a href="#" data-contact-email><span>Email</span><small>Send us a message</small></a></div></section>
-          <p class="buyer-account-note">Account and saved items are stored on this device. Online bidding and order tracking are not connected.</p>
+          <p class="buyer-account-note">Account details, saved items, and auction preview bids are stored on this device. Preview bids are not synchronized between different buyers yet.</p>
           <a class="buyer-signout" href="index.html" onclick="signOut(event)">Sign out</a>
         </section>
       </main>
@@ -153,6 +153,7 @@
       </form>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="JS/site.js?v=99"></script>
+    <script src="JS/auction-core.js?v=1"></script>
+    <script src="JS/site.js?v=102"></script>
   </body>
 </html>

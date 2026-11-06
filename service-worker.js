@@ -1,5 +1,5 @@
 // Change this value whenever a site update should replace the cached files.
-const CACHE = 'marks-savannah-farm-v150';
+const CACHE = 'marks-savannah-farm-v152';
 
 // These core pages and assets remain available when the visitor is offline.
 const FILES = [
@@ -13,6 +13,7 @@ const FILES = [
   './blog.html',
   './app.html',
   './products-and-services.html',
+  './auctions.html',
   './shop.html',
   './herdbook.html',
   './sign-in.html',
@@ -48,6 +49,8 @@ const FILES = [
   './CSS/site.css?v=133',
   './CSS/site.css?v=134',
   './CSS/site.css?v=135',
+  './CSS/site.css?v=136',
+  './CSS/site.css?v=137',
   './JS/site.js',
   './JS/site.js?v=86',
   './JS/site.js?v=87',
@@ -65,6 +68,7 @@ const FILES = [
   './JS/site.js?v=99',
   './JS/site.js?v=100',
   './JS/site.js?v=101',
+  './JS/site.js?v=102',
   './JS/farm-home.js',
   './JS/farm-home.js?v=1',
   './JS/farm-home.js?v=2',
@@ -73,7 +77,10 @@ const FILES = [
   './JS/farm-home.js?v=5',
   './JS/farm-home.js?v=6',
   './JS/farm-home.js?v=7',
+  './JS/farm-home.js?v=8',
   './JS/commerce.js?v=1',
+  './JS/auction-core.js?v=1',
+  './JS/auction-page.js?v=1',
   './manifest.webmanifest',
   './Assets/login page background.png',
   './Assets/Splash Screen.png',
