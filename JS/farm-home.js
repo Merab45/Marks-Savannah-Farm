@@ -89,6 +89,12 @@
   const TABS = [['home','Home'], ['market','Marketplace'], ['auctions','Auctions'], ['saved','Saved'], ['profile','Profile']];
   const user = () => { const e = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session'); const u = store.get('savanna-customer-accounts', []).find(a => a.email === e); return { email: e || '', name: u && u.name ? String(u.name) : '' }; };
   const saved = () => store.get('farm-app-saved', []);
+  const cartItems = () => {
+    const items = store.get('savanna-farm-shop-cart', []);
+    return Array.isArray(items) ? items.filter(item => item && typeof item === 'object' && item.id) : [];
+  };
+  const cartCount = () => cartItems().reduce((total, item) => total + Math.max(1, Number(item.quantity) || 1), 0);
+  const cartButton = () => `<button class="fh-icon fh-cart-button" data-shop-cart aria-label="Open cart, ${cartCount()} items">${ic('cart')}<em data-app-cart-count>${cartCount()}</em></button>`;
   const toast = m => { const t = document.querySelector('.app-toast'); if (!t) return; t.textContent = m; t.classList.add('is-visible'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('is-visible'), 2600); };
 
   const brand = right => `<header class="fh-top"><a class="fh-brand" href="index.html" aria-label="Mark’s Savannah Farm"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span>Mark’s<br>Savannah Farm</span></a>${right}</header>`;
@@ -153,7 +159,7 @@
   function home() {
     const n = user().name.split(' ')[0], h = new Date().getHours(), g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
     const t = auctionEnd();
-    return brand(`<button class="fh-icon" data-shop-cart aria-label="Open cart">${ic('cart')}</button>`) + `
+    return brand(cartButton()) + `
     <div class="fh-greet"><h2>${g}${n ? ', ' + esc(n) : ''}</h2><p>Welcome to Mark’s Savannah Farm</p></div>
     <section class="fh-hero"><h2>Growing food today.<br>Building a better tomorrow.</h2><button class="fh-gold" data-tab="market">Explore the farm ${ic('arrow')}</button></section>
     <section class="fh-live"><div class="fh-row"><h3>${ic('auctions')} Live Auctions</h3><span class="fh-pill">Live</span></div>
@@ -167,7 +173,7 @@
     <a class="fh-learn" href="blog.html#guide-enterprise" style="background-image:linear-gradient(90deg,#eaf2dcf2 45%,#eaf2dc55),url('${img('Agri-Consultancy.jpg')}')"><h3>${ic('book')} Learn something new</h3><p>Practical farming tips, livestock care and agricultural insights.</p><b>Explore guides ${ic('arrow')}</b></a>`;
   }
   function market() {
-    return brand(`<button class="fh-icon" data-shop-cart aria-label="Open cart">${ic('cart')}<em data-app-cart-count>${store.get('savanna-farm-shop-cart', []).reduce((n, item) => n + (Number(item.quantity) || 1), 0)}</em></button>`) + `
+    return brand(cartButton()) + `
     <div class="fh-search"><label>${ic('search')}<input id="fh-q" type="search" placeholder="Search livestock, products…" value="${esc(S.q)}" aria-label="Search"></label><button class="fh-icon" data-sort aria-label="Change sort order">${ic('sort')}</button></div>
     <div class="fh-chips" role="group" aria-label="Category">${CATS.map(c => `<button data-cat="${c}" aria-pressed="${c === S.cat}" class="${c === S.cat ? 'is-on' : ''}">${c}</button>`).join('')}</div>
     <h2 class="fh-h2">Our Marketplace</h2><p class="fh-sub">Quality livestock and farm products</p><div class="fh-grid" id="fh-list"></div>`;
@@ -222,10 +228,13 @@
     if (d.shopCart !== undefined) { location.href = 'shop.html#shop-cart'; return; }
     if (d.addCart) {
       const product = LISTINGS.find(item => item.id === d.addCart); if (!product) return;
-      const cart = store.get('savanna-farm-shop-cart', []), current = Array.isArray(cart) ? cart : [], item = current.find(entry => entry.id === product.id);
+      const current = cartItems(), item = current.find(entry => entry.id === product.id);
       if (item) item.quantity = (Number(item.quantity) || 1) + 1;
       else current.push({id:product.id,name:product.name,category:product.cat,unit:({Cattle:'head',Goats:'head',Sheep:'head',Pigs:'head',Poultry:'bird',Crops:'bag or kg',Dairy:'pack',Equipment:'item',Services:'service'})[product.cat] || 'item',quantity:1});
-      store.set('savanna-farm-shop-cart', current); toast(`${product.name} added to your order.`); return;
+      store.set('savanna-farm-shop-cart', current);
+      root.querySelectorAll('[data-app-cart-count]').forEach(node => { node.textContent = String(cartCount()); });
+      root.querySelectorAll('[data-shop-cart]').forEach(button => { button.setAttribute('aria-label', `Open cart, ${cartCount()} items`); });
+      toast(`${product.name} added to your order.`); return;
     }
     if (d.open) { const [type, id] = d.open.split(':'); S.detail = { type, id }; render(); return; }
     if (d.back !== undefined) { S.detail = null; render(); return; }

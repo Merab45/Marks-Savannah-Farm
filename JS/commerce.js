@@ -51,7 +51,15 @@
   const moneyText = 'Price confirmed by the farm';
   const $ = (selector, root = document) => root.querySelector(selector);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const readCart = () => { try { const value = JSON.parse(localStorage.getItem(cartKey) || '[]'); return Array.isArray(value) ? value : []; } catch { return []; } };
+  const readCart = () => {
+    try {
+      const value = JSON.parse(localStorage.getItem(cartKey) || '[]');
+      return Array.isArray(value) ? value.filter(item => item && typeof item === 'object' && item.id).map(item => ({
+        id: String(item.id), name: String(item.name || 'Farm product'), category: String(item.category || 'Farm product'),
+        unit: String(item.unit || 'item'), quantity: Math.max(1, Math.floor(Number(item.quantity) || 1))
+      })) : [];
+    } catch { return []; }
+  };
   const writeCart = value => { localStorage.setItem(cartKey, JSON.stringify(value)); renderCart(); };
   const toast = message => { const el = $('#shop-toast'); el.textContent = message; el.classList.add('is-visible'); clearTimeout(toast.timer); toast.timer = setTimeout(() => el.classList.remove('is-visible'), 2600); };
   const requestedCategory = new URLSearchParams(location.search).get('category');
@@ -70,7 +78,7 @@
   }
   function renderCart() {
     const cart = readCart();
-    const count = cart.reduce((total, item) => total + Math.max(1, Number(item.quantity) || 1), 0);
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
     document.querySelectorAll('[data-cart-count]').forEach(node => node.textContent = String(count));
     $('#shop-cart-items').innerHTML = cart.length ? cart.map(item => `<article class="shop-cart-item"><div><strong>${esc(item.name)}</strong><small>${esc(item.unit || 'item')} · ${moneyText}</small></div><div class="shop-quantity"><button type="button" data-cart-change="-1" data-cart-id="${esc(item.id)}" aria-label="Remove one ${esc(item.name)}">−</button><span>${Math.max(1, Number(item.quantity) || 1)}</span><button type="button" data-cart-change="1" data-cart-id="${esc(item.id)}" aria-label="Add one ${esc(item.name)}">+</button><button type="button" class="shop-remove" data-cart-remove="${esc(item.id)}">Remove</button></div></article>`).join('') : '<p class="shop-empty">Your cart is empty. Add products from the catalogue to prepare an order request.</p>';
     $('[data-checkout-open]').disabled = cart.length === 0;
