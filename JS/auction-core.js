@@ -33,10 +33,9 @@
     const now = Date.now();
     let available = entries.filter(entry => Number(entry.endsAt) > now).length;
     while (available < 3) {
-      const lastEnd = Math.max(now, ...entries.map(entry => Number(entry.endsAt) || 0));
       const source = templates[(entries.length - templates.length) % templates.length];
       const round = Math.max(0, ...entries.filter(entry => baseId(entry.id) === source.id).map(entry => Number(entry.id.match(/-relist-(\d+)$/)?.[1] || 0))) + 1;
-      const startsAt = Math.max(now + 12 * HOUR, lastEnd);
+      const startsAt = now;
       entries.push({id:`${source.id}-relist-${round}`, startsAt, endsAt:startsAt + 2 * DAY});
       available++;
     }
