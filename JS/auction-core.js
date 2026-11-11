@@ -17,24 +17,42 @@
 
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key) || 'null') ?? fallback; } catch { return fallback; } };
   const save = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
+  const baseId = id => id.replace(/-relist-\d+$/, '');
+  function itemFor(entry) {
+    const source = templates.find(item => item.id === baseId(entry.id));
+    if (!source) return null;
+    const relist = entry.id === source.id ? 0 : Number(entry.id.match(/-relist-(\d+)$/)?.[1] || 1);
+    return relist ? {...source, id:entry.id, name:`${source.name} (Round ${relist + 1})`} : source;
+  }
   function schedule() {
     let entries = read(scheduleKey, null);
-    if (!Array.isArray(entries) || entries.length !== templates.length) {
+    if (!Array.isArray(entries) || !templates.every(item => entries.some(entry => entry.id === item.id))) {
       const now = Date.now();
       entries = templates.map(item => ({id:item.id, startsAt:now + item.startsIn, endsAt:now + item.startsIn + item.duration}));
-      save(scheduleKey, entries);
     }
+    const now = Date.now();
+    let available = entries.filter(entry => Number(entry.endsAt) > now).length;
+    while (available < 3) {
+      const lastEnd = Math.max(now, ...entries.map(entry => Number(entry.endsAt) || 0));
+      const source = templates[(entries.length - templates.length) % templates.length];
+      const round = Math.max(0, ...entries.filter(entry => baseId(entry.id) === source.id).map(entry => Number(entry.id.match(/-relist-(\d+)$/)?.[1] || 0))) + 1;
+      const startsAt = Math.max(now + 12 * HOUR, lastEnd);
+      entries.push({id:`${source.id}-relist-${round}`, startsAt, endsAt:startsAt + 2 * DAY});
+      available++;
+    }
+    save(scheduleKey, entries);
     return entries;
   }
   function list() {
     const times = schedule(), now = Date.now();
-    return templates.map(item => {
-      const time = times.find(entry => entry.id === item.id) || {};
+    return times.map(time => {
+      const item = itemFor(time);
+      if (!item) return null;
       const startsAt = Number(time.startsAt) || now, endsAt = Number(time.endsAt) || (now + item.duration);
       const status = now < startsAt ? 'upcoming' : now < endsAt ? 'live' : 'ended';
       const bids = getBids(item.id);
       return {...item, startsAt, endsAt, status, bids, highestBid:bids[0]?.amount || item.startBid, bidderCount:new Set(bids.map(bid => bid.bidder)).size};
-    });
+    }).filter(Boolean);
   }
   function get(id) { return list().find(item => item.id === id) || list()[0]; }
   function getBids(id) {
