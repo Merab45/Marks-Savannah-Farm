@@ -1,5 +1,5 @@
 // Change this value whenever a site update should replace the cached files.
-const CACHE = 'marks-savannah-farm-v153';
+const CACHE = 'marks-savannah-farm-v154';
 
 // These core pages and assets remain available when the visitor is offline.
 const FILES = [
@@ -81,6 +81,8 @@ const FILES = [
   './JS/commerce.js?v=1',
   './JS/auction-core.js?v=1',
   './JS/auction-page.js?v=1',
+  './JS/auction-core.js?v=2',
+  './JS/auction-page.js?v=2',
   './manifest.webmanifest',
   './Assets/login page background.png',
   './Assets/Splash Screen.png',
