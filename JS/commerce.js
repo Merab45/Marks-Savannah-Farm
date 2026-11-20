@@ -48,20 +48,44 @@
     'tractors':'tractor','farm equipment':'equipment','ploughs & harrows':'ploughs','planters & seeders':'ploughs','irrigation equipment':'irrigation','water pumps':'irrigation','sprayers':'sprayers'
   };
   const cartKey = 'savanna-farm-shop-cart';
+  const cartUpdatedEvent = 'savanna-cart-updated';
+  const maxQuantity = 999;
   const moneyText = 'Price confirmed by the farm';
   const $ = (selector, root = document) => root.querySelector(selector);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const readCart = () => {
     try {
       const value = JSON.parse(localStorage.getItem(cartKey) || '[]');
-      return Array.isArray(value) ? value.filter(item => item && typeof item === 'object' && item.id).map(item => ({
-        id: String(item.id), name: String(item.name || 'Farm product'), category: String(item.category || 'Farm product'),
-        unit: String(item.unit || 'item'), quantity: Math.max(1, Math.floor(Number(item.quantity) || 1))
-      })) : [];
+      return Array.isArray(value) ? value.filter(item => item && typeof item === 'object' && item.id).map(item => {
+        const quantity = Number(item.quantity);
+        const unitPrice = item.unitPrice == null ? null : Number(item.unitPrice);
+        return {
+          id: String(item.id), name: String(item.name || 'Farm product'), category: String(item.category || 'Farm product'),
+          unit: String(item.unit || 'item'), quantity: Number.isFinite(quantity) ? Math.min(maxQuantity, Math.max(1, Math.floor(quantity))) : 1,
+          unitPrice: Number.isFinite(unitPrice) && unitPrice >= 0 ? unitPrice : null
+        };
+      }) : [];
     } catch { return []; }
   };
-  const writeCart = value => { localStorage.setItem(cartKey, JSON.stringify(value)); renderCart(); };
-  const toast = message => { const el = $('#shop-toast'); el.textContent = message; el.classList.add('is-visible'); clearTimeout(toast.timer); toast.timer = setTimeout(() => el.classList.remove('is-visible'), 2600); };
+  const writeCart = value => {
+    try {
+      localStorage.setItem(cartKey, JSON.stringify(value));
+      window.dispatchEvent(new Event(cartUpdatedEvent));
+      renderCart();
+      return true;
+    } catch {
+      toast('Your order could not be saved on this device.');
+      return false;
+    }
+  };
+  const toast = message => {
+    const el = $('#shop-toast');
+    if (!el) return;
+    el.textContent = message;
+    el.classList.add('is-visible');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => el.classList.remove('is-visible'), 2600);
+  };
   const requestedCategory = new URLSearchParams(location.search).get('category');
   let activeCategory = categories.includes(requestedCategory) ? requestedCategory : 'All';
 
@@ -80,13 +104,23 @@
     const cart = readCart();
     const count = cart.reduce((total, item) => total + item.quantity, 0);
     document.querySelectorAll('[data-cart-count]').forEach(node => node.textContent = String(count));
-    $('#shop-cart-items').innerHTML = cart.length ? cart.map(item => `<article class="shop-cart-item"><div><strong>${esc(item.name)}</strong><small>${esc(item.unit || 'item')} · ${moneyText}</small></div><div class="shop-quantity"><button type="button" data-cart-change="-1" data-cart-id="${esc(item.id)}" aria-label="Remove one ${esc(item.name)}">−</button><span>${Math.max(1, Number(item.quantity) || 1)}</span><button type="button" data-cart-change="1" data-cart-id="${esc(item.id)}" aria-label="Add one ${esc(item.name)}">+</button><button type="button" class="shop-remove" data-cart-remove="${esc(item.id)}">Remove</button></div></article>`).join('') : '<p class="shop-empty">Your cart is empty. Add products from the catalogue to prepare an order request.</p>';
-    $('[data-checkout-open]').disabled = cart.length === 0;
+    const items = $('#shop-cart-items');
+    if (items) items.innerHTML = cart.length ? cart.map(item => `<article class="shop-cart-item"><div><strong>${esc(item.name)}</strong><small>${esc(item.unit || 'item')} · ${moneyText}</small></div><div class="shop-quantity"><button type="button" data-cart-change="-1" data-cart-id="${esc(item.id)}" aria-label="Decrease ${esc(item.name)} quantity">−</button><span aria-live="polite">${item.quantity}</span><button type="button" data-cart-change="1" data-cart-id="${esc(item.id)}" aria-label="Increase ${esc(item.name)} quantity">+</button><button type="button" class="shop-remove" data-cart-remove="${esc(item.id)}">Remove</button></div></article>`).join('') : '<p class="shop-empty">Your cart is empty. Add products from the catalogue to prepare an order request.</p>';
+    const subtotal = $('#shop-cart-subtotal');
+    if (subtotal) {
+      const pricesKnown = cart.length > 0 && cart.every(item => item.unitPrice !== null);
+      const total = pricesKnown ? cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0) : null;
+      subtotal.textContent = total === null ? (cart.length ? 'Confirmed by the farm' : '—') : new Intl.NumberFormat('en-KE', { style:'currency', currency:'KES', maximumFractionDigits:0 }).format(total);
+    }
+    const units = $('#shop-cart-unit-count');
+    if (units) units.textContent = `${count} ${count === 1 ? 'item' : 'items'}`;
+    const checkoutButton = $('[data-checkout-open]');
+    if (checkoutButton) checkoutButton.disabled = cart.length === 0;
   }
   function addItem(product) {
     const cart = readCart(), current = cart.find(item => item.id === product.id);
-    if (current) current.quantity = (Number(current.quantity) || 1) + 1;
-    else cart.push({id:product.id,name:product.name,category:product.category,unit:product.unit,quantity:1});
+    if (current) current.quantity = Math.min(maxQuantity, current.quantity + 1);
+    else cart.push({id:product.id,name:product.name,category:product.category,unit:product.unit,unitPrice:Number.isFinite(product.price) ? product.price : null,quantity:1});
     writeCart(cart); toast(`${product.name} added to your order.`);
   }
   function submitOrder(event) {
@@ -114,25 +148,46 @@
       link.removeAttribute('target'); link.removeAttribute('rel'); link.textContent = 'View details & add to order';
     });
   }
-  const searchParam = new URLSearchParams(location.search).get('search');
-  if (searchParam) $('#shop-search').value = searchParam;
-  $('#shop-categories').addEventListener('click', event => { const button = event.target.closest('[data-shop-category]'); if (!button) return; activeCategory = button.dataset.shopCategory; renderProducts(); });
-  $('#shop-search').addEventListener('input', renderProducts);
-  $('#shop-products').addEventListener('click', event => { const button = event.target.closest('[data-shop-add]'); if (!button) return; const product = products.find(item => item.id === button.dataset.shopAdd); if (product) addItem(product); });
-  $('#shop-cart-items').addEventListener('click', event => {
-    const remove = event.target.closest('[data-cart-remove]');
-    if (remove) { writeCart(readCart().filter(item => item.id !== remove.dataset.cartRemove)); return; }
-    const change = event.target.closest('[data-cart-change]'); if (!change) return;
-    const cart = readCart(), item = cart.find(entry => entry.id === change.dataset.cartId); if (!item) return;
-    item.quantity = (Number(item.quantity) || 1) + Number(change.dataset.cartChange);
-    writeCart(cart.filter(entry => item === entry ? item.quantity > 0 : true));
-  });
-  $('[data-cart-clear]').addEventListener('click', () => writeCart([]));
-  document.querySelectorAll('[data-cart-focus]').forEach(button => button.addEventListener('click', () => $('#shop-cart').scrollIntoView({behavior:'smooth',block:'start'})));
+  const categoryList = $('#shop-categories');
+  const searchInput = $('#shop-search');
+  const productList = $('#shop-products');
+  if (categoryList && searchInput && productList) {
+    const searchParam = new URLSearchParams(location.search).get('search');
+    if (searchParam) searchInput.value = searchParam;
+    categoryList.addEventListener('click', event => { const button = event.target.closest('[data-shop-category]'); if (!button) return; activeCategory = button.dataset.shopCategory; renderProducts(); });
+    searchInput.addEventListener('input', renderProducts);
+    productList.addEventListener('click', event => { const button = event.target.closest('[data-shop-add]'); if (!button) return; const product = products.find(item => item.id === button.dataset.shopAdd); if (product) addItem(product); });
+    renderProducts();
+  }
+
+  const cartItems = $('#shop-cart-items');
+  if (cartItems) {
+    cartItems.addEventListener('click', event => {
+      const remove = event.target.closest('[data-cart-remove]');
+      if (remove) { writeCart(readCart().filter(item => item.id !== remove.dataset.cartRemove)); return; }
+      const change = event.target.closest('[data-cart-change]');
+      if (!change) return;
+      const direction = Number(change.dataset.cartChange);
+      if (direction !== -1 && direction !== 1) return;
+      const cart = readCart(), item = cart.find(entry => entry.id === change.dataset.cartId);
+      if (!item) return;
+      item.quantity = Math.min(maxQuantity, Math.max(1, item.quantity + direction));
+      writeCart(cart);
+    });
+    renderCart();
+    window.addEventListener(cartUpdatedEvent, renderCart);
+    window.addEventListener('storage', event => { if (event.key === cartKey) renderCart(); });
+  }
+
+  const clearButton = $('[data-cart-clear]');
+  if (clearButton) clearButton.addEventListener('click', () => writeCart([]));
+  document.querySelectorAll('[data-cart-focus]').forEach(button => button.addEventListener('click', () => $('#shop-cart')?.scrollIntoView({behavior:'smooth',block:'start'})));
   const checkout = $('#shop-checkout');
-  $('[data-checkout-open]').addEventListener('click', () => checkout.showModal());
-  $('[data-checkout-close]').addEventListener('click', () => checkout.close());
-  checkout.addEventListener('click', event => { if (event.target === checkout) checkout.close(); });
-  $('#shop-checkout-form').addEventListener('submit', submitOrder);
-  renderProducts(); renderCart();
+  const openCheckout = $('[data-checkout-open]');
+  const closeCheckout = $('[data-checkout-close]');
+  const checkoutForm = $('#shop-checkout-form');
+  if (checkout && openCheckout) openCheckout.addEventListener('click', () => { if (readCart().length) checkout.showModal(); });
+  if (checkout && closeCheckout) closeCheckout.addEventListener('click', () => checkout.close());
+  if (checkout) checkout.addEventListener('click', event => { if (event.target === checkout) checkout.close(); });
+  if (checkoutForm) checkoutForm.addEventListener('submit', submitOrder);
 })();

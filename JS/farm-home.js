@@ -8,7 +8,6 @@
     home:'<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
     market:'<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9"/><path d="M5 12v8h14v-8"/>',
     cart:'<path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/>',
-    cart:'<path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/>',
     auctions:'<path d="m14 13-8.4 8.4a2 2 0 0 1-2.8-2.8L11 10"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/>',
     saved:'<path d="M6 3h12v18l-6-4-6 4z"/>',
     profile:'<circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/>',
@@ -25,7 +24,8 @@
     out:'<path d="M9 4H5v16h4"/><path d="M16 8l4 4-4 4M20 12H9"/>',
     file:'<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
     info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>', phone:'<path d="M5 3h4l2 5-2.5 1.7a15 15 0 0 0 5.8 5.8L16 13l5 2v4a2 2 0 0 1-2 2C10.2 21 3 13.8 3 5a2 2 0 0 1 2-2Z"/>', check:'<circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.8 2.7L16 9.5"/>', chev:'<path d="m6 9 6 6 6-6"/>',
-    user:'<circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/>'
+    user:'<circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/>',
+    more:'<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>'
   };
   const ic = (n, c = '') => `<svg class="fh-i ${c}" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
@@ -82,16 +82,20 @@
   const RULES = ['Bids must meet the displayed minimum and increment.','Bidder names and contact details are private; only bid amounts are shown publicly.','Bids close automatically at the displayed time.','The farm can be contacted to arrange the outcome after the auction closes.'];
 
   const S = { detail:null, tab:'home', cat:'All', q:'', sort:'recent', atab:'live' };
-  const TABS = [['home','Home'], ['market','Marketplace'], ['auctions','Auctions'], ['saved','Saved'], ['profile','Profile']];
+  const TABS = [['home','Home'], ['market','Marketplace'], ['auctions','Auctions'], ['saved','Saved'], ['more','More']];
   const user = () => { const e = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session'); const u = store.get('savanna-customer-accounts', []).find(a => a.email === e); return { email: e || '', name: u && u.name ? String(u.name) : '' }; };
   const saved = () => store.get('farm-app-saved', []);
   const cartItems = () => {
     const items = store.get('savanna-farm-shop-cart', []);
-    return Array.isArray(items) ? items.filter(item => item && typeof item === 'object' && item.id) : [];
+    return Array.isArray(items) ? items.filter(item => item && typeof item === 'object' && item.id).map(item => {
+      const quantity = Number(item.quantity);
+      return { ...item, quantity:Number.isFinite(quantity) ? Math.min(999, Math.max(1, Math.floor(quantity))) : 1 };
+    }) : [];
   };
   const cartCount = () => cartItems().reduce((total, item) => total + Math.max(1, Number(item.quantity) || 1), 0);
   const cartButton = () => `<button class="fh-icon fh-cart-button" data-shop-cart aria-label="Open cart, ${cartCount()} items">${ic('cart')}<em data-app-cart-count>${cartCount()}</em></button>`;
-  const topActions = extra => `<div class="fh-top-actions">${extra || ''}${cartButton()}</div>`;
+  const profileButton = () => `<button class="fh-icon fh-profile-button" data-tab="profile" aria-label="Open profile">${ic('profile')}</button>`;
+  const topActions = extra => `<div class="fh-top-actions">${extra || ''}${profileButton()}${cartButton()}</div>`;
   const toast = m => { const t = document.querySelector('.app-toast'); if (!t) return; t.textContent = m; t.classList.add('is-visible'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('is-visible'), 2600); };
 
   const brand = right => `<header class="fh-top"><a class="fh-brand" href="index.html" aria-label="Mark’s Savannah Farm"><img src="Assets/Glossy%20Green%20Agriculture%20Emblem.png" alt=""><span>Mark’s<br>Savannah Farm</span></a>${right}</header>`;
@@ -153,7 +157,7 @@
   function home() {
     const n = user().name.split(' ')[0], h = new Date().getHours(), g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
     const featured = auctionMarket.list().find(item => item.status === 'live') || auctionMarket.list()[0];
-    return brand(cartButton()) + `
+    return brand(topActions()) + `
     <div class="fh-greet"><h2>${g}${n ? ', ' + esc(n) : ''}</h2><p>Welcome to Mark’s Savannah Farm</p></div>
     <section class="fh-hero"><h2>Growing food today.<br>Building a better tomorrow.</h2><button class="fh-gold" data-tab="market">Explore the farm ${ic('arrow')}</button></section>
     <section class="fh-live"><div class="fh-row"><h3>${ic('auctions')} Live Auctions</h3><span class="fh-pill">${auctionMarket.list().filter(item => item.status === 'live').length} Live</span></div>
@@ -167,7 +171,7 @@
     <a class="fh-learn" href="blog.html#guide-enterprise" style="background-image:linear-gradient(90deg,#eaf2dcf2 45%,#eaf2dc55),url('${img('Agri-Consultancy.jpg')}')"><h3>${ic('book')} Learn something new</h3><p>Practical farming tips, livestock care and agricultural insights.</p><b>Explore guides ${ic('arrow')}</b></a>`;
   }
   function market() {
-    return brand(cartButton()) + `
+    return brand(topActions()) + `
     <div class="fh-search"><label>${ic('search')}<input id="fh-q" type="search" placeholder="Search livestock, products…" value="${esc(S.q)}" aria-label="Search"></label><button class="fh-icon" data-sort aria-label="Change sort order">${ic('sort')}</button></div>
     <div class="fh-chips" role="group" aria-label="Category">${CATS.map(c => `<button data-cat="${c}" aria-pressed="${c === S.cat}" class="${c === S.cat ? 'is-on' : ''}">${c}</button>`).join('')}</div>
     <h2 class="fh-h2">Our Marketplace</h2><p class="fh-sub">Quality livestock and farm products</p><div class="fh-grid" id="fh-list"></div>`;
@@ -200,7 +204,10 @@
     return title('Profile') + `<div class="fh-me">${ic('user', 'fh-big-i')}<h2>${u.name ? esc(u.name) : 'Your account'}</h2><p>${esc(u.email)}</p></div>
     <nav class="fh-list" aria-label="Account links"><a href="customer-account.html">${ic('user')} Buyer account details</a><a href="${wa("Hello Mark's Savannah Farm, I need some help.")}" target="_blank" rel="noopener">${ic('chat')} Chat with the farm</a><a href="terms-and-conditions.html">${ic('file')} Terms &amp; Conditions</a><a href="privacy-policy.html">${ic('file')} Privacy Policy</a><button data-signout>${ic('out')} Sign out</button></nav>`;
   }
-  const VIEWS = { home, market, auctions, saved: savedView, profile };
+  function moreView() {
+    return title('More') + `<p class="fh-fine">Account and support links</p><nav class="fh-list" aria-label="More links"><button data-tab="profile">${ic('profile')} Your profile</button><a href="customer-account.html">${ic('user')} Buyer account details</a><a href="${wa("Hello Mark's Savannah Farm, I need some help.")}" target="_blank" rel="noopener">${ic('chat')} Chat with the farm</a><a href="terms-and-conditions.html">${ic('file')} Terms &amp; Conditions</a><a href="privacy-policy.html">${ic('file')} Privacy Policy</a><button data-signout>${ic('out')} Sign out</button></nav>`;
+  }
+  const VIEWS = { home, market, auctions, saved: savedView, more: moreView, profile };
 
   function render(keepScroll = false) {
     const d = S.detail;
@@ -227,6 +234,7 @@
       if (item) item.quantity = (Number(item.quantity) || 1) + 1;
       else current.push({id:product.id,name:product.name,category:product.cat,unit:({Cattle:'head',Goats:'head',Sheep:'head',Pigs:'head',Poultry:'bird',Crops:'bag or kg',Dairy:'pack',Equipment:'item',Services:'service'})[product.cat] || 'item',quantity:1});
       store.set('savanna-farm-shop-cart', current);
+      window.dispatchEvent(new Event('savanna-cart-updated'));
       root.querySelectorAll('[data-app-cart-count]').forEach(node => { node.textContent = String(cartCount()); });
       root.querySelectorAll('[data-shop-cart]').forEach(button => { button.setAttribute('aria-label', `Open cart, ${cartCount()} items`); });
       toast(`${product.name} added to your order.`); return;
@@ -258,7 +266,13 @@
     if (stateChanged) render(true);
   }
   window.addEventListener('farm-auctions-updated', () => { if (S.tab === 'auctions' || S.detail?.type === 'auction') render(true); });
-  window.addEventListener('storage', event => { if (event.key === 'marks-savannah-auction-bids-v1' || event.key === 'marks-savannah-auction-schedule-v1') { if (S.tab === 'auctions' || S.detail?.type === 'auction') render(true); } });
+  window.addEventListener('storage', event => {
+    if (event.key === 'savanna-farm-shop-cart') {
+      root.querySelectorAll('[data-app-cart-count]').forEach(node => { node.textContent = String(cartCount()); });
+      root.querySelectorAll('[data-shop-cart]').forEach(button => { button.setAttribute('aria-label', `Open cart, ${cartCount()} items`); });
+    }
+    if (event.key === 'marks-savannah-auction-bids-v1' || event.key === 'marks-savannah-auction-schedule-v1') { if (S.tab === 'auctions' || S.detail?.type === 'auction') render(true); }
+  });
   setInterval(updateAuctionTimers, 1000);
   window.addEventListener('farm-home-open', open);
   window.farmHomeReady = true;

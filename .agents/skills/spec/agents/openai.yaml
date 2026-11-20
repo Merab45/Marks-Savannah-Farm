@@ -1,0 +1,3 @@
+interface:
+  display_name: "Spec"
+  short_description: "Write or revise requirements with observable acceptance criteria"

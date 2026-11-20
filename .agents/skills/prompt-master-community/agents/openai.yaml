@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prompt Master for Codex"
+  short_description: "Refine, coordinate, and run Codex tasks"
+  default_prompt: "Use $prompt-master-community to refine, coordinate if useful, and run this task: "

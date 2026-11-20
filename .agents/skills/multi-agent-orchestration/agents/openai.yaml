@@ -1,0 +1,3 @@
+interface:
+  display_name: "Multi Agent Orchestration"
+  short_description: "Execute authorized agent work with explicit ownership and…"

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Breakdown"
+  short_description: "Turn agreed requirements into executable dependency-aware tasks"

@@ -5786,11 +5786,11 @@ html.page-legal .legal-footer { padding:0 0 28px; color:#718075; font-size:13px;
 /* ===== Phone mode: show the green emblem instead of the wordmark logo (v119) ===== */
 html.page-farm-app .splash-name { display:none; }
 @media (max-width:699px) {
-  html.page-farm-app .splash-brand picture, html.page-farm-app .auth-logo-lockup picture, html.page-legal .legal-brand picture { display:block; }
+  html.page-farm-app .splash-brand picture, html.page-legal .legal-brand picture { display:block; }
   html.page-farm-app .splash-brand img { width:150px; height:140px; object-fit:contain; border-radius:0; box-shadow:none; filter:drop-shadow(0 10px 22px #001b12aa); }
   html.page-farm-app .splash-name { display:block; margin:16px 0 2px; color:#fff; font:800 26px/1.1 Manrope,'DM Sans',sans-serif; letter-spacing:-.6px; text-shadow:0 2px 12px #052c1d; animation:splash-rise .85s cubic-bezier(.2,.8,.2,1) .65s both; }
-  html.page-farm-app .auth-logo-lockup { width:auto; }
-  html.page-farm-app .auth-logo-lockup img { width:84px; height:78px; object-fit:contain; border-radius:0; box-shadow:none; }
+  html.page-farm-app .auth-logo-lockup { width:min(230px,72vw); }
+  html.page-farm-app .auth-logo-lockup img { width:100%; height:54px; object-fit:contain; border-radius:0; box-shadow:none; }
   html.page-legal .legal-brand img { width:48px; height:44px; max-height:none; object-fit:contain; border-radius:0; }
 }
 
@@ -6179,7 +6179,8 @@ html.page-shop .shop-toast.is-visible { opacity:1; transform:none; }
 @media(max-width:860px) {
   html.page-shop .shop-layout { grid-template-columns:minmax(0,1fr); grid-template-areas:"catalog" "cart"; }
   html.page-shop .shop-layout > .shop-catalog { grid-area:catalog; min-width:0; }
-  html.page-shop .shop-layout > .shop-cart { grid-area:cart; position:static; min-width:0; width:100%; margin-top:8px; }
+  html.page-shop .shop-layout > .shop-cart { display:block; grid-area:cart; position:static; min-width:0; width:100%; height:auto; margin-top:8px; }
+  html.page-shop .shop-cart-items { display:grid; height:auto; min-height:56px; flex:none; align-content:start; }
 }
 @media(max-width:600px) { html.page-shop .shop-header { min-height:60px; padding:8px 12px; } html.page-shop .shop-header nav { gap:10px; } html.page-shop .shop-header nav a { font-size:11px; } html.page-shop .shop-header nav a[href="products-and-services.html"] { display:none; } html.page-shop .shop-brand img { width:36px; height:36px; } html.page-shop .shop-brand strong { font-size:13px; } html.page-shop .shop-brand small { font-size:10px; } html.page-shop .shop-layout { gap:18px; padding:22px 13px 50px; } html.page-shop .shop-product-grid { grid-template-columns:1fr; } html.page-shop .shop-product { display:grid; grid-template-columns:105px 1fr; } html.page-shop .shop-product > img { height:100%; min-height:190px; } html.page-shop .shop-product-copy { padding:11px; } html.page-shop .shop-product h2 { font-size:15px; } html.page-shop .shop-product-copy > p { font-size:11px; } html.page-shop .shop-consultancy { align-items:flex-start; flex-direction:column; gap:12px; } }
 html.page-index .offerings-shop-link { margin:25px 0 0; text-align:center; }
@@ -6309,3 +6310,20 @@ html.page-auctions .auction-dialog-close { position:absolute; top:12px; right:12
 .fh-note-box { display:flex; align-items:center; justify-content:center; gap:8px; margin:10px 0 0; padding:12px; border-radius:12px; background:#e3ecd4; font-size:14px; } .fh-result { display:flex; gap:12px; margin-top:10px; padding:14px; border-radius:14px; background:#e3ecd4; } .fh-result p { margin:2px 0 0; } .fh-result .fh-i { color:#2e8b3a; width:26px; height:26px; }
 .fh-sheet { position:absolute; inset:0; z-index:20; display:flex; align-items:flex-end; background:#0008; } .fh-sheet-card { width:100%; max-height:92%; overflow:auto; padding:20px 18px calc(env(safe-area-inset-bottom) + 18px); border-radius:22px 22px 0 0; background:#fffdf6; animation:screen-in .25s ease-out both; } .fh-sheet-card h2 { margin:0 0 4px; font:800 22px Georgia,serif; } .fh-sheet-card > p { margin:0 0 12px; color:#4a5a4e; }
 .fh-sheet-card label { display:block; font-weight:700; margin-bottom:6px; } .fh-sheet-card input { width:100%; padding:13px 14px; border:1.5px solid #cfc9b3; border-radius:12px; font:700 20px 'DM Sans',sans-serif; box-sizing:border-box; } .fh-err { min-height:20px; margin:6px 0 0!important; color:#b3261e!important; font-size:14px; } .fh-rev div { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #e4dcc6; } .fh-rev dd { margin:0; font-weight:800; }
+
+/* Cart summary keeps requested quantities visible while farm prices remain unconfirmed. */
+html.page-shop .shop-cart-summary { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; padding:11px 0; border-top:1px solid #e9ece3; border-bottom:1px solid #e9ece3; color:#23472d; }
+html.page-shop .shop-cart-summary > span { display:grid; gap:3px; }
+html.page-shop .shop-cart-summary small { color:#778176; font-size:10px; }
+html.page-shop .shop-cart-summary > strong { text-align:right; font-size:12px; }
+html.page-farm-app .onboarding-content { touch-action:pan-y; }
+html.page-farm-app .onboarding-image { touch-action:pan-y; }
+html.page-farm-app .onboarding-image[data-onboarding-image="phone"] img { object-position:center 38%; }
+html.page-farm-app .onboarding-phone-preview { display:none; position:absolute; top:3%; left:34%; width:29%; height:91%; box-sizing:border-box; flex-direction:column; justify-content:center; gap:5px; overflow:hidden; padding:8% 4%; border-radius:8px; background:#fbfff5; color:#163d23; box-shadow:0 1px 5px #102d2440; pointer-events:none; }
+html.page-farm-app .onboarding-image[data-onboarding-image="phone"] .onboarding-phone-preview { display:flex; }
+html.page-farm-app .onboarding-phone-preview > span { color:#536c56; font-size:clamp(5px,1.7vw,8px); font-weight:700; }
+html.page-farm-app .onboarding-phone-preview > b { font-size:clamp(6px,2vw,9px); line-height:1.15; }
+html.page-farm-app .onboarding-phone-preview > small { color:#536c56; font-size:clamp(4px,1.45vw,7px); line-height:1.25; }
+html.page-farm-app .onboarding-phone-preview > i { width:100%; height:4px; margin-top:3px; border-radius:4px; background:linear-gradient(90deg,#168044 68%,#dce7d2 68%); }
+html.page-farm-app .onboarding-phone-preview > em { align-self:stretch; padding:4px 2px; border-radius:999px; background:#0a5c35; color:white; font-size:clamp(4px,1.4vw,7px); font-style:normal; font-weight:700; text-align:center; }
+html.page-farm-app .fh-profile-button { flex:none; }

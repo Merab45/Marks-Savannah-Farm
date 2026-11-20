@@ -1,0 +1,3 @@
+interface:
+  display_name: "A11y Review"
+  short_description: "Audit accessibility with automated and manual evidence"

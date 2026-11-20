@@ -10,12 +10,12 @@
     <meta name="description" content="Explore farm products, guides, and buyer account options from Mark’s Savannah Farm.">
     <link rel="preload" as="image" href="Assets/Splash%20Screen.png">
     <link rel="preload" as="image" href="Assets/Glossy%20Green%20Agriculture%20Emblem.png" media="(max-width:699px)">
-    <link rel="preload" as="image" href="Assets/marks-savannah-farm-logo.svg" media="(min-width:700px)">
+    <link rel="preload" as="image" href="Assets/marks-savannah-farm-logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet"></noscript>
-    <link rel="stylesheet" href="CSS/site.css?v=137">
+    <link rel="stylesheet" href="CSS/site.css?v=155">
     <script>document.documentElement.classList.toggle('android-app', /Android/i.test(navigator.userAgent)||/[?&]preview/.test(location.search));</script>
   </head>
   <body class="farm-app">
@@ -43,8 +43,8 @@
       <section class="app-screen app-onboarding" id="screen-onboarding" aria-label="App introduction" hidden>
         <header class="app-topbar"><a href="index.html" class="app-back-site" aria-label="Back to website">‹</a><span class="app-step" aria-live="polite"><b data-step-number>1</b> / 3</span></header>
         <div class="onboarding-content">
-          <div class="onboarding-copy"><h1 data-onboarding-title>Discover premium livestock and farm products</h1><p data-onboarding-copy>Buy quality cattle, goats, sheep, poultry, crops, and more — all in one convenient app.</p></div>
-          <div class="onboarding-image" data-onboarding-image="animals"><img src="Assets/Onboarding.png" alt="Cattle, goats, and poultry at a green farm" fetchpriority="high"></div>
+          <div class="onboarding-copy" aria-live="polite"><h1 data-onboarding-title>Discover premium livestock and farm products</h1><p data-onboarding-copy>Buy quality cattle, goats, sheep, poultry, crops, and more — all in one convenient app.</p></div>
+          <div class="onboarding-image" data-onboarding-image="animals"><img src="Assets/Onboarding.png" alt="Cattle, goats, and poultry at a green farm" fetchpriority="high"><div class="onboarding-phone-preview" aria-hidden="true"><span>Farming Guide</span><b>Maize planting</b><small>Soil preparation, spacing and seasonal advice</small><i></i><em>Read guide</em></div></div>
           <div class="onboarding-benefits" data-onboarding-benefits>
             <div><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.8 2.7L16 9.5"/></svg></span><span>Browse &amp; request quotes with ease</span></div>
             <div><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.8 2.7L16 9.5"/></svg></span><span>Trusted quality &amp; expert advice</span></div>
@@ -56,7 +56,7 @@
 
       <section class="app-screen app-auth" id="screen-auth" aria-label="Account access" hidden>
         <header class="app-topbar"><button class="app-back-site" type="button" data-auth-back aria-label="Back">‹</button><a class="auth-skip" href="index.html">Farm website</a></header>
-        <div class="auth-brand"><div class="auth-logo-lockup"><picture><source media="(max-width:699px)" srcset="Assets/Glossy%20Green%20Agriculture%20Emblem.png"><img src="Assets/marks-savannah-farm-logo.svg?v=auth-1" alt="Mark’s Savannah Farm"></picture></div><span class="auth-mode-label" data-auth-mode-label>Welcome back</span><p data-auth-subtitle>Sign in to continue your farming journey</p></div>
+        <div class="auth-brand"><div class="auth-logo-lockup"><img src="Assets/marks-savannah-farm-logo.svg?v=auth-1" alt="Mark’s Savannah Farm"></div><span class="auth-mode-label" data-auth-mode-label>Welcome back</span><p data-auth-subtitle>Sign in to continue your farming journey</p></div>
 
         <form class="app-form" id="app-sign-in">
           <p class="app-required-note"><span aria-hidden="true">*</span> Required fields</p>

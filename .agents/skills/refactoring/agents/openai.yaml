@@ -1,0 +1,3 @@
+interface:
+  display_name: "Refactoring"
+  short_description: "Execute an agreed structural move while preserving behavior"

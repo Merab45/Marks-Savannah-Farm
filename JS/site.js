@@ -142,6 +142,20 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       else openAuth('sign-in');
     });
     onboarding.querySelectorAll('[data-go-step]').forEach(dot => dot.addEventListener('click', () => updateStep(Number(dot.dataset.goStep))));
+    let swipeStart = null;
+    onboarding.addEventListener('pointerdown', event => {
+      if (event.pointerType !== 'touch' || !event.isPrimary || event.target.closest('button, a, input, textarea, select')) return;
+      swipeStart = { x:event.clientX, y:event.clientY };
+    }, { passive:true });
+    onboarding.addEventListener('pointerup', event => {
+      if (!swipeStart || event.pointerType !== 'touch') return;
+      const dx = event.clientX - swipeStart.x;
+      const dy = event.clientY - swipeStart.y;
+      swipeStart = null;
+      if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+      updateStep(currentStep + (dx < 0 ? 1 : -1));
+    }, { passive:true });
+    onboarding.addEventListener('pointercancel', () => { swipeStart = null; }, { passive:true });
     onboarding.querySelector('[data-open-auth]').addEventListener('click', event => { event.preventDefault(); openAuth('sign-in'); });
     auth.querySelector('[data-auth-back]').addEventListener('click', event => {
       if (event.currentTarget.dataset.backToSignIn === 'true') setAuthMode('sign-in');
