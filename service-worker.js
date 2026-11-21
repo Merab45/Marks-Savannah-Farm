@@ -1,7 +1,7 @@
 // Bump the version when the local site shell changes. Old farm caches are
 // retired only after this worker installs successfully and takes control.
 const CACHE_PREFIX = 'marks-savannah-farm-';
-const CACHE_NAME = `${CACHE_PREFIX}v155`;
+const CACHE_NAME = `${CACHE_PREFIX}v156`;
 
 // Keep the pages and code shell available offline. Large photography is
 // cached on first use so the initial install does not download the full gallery.
@@ -18,7 +18,6 @@ const CORE_FILES = [
   './products-and-services.html',
   './auctions.html',
   './shop.html',
-  './herdbook.html',
   './sign-in.html',
   './create-account.html',
   './customer-account.html',
@@ -28,6 +27,8 @@ const CORE_FILES = [
   './JS/auction-page.js',
   './JS/commerce.js',
   './JS/farm-home.js',
+  './JS/customer-auth.js',
+  './JS/supabase-config.js',
   './manifest.webmanifest',
   './Assets/farm-icon.svg',
   './Assets/marks-savannah-farm-logo.svg',
@@ -80,6 +81,20 @@ self.addEventListener('fetch', event => {
   const request = event.request;
   const requestUrl = new URL(request.url);
   if (request.method !== 'GET' || requestUrl.origin !== self.location.origin) return;
+
+  // Never cache authenticated API responses or the staff-facing herdbook page.
+  if (request.headers.has('authorization') || /^\/(auth|rest|realtime|functions)\/v1\//i.test(requestUrl.pathname)) {
+    event.respondWith(fetch(request));
+    return;
+  }
+  if (/\/herdbook\.html$/i.test(requestUrl.pathname)) {
+    event.respondWith(fetch(request).catch(() => new Response('This page is available only while online.', {
+      status:503,
+      statusText:'Service Unavailable',
+      headers:{ 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'no-store' },
+    })));
+    return;
+  }
 
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);

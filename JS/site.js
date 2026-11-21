@@ -80,6 +80,8 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
       const signupMode = mode === 'sign-up';
       document.getElementById('app-sign-in').hidden = signupMode;
       document.getElementById('app-sign-up').hidden = !signupMode;
+      document.getElementById('app-password-reset').hidden = true;
+      document.getElementById('app-new-password').hidden = true;
       auth.classList.toggle('is-sign-up', signupMode);
       auth.querySelector('[data-auth-mode-label]').textContent = signupMode ? 'Create Your Account' : 'Welcome Back!';
       auth.querySelector('[data-auth-subtitle]').textContent = signupMode ? 'Join our growing community' : 'Sign in to continue your farming journey';
@@ -113,11 +115,17 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
     };
     const startOnboarding = () => { showScreen(onboarding); updateStep(0); };
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const savedSession = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session');
     const SPLASH_HOLD_MS = 2700;
     const SPLASH_FADE_MS = reduceMotion ? 0 : 400;
     function continueFromSplash() {
-      if (savedSession) window.openFarmHome();
+      if (new URLSearchParams(location.search).get('auth') === 'recovery') {
+        showScreen(auth);
+        document.getElementById('app-sign-in').hidden = true;
+        document.getElementById('app-sign-up').hidden = true;
+        document.getElementById('app-new-password').hidden = false;
+        auth.querySelector('[data-auth-mode-label]').textContent = 'Reset your password';
+        auth.querySelector('[data-auth-subtitle]').textContent = 'Choose a new password for your account';
+      } else if (window.MarksFarmAuth?.getUser()) window.openFarmHome();
       else if (localStorage.getItem('marks-farm-app-onboarding-complete')) openAuth('sign-in');
       else startOnboarding();
     }
@@ -181,62 +189,74 @@ if (document.documentElement.classList.contains('page-farm-app') && document.doc
     };
     signupPassword.addEventListener('input', updatePasswordRules);
     updatePasswordRules();
-    auth.querySelectorAll('[data-google-auth]').forEach(button => button.addEventListener('click', () => showToast('Google sign-in needs the farm’s OAuth setup before it can create or access an account.')));
-    auth.querySelectorAll('[data-facebook-auth]').forEach(button => button.addEventListener('click', () => showToast('Facebook sign-in needs the farm’s OAuth setup before it can create or access an account.')));
-    auth.querySelectorAll('[data-apple-auth]').forEach(button => button.addEventListener('click', () => showToast('Apple sign-in needs the farm’s OAuth setup before it can create or access an account.')));
-    auth.querySelector('[data-forgot-password]').addEventListener('click', () => showToast('Password recovery will be available when accounts are connected to an online service.'));
-
-    const accountUsers = () => JSON.parse(localStorage.getItem('savanna-customer-accounts') || '[]');
-    const hashPassword = async (password, salt) => {
-      const saltBytes = Uint8Array.from(salt.match(/.{2}/g), byte => parseInt(byte,16));
-      const key = await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
-      const bits = await crypto.subtle.deriveBits({name:'PBKDF2',salt:saltBytes,iterations:210000,hash:'SHA-256'},key,256);
-      return Array.from(new Uint8Array(bits),byte => byte.toString(16).padStart(2,'0')).join('');
+    const authError = auth.querySelector('[data-sign-in-error]');
+    const authSuccess = auth.querySelector('[data-auth-config-error]');
+    const showAuthMessage = (node, message, isError = true) => {
+      node.textContent = message;
+      node.classList.toggle('is-visible', isError);
+      node.classList.toggle('is-success', !isError);
     };
+    if (!window.MarksFarmAuth?.isConfigured()) showAuthMessage(authSuccess, window.MarksFarmAuth?.getConfigurationMessage() || 'Online account access is not configured.');
+    auth.querySelectorAll('[data-google-auth], [data-facebook-auth], [data-apple-auth]').forEach(button => {
+      button.disabled = true;
+      button.title = 'Social sign-in is not configured yet';
+    });
+    auth.querySelector('[data-forgot-password]').addEventListener('click', () => {
+      document.getElementById('app-sign-in').hidden = true;
+      document.getElementById('app-sign-up').hidden = true;
+      document.getElementById('app-password-reset').hidden = false;
+      document.getElementById('app-reset-email').value = document.querySelector('#app-sign-in [name="email"]').value;
+      auth.querySelector('[data-auth-mode-label]').textContent = 'Reset your password';
+      auth.querySelector('[data-auth-subtitle]').textContent = 'We’ll email you a secure reset link';
+    });
+    auth.querySelector('[data-cancel-reset]').addEventListener('click', () => setAuthMode('sign-in'));
     document.getElementById('app-sign-in').addEventListener('submit', async event => {
       event.preventDefault();
       const form = event.currentTarget;
-      const email = form.elements.email.value.trim().toLowerCase();
-      const error = auth.querySelector('[data-sign-in-error]');
-      const user = accountUsers().find(account => account.email === email);
-      error.classList.remove('is-visible');
-      if (!user || await hashPassword(form.elements.password.value,user.salt) !== user.passwordHash) {
-        error.textContent = 'We could not find an account with those details. Check them or create an account.';
-        error.classList.add('is-visible');
-        return;
-      }
-      if (form.elements.remember.checked) { localStorage.setItem('savanna-customer-session',email); sessionStorage.removeItem('savanna-customer-session'); }
-      else { localStorage.removeItem('savanna-customer-session'); sessionStorage.setItem('savanna-customer-session',email); }
-      window.openFarmHome();
+      const button = form.querySelector('[type="submit"]');
+      button.disabled = true;
+      showAuthMessage(authError, '');
+      try {
+        await window.MarksFarmAuth.signIn(form.elements.email.value, form.elements.password.value);
+        window.openFarmHome();
+      } catch (error) {
+        showAuthMessage(authError, error.message || 'We could not sign you in. Check your email and password.');
+      } finally { button.disabled = false; }
     });
     document.getElementById('app-sign-up').addEventListener('submit', async event => {
       event.preventDefault();
       const form = event.currentTarget;
       const error = auth.querySelector('[data-sign-up-error]');
-      const name = form.elements.name.value.trim();
-      const email = form.elements.email.value.trim().toLowerCase();
-      const password = form.elements.password.value;
-      error.classList.remove('is-visible');
-      if (!Object.values(passwordRules).every(rule => rule(password))) {
-        error.textContent = 'Choose a password that meets all the requirements above.';
-        error.classList.add('is-visible');
-        return;
-      }
-      if (password !== form.elements.confirm.value) { error.textContent = 'Those passwords do not match.'; error.classList.add('is-visible'); return; }
-      if (accountUsers().some(account => account.email === email)) { error.textContent = 'An account with this email already exists. Sign in instead.'; error.classList.add('is-visible'); return; }
-      const salt = crypto.getRandomValues(new Uint8Array(16));
-      const saltText = Array.from(salt,byte => byte.toString(16).padStart(2,'0')).join('');
+      const button = form.querySelector('[type="submit"]');
+      if (!Object.values(passwordRules).every(rule => rule(form.elements.password.value))) return showAuthMessage(error, 'Choose a password that meets all the requirements above.');
+      if (form.elements.password.value !== form.elements.confirm.value) return showAuthMessage(error, 'Those passwords do not match.');
+      button.disabled = true; showAuthMessage(error, '');
       try {
-        const users = accountUsers();
-        users.push({name,email,phone:form.elements.phone.value.trim(),salt:saltText,passwordHash:await hashPassword(password,saltText),createdAt:new Date().toISOString()});
-        localStorage.setItem('savanna-customer-accounts',JSON.stringify(users));
-        localStorage.setItem('savanna-customer-session',email);
-      } catch {
-        error.textContent = 'This browser could not save the account. Please allow local storage and try again.';
-        error.classList.add('is-visible');
-        return;
-      }
-      window.openFarmHome();
+        const result = await window.MarksFarmAuth.signUp({ email:form.elements.email.value, password:form.elements.password.value, displayName:form.elements.name.value.trim(), phone:form.elements.phone.value.trim() });
+        if (result.session) window.openFarmHome();
+        else showAuthMessage(authSuccess, 'Account created. Check your email for the confirmation link before signing in.', false);
+      } catch (failure) { showAuthMessage(error, failure.message || 'We could not create your account. Try again.'); }
+      finally { button.disabled = false; }
+    });
+    document.getElementById('app-password-reset').addEventListener('submit', async event => {
+      event.preventDefault(); const form=event.currentTarget, button=form.querySelector('[type="submit"]'), error=auth.querySelector('[data-reset-error]');
+      button.disabled=true; showAuthMessage(error, '');
+      try { await window.MarksFarmAuth.requestPasswordReset(form.elements.email.value); showAuthMessage(authSuccess, 'If that email is registered, a password reset link has been sent.', false); }
+      catch (failure) { showAuthMessage(error, failure.message || 'Could not send a reset link.'); }
+      finally { button.disabled=false; }
+    });
+    document.getElementById('app-new-password').addEventListener('submit', async event => {
+      event.preventDefault(); const form=event.currentTarget, button=form.querySelector('[type="submit"]'), error=auth.querySelector('[data-new-password-error]');
+      if (!Object.values(passwordRules).every(rule => rule(form.elements.password.value))) return showAuthMessage(error, 'Use at least 8 characters, one uppercase letter, and one symbol.');
+      if (form.elements.password.value !== form.elements.confirm.value) return showAuthMessage(error, 'Those passwords do not match.');
+      button.disabled=true; showAuthMessage(error, '');
+      try { await window.MarksFarmAuth.updatePassword(form.elements.password.value); showAuthMessage(authSuccess, 'Password updated. You can now sign in.', false); setAuthMode('sign-in'); history.replaceState(null, '', 'app.html'); }
+      catch (failure) { showAuthMessage(error, failure.message || 'The reset link is invalid or expired. Request a new one.'); }
+      finally { button.disabled=false; }
+    });
+    window.MarksFarmAuth?.ready.then(session => {
+      if (session?.user && splashReady) window.openFarmHome();
+      if (new URLSearchParams(location.search).get('auth') === 'confirmed' && session?.user) showAuthMessage(authSuccess, 'Email confirmed. Your account is ready.', false);
     });
   })();
 }
@@ -677,16 +697,6 @@ your shortlist" onclick="toggleSave(${
       typeFilter.value=link.dataset.navLivestockType;
       typeFilter.dispatchEvent(new Event('change',{bubbles:true}));
     }));
-    try{
-      if(localStorage.getItem('savanna-customer-session')||sessionStorage.getItem('savanna-customer-session')){
-        document.querySelectorAll('a[href="sign-in.html"]').forEach(a=>{
-          a.href='customer-account.html';a.textContent=a.closest('footer')?'My buyer account':'My account'
-        }
-        )
-      }
-    }
-    catch{
-    }
     Object.assign(window, {
       toggleSave, openEnquiry, closeEnquiry, sendEnquiry
     }
@@ -870,7 +880,7 @@ if (document.documentElement.classList.contains('page-herdbook')) {
 }
 // Customer app: Home, Marketplace, Auctions, Saved, and Profile.
 if (document.documentElement.classList.contains('page-customer-account')) {
-  (() => {
+  (async () => {
     const catalog = [
       ['market-cattle','Cattle','Cattle','Livestock','Assets/Cattle%20dropdown.jpg','Ask about breeds and current availability.'],
       ['market-goats','Goats','Goats','Livestock','Assets/Goats.jpg','Ask about breeds and current availability.'],
@@ -887,10 +897,22 @@ if (document.documentElement.classList.contains('page-customer-account')) {
       try { return JSON.parse(localStorage.getItem(key) ?? JSON.stringify(fallback)); }
       catch { return fallback; }
     };
-    const email = (localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session') || '').trim().toLowerCase();
-    const users = readStore('savanna-customer-accounts',[]);
-    const user = Array.isArray(users) ? users.find(item => String(item.email || '').toLowerCase() === email) : null;
-    if (!user) { location.replace('sign-in.html'); return; }
+    const auth = window.MarksFarmAuth;
+    if (!auth) { location.replace('sign-in.html'); return; }
+    try { await auth.ready; } catch { /* Show sign-in when session retrieval fails. */ }
+    const authenticatedUser = auth.getUser();
+    if (!authenticatedUser) { location.replace('sign-in.html'); return; }
+    const savedProfile = auth.getProfile() || {};
+    const user = {
+      id: authenticatedUser.id,
+      email: authenticatedUser.email || '',
+      name: savedProfile.display_name || authenticatedUser.user_metadata?.display_name || '',
+      phone: savedProfile.phone || authenticatedUser.user_metadata?.phone || '',
+      createdAt: authenticatedUser.created_at,
+    };
+    window.addEventListener('marks-auth-state', event => {
+      if (!event.detail.user || event.detail.user.id !== user.id) location.replace('sign-in.html');
+    });
 
     let marketFilter = 'All';
     let auctionTab = 'live';
@@ -1077,7 +1099,7 @@ if (document.documentElement.classList.contains('page-customer-account')) {
 
     function renderOrders() {
       const orders=readStore('savanna-customer-orders',[]);
-      const safe=Array.isArray(orders)?orders.filter(order=>order&&(!order.email||String(order.email).toLowerCase()===email)):[];
+      const safe=Array.isArray(orders)?orders.filter(order=>order&&(!order.email||String(order.email).toLowerCase()===user.email.toLowerCase())):[];
       const list=document.getElementById('ordersList');
       if(!safe.length){list.innerHTML='<div class="buyer-market-empty"><strong>No purchases recorded yet</strong><p>When you arrange a purchase directly with the farm, it can be noted here.</p></div>';return;}
       list.innerHTML=safe.slice(0,5).map(order=>`<article class="buyer-order-entry"><div><strong>${escapeHtml(order.animalName||order.listingName||'Farm purchase')}</strong><small>${escapeHtml(order.orderNumber||order.createdAt||'Arranged with the farm')}</small></div><span class="buyer-order-status">${escapeHtml(order.status||'Recorded')}</span></article>`).join('');
@@ -1111,96 +1133,21 @@ if (document.documentElement.classList.contains('page-customer-account')) {
       document.getElementById('editName').value=user.name||'';document.getElementById('editEmail').value=user.email||'';document.getElementById('editPhone').value=user.phone||'';document.getElementById('editModal').classList.add('open');document.getElementById('editName').focus();
     }
     function closeEdit(){document.getElementById('editModal').classList.remove('open');}
-    function saveProfile(event){
-      event.preventDefault();user.name=document.getElementById('editName').value.trim();user.phone=document.getElementById('editPhone').value.trim();
-      const updated=users.map(item=>String(item.email||'').toLowerCase()===email?user:item);
-      try{localStorage.setItem('savanna-customer-accounts',JSON.stringify(updated));}catch{showToast('Could not save: browser storage is unavailable.');return;}
-      renderUser();closeEdit();showToast('Your profile details have been saved on this device.');
+    async function saveProfile(event){
+      event.preventDefault();
+      try {
+        const saved = await auth.saveProfile(document.getElementById('editName').value, document.getElementById('editPhone').value);
+        user.name = saved.display_name || '';
+        user.phone = saved.phone || '';
+        renderUser(); closeEdit(); showToast('Your profile has been updated.');
+      } catch (error) { showToast(error.message || 'Could not save your profile.'); }
     }
     function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));}
     function showToast(message){const toast=document.getElementById('toast');toast.textContent=message;toast.classList.add('show');window.setTimeout(()=>toast.classList.remove('show'),2800);}
-    function signOut(event){event.preventDefault();localStorage.removeItem('savanna-customer-session');sessionStorage.removeItem('savanna-customer-session');location.href='index.html';}
+    async function signOut(event){event.preventDefault();try{await auth.signOut();location.replace('sign-in.html');}catch(error){showToast(error.message||'Could not sign out.');}}
 
     Object.assign(window,{openEdit,closeEdit,signOut});
     initialize();
   })();
 }
 // Initialize behavior only on the matching page.
-if (document.documentElement.classList.contains('page-sign-in')) {
-  (() => {
-    // Verify credentials stored by this browser and create a buyer session.
-    document.getElementById('year').textContent=new Date().getFullYear();
-    const users=()=>JSON.parse(localStorage.getItem('savanna-customer-accounts')||'[]');
-    async function hashPassword(password,salt){
-      const saltBytes=Uint8Array.from(salt.match(/.{2}/g),b=>parseInt(b,16));
-      const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
-      const bits=await crypto.subtle.deriveBits({
-        name:'PBKDF2',salt:saltBytes,iterations:210000,hash:'SHA-256'
-      }
-      ,key,256);
-      return Array.from(new Uint8Array(bits),b=>b.toString(16).padStart(2,'0')).join('')
-    }
-    document.getElementById('togglePassword').addEventListener('click',()=>{
-      const field=document.getElementById('password'),show=field.type==='password';field.type=show?'text':'password';document.getElementById('togglePassword').textContent=show?'Hide':'Show';document.getElementById('togglePassword').setAttribute('aria-label',show?'Hide password':'Show password')
-    }
-    );
-    document.getElementById('login').addEventListener('submit',async e=>{
-      e.preventDefault();const email=document.getElementById('email').value.trim().toLowerCase(),password=document.getElementById('password').value;const user=users().find(u=>u.email===email);const error=document.getElementById('error');if(!user||await hashPassword(password,user.salt)!==user.passwordHash){
-        error.textContent='We could not find an account with those details. Check them or create an account.';error.classList.add('show');return
-      }
-      if(document.getElementById('rememberMe').checked){
-        localStorage.setItem('savanna-customer-session',email);sessionStorage.removeItem('savanna-customer-session')
-      }
-      else{
-        localStorage.removeItem('savanna-customer-session');sessionStorage.setItem('savanna-customer-session',email)
-      }
-      location.href='customer-account.html'
-    }
-    );
-    Object.assign(window, {
-    }
-    );
-  }
-  )();
-}
-// Initialize behavior only on the matching page.
-if (document.documentElement.classList.contains('page-create-account')) {
-  (() => {
-    // Validate the form, hash the password, and save a local buyer account.
-    document.getElementById('year').textContent=new Date().getFullYear();
-    const users=()=>JSON.parse(localStorage.getItem('savanna-customer-accounts')||'[]');
-    async function hashPassword(password,salt){
-      const saltBytes=Uint8Array.from(salt.match(/.{2}/g),b=>parseInt(b,16));
-      const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
-      const bits=await crypto.subtle.deriveBits({
-        name:'PBKDF2',salt:saltBytes,iterations:210000,hash:'SHA-256'
-      }
-      ,key,256);
-      return Array.from(new Uint8Array(bits),b=>b.toString(16).padStart(2,'0')).join('')
-    }
-    ;
-    document.getElementById('signup').addEventListener('submit',async e=>{
-      e.preventDefault();const name=document.getElementById('name').value.trim(),email=document.getElementById('email').value.trim().toLowerCase(),phone=document.getElementById('phone').value.trim(),password=document.getElementById('password').value,confirm=document.getElementById('confirm').value,error=document.getElementById('error');if(password!==confirm){
-        error.textContent='Those passwords do not match.';error.classList.add('show');return
-      }
-      error.classList.remove('show');const list=users();if(list.some(user=>user.email===email)){
-        error.textContent='An account with this email already exists. Sign in instead.';error.classList.add('show');return
-      }
-      const salt=crypto.getRandomValues(new Uint8Array(16));const saltText=Array.from(salt,b=>b.toString(16).padStart(2,'0')).join('');list.push({
-        name,email,phone,salt:saltText,passwordHash:await hashPassword(password,saltText),createdAt:new Date().toISOString()
-      }
-      );try{
-        localStorage.setItem('savanna-customer-accounts',JSON.stringify(list));localStorage.setItem('savanna-customer-session',email)
-      }
-      catch{
-        error.textContent='This browser is blocking storage, so the account could not be saved. Turn off private browsing and try again.';error.classList.add('show');return
-      }
-      location.href='customer-account.html'
-    }
-    );
-    Object.assign(window, {
-    }
-    );
-  }
-  )();
-}

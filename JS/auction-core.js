@@ -60,7 +60,7 @@
       .sort((a,b) => Number(b.amount)-Number(a.amount) || Number(a.placedAt)-Number(b.placedAt));
   }
   function bidderId() {
-    const account = (localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session') || '').trim().toLowerCase();
+    const account = window.MarksFarmAuth?.getUser()?.id || '';
     const scopedKey = `${bidderKey}:${account ? encodeURIComponent(account) : 'anonymous-device'}`;
     let id = localStorage.getItem(scopedKey);
     if (!id) { id = globalThis.crypto?.randomUUID?.() || `buyer-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`; try { localStorage.setItem(scopedKey,id); } catch {} }

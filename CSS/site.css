@@ -5623,6 +5623,10 @@ html.page-farm-app .terms-check input { flex:none; margin:1px 0 0; }
 html.page-farm-app .terms-check a { color:#075a30; font-weight:700; text-underline-offset:2px; }
 html.page-farm-app .app-error { display:none; margin:0; color:#a62e24; font-size:12px; line-height:1.35; }
 html.page-farm-app .app-error.is-visible { display:block; }
+html.page-farm-app .app-error.is-success { display:block; color:#176b39; }
+html.page-farm-app .app-form[hidden], html.page-farm-app [hidden] { display:none !important; }
+html.page-sign-in .auth-status, html.page-create-account .auth-status { margin:10px 0; color:#176b39; font:500 13px/1.5 system-ui,sans-serif; }
+html.page-sign-in form[hidden], html.page-create-account form[hidden] { display:none !important; }
 html.page-farm-app .app-toast { position:fixed; z-index:20; right:16px; bottom:calc(16px + env(safe-area-inset-bottom)); left:16px; width:max-content; max-width:calc(100% - 32px); margin:auto; padding:11px 15px; transform:translateY(15px); border-radius:10px; background:#173d28; color:#fff; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s,transform .2s; }
 html.page-farm-app .app-toast.is-visible { transform:translateY(0); opacity:1; }
 @media(max-height:720px) { html.page-farm-app .app-screen { padding-right:20px; padding-left:20px; } html.page-farm-app .app-onboarding { gap:8px; } html.page-farm-app .onboarding-copy { padding:3px 0 7px; } html.page-farm-app .onboarding-image { min-height:165px; max-height:34vh; } html.page-farm-app .onboarding-benefits { gap:4px; padding-top:8px; } html.page-farm-app .benefit-icon { flex-basis:34px; width:34px; height:34px; } html.page-farm-app .onboarding-benefits > div { min-height:36px; font-size:13px; } html.page-farm-app .app-auth { gap:6px; } html.page-farm-app .app-input { min-height:43px; } html.page-farm-app .app-input input { height:40px; } html.page-farm-app .social-auth-button { min-height:40px; } }

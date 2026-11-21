@@ -1,0 +1,6 @@
+# Supabase CLI-generated local state and environment secrets.
+.temp/
+.branches/
+.env
+.env.*
+!.env.example

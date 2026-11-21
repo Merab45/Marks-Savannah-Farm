@@ -83,7 +83,16 @@
 
   const S = { detail:null, tab:'home', cat:'All', q:'', sort:'recent', atab:'live' };
   const TABS = [['home','Home'], ['market','Marketplace'], ['auctions','Auctions'], ['saved','Saved'], ['more','More']];
-  const user = () => { const e = localStorage.getItem('savanna-customer-session') || sessionStorage.getItem('savanna-customer-session'); const u = store.get('savanna-customer-accounts', []).find(a => a.email === e); return { email: e || '', name: u && u.name ? String(u.name) : '' }; };
+  const user = () => {
+    const auth = window.MarksFarmAuth;
+    const account = auth?.getUser();
+    const profile = auth?.getProfile() || {};
+    return {
+      email: account?.email || '',
+      name: String(profile.display_name || account?.user_metadata?.display_name || ''),
+      phone: String(profile.phone || account?.user_metadata?.phone || ''),
+    };
+  };
   const saved = () => store.get('farm-app-saved', []);
   const cartItems = () => {
     const items = store.get('savanna-farm-shop-cart', []);
@@ -243,7 +252,10 @@
     if (d.back !== undefined) { S.detail = null; render(); return; }
     if (d.bid) { const item = AU(d.bid); if (item.status !== 'live') { S.detail = { type:'auction', id:d.bid }; render(); toast('Bids are accepted only while the lot is live.'); return; } sheet(d.bid); return; }
     if (d.tab) S.detail = null;
-    if (d.signout !== undefined) { ['savanna-customer-session'].forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); }); location.reload(); return; }
+    if (d.signout !== undefined) {
+      Promise.resolve(window.MarksFarmAuth?.signOut()).then(() => location.reload()).catch(error => toast(error.message || 'Could not sign out.'));
+      return;
+    }
     if (d.save) { const s = saved(), i = s.indexOf(d.save); i < 0 ? s.push(d.save) : s.splice(i, 1); store.set('farm-app-saved', s); render(); toast(i < 0 ? 'Saved' : 'Removed from saved'); return; }
     if (d.sort !== undefined) { S.sort = { recent:'low', low:'high', high:'recent' }[S.sort]; fillList(); toast({ recent:'Sorted: recently listed', low:'Sorted: price low to high', high:'Sorted: price high to low' }[S.sort]); return; }
     if (d.remind !== undefined) { const on = !store.get('farm-app-remind', false); store.set('farm-app-remind', on); render(); toast(on ? 'Reminder noted on this device' : 'Reminder removed'); return; }
@@ -275,5 +287,14 @@
   });
   setInterval(updateAuctionTimers, 1000);
   window.addEventListener('farm-home-open', open);
+  window.addEventListener('marks-auth-state', event => {
+    const previous = event.detail.previousUserId;
+    const next = event.detail.user?.id || null;
+    if (!next || (previous && previous !== next)) {
+      root.replaceChildren();
+      if (!next) location.replace('app.html#sign-in');
+      else location.reload();
+    }
+  });
   window.farmHomeReady = true;
 })();

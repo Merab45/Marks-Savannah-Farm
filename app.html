@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet"></noscript>
-    <link rel="stylesheet" href="CSS/site.css?v=155">
+    <link rel="stylesheet" href="CSS/site.css?v=156">
     <script>document.documentElement.classList.toggle('android-app', /Android/i.test(navigator.userAgent)||/[?&]preview/.test(location.search));</script>
   </head>
   <body class="farm-app">
@@ -82,6 +82,24 @@
           <p class="auth-switch">Don’t have an account? <button type="button" data-switch-auth="sign-up">Sign Up</button></p>
         </form>
 
+        <form class="app-form" id="app-password-reset" hidden>
+          <p class="app-required-note">Reset your password</p>
+          <label class="app-field-label" for="app-reset-email">Email <span>*</span></label>
+          <label class="app-input is-required"><span aria-hidden="true">✉</span><input id="app-reset-email" name="email" type="email" autocomplete="email" placeholder="e.g. amina@example.com" required></label>
+          <p class="app-error" data-reset-error role="alert"></p>
+          <button class="app-primary auth-submit" type="submit">Send reset link</button>
+          <p class="auth-switch"><button type="button" data-cancel-reset>Back to sign in</button></p>
+        </form>
+        <form class="app-form" id="app-new-password" hidden>
+          <p class="app-required-note">Choose a new password</p>
+          <label class="app-field-label" for="app-new-password-field">New password <span>*</span></label>
+          <label class="app-input is-required"><span aria-hidden="true">▣</span><input id="app-new-password-field" name="password" type="password" autocomplete="new-password" minlength="8" pattern="(?=.*[A-Z])(?=.*[^A-Za-z0-9\s]).{8,}" title="Use at least 8 characters, including one uppercase letter and one symbol." required></label>
+          <label class="app-field-label" for="app-new-password-confirm">Confirm password <span>*</span></label>
+          <label class="app-input is-required"><span aria-hidden="true">▣</span><input id="app-new-password-confirm" name="confirm" type="password" autocomplete="new-password" minlength="8" required></label>
+          <p class="app-error" data-new-password-error role="alert"></p>
+          <button class="app-primary auth-submit" type="submit">Save new password</button>
+        </form>
+
         <form class="app-form" id="app-sign-up" hidden>
           <p class="app-required-note"><span aria-hidden="true">*</span> Required fields</p>
           <label class="app-field-label" for="app-signup-name">Full Name <span>*</span></label>
@@ -112,13 +130,17 @@
           </div>
           <p class="auth-switch">Already have an account? <button type="button" data-switch-auth="sign-in">Sign In</button></p>
         </form>
-        <p class="app-prototype-note">Account forms save on this device for this prototype.</p>
+        <p class="app-prototype-note">Existing prototype accounts stay on this device and are not imported. Create a new verified account to sign in online. Your saved items and cart remain on this device.</p>
+        <p class="app-error" data-auth-config-error role="status"></p>
       </section>
       <section class="app-screen app-home" id="screen-home" aria-label="Mark’s Savannah Farm home" hidden></section>
       <div class="app-toast" role="status" aria-live="polite"></div>
     </main>
-    <script src="JS/site.js?v=101"></script>
-    <script src="JS/auction-core.js?v=2"></script>
-    <script src="JS/farm-home.js?v=8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.2/dist/umd/supabase.js" defer></script>
+    <script src="JS/supabase-config.js?v=1" defer></script>
+    <script src="JS/customer-auth.js?v=1" defer></script>
+    <script src="JS/site.js?v=102" defer></script>
+    <script src="JS/auction-core.js?v=2" defer></script>
+    <script src="JS/farm-home.js?v=8" defer></script>
   </body>
 </html>
